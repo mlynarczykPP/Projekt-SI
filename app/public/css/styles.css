@@ -1,0 +1,86 @@
+body {
+    background-color: #DCF4F9;
+    font-family: sans-serif;
+    color: #092D34;
+}
+
+h1{
+    text-align: center;
+    padding: 20px;
+}
+
+a {
+    color: white;
+}
+
+td a {
+    color: #092D34;
+}
+
+p a {
+    color: #092D34;
+}
+
+th{
+    background-color: #1c7e91;
+    color: white;
+}
+
+#menu {
+    background-color: #092D34;
+    border-radius: 10px;
+    text-align: center;
+    font-size: 1.2em;
+}
+
+nav ul{
+    text-decoration: none;
+    list-style-type: none;
+    padding-inline-start: 15px;
+}
+
+#menu nav li {
+    list-style-type: none;
+    display: inline-block;
+    position: relative;
+    padding: 20px;
+}
+
+nav li {
+    color: white;
+}
+
+nav a {
+    color: white;
+    padding: 10px;
+}
+
+nav a {
+    text-decoration-line: none;
+}
+
+#pod {
+    position: absolute;
+    display: none;
+    background: #092D34;
+    font-size: 0.9em;
+    padding: 10px;
+    border-radius: 10px;
+    margin-left: -20px;
+}
+
+#todo:hover #pod {
+    display: block;
+}
+
+#task:hover #pod {
+    display: block;
+}
+
+#categories:hover #pod {
+    display: block;
+}
+
+#tags:hover #pod {
+    display: block;
+}

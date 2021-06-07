@@ -1,0 +1,87 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    {{ 'title_notes_list'|trans }}
+{% endblock %}
+
+{% block body %}
+    {% block header %}
+        <h1>{{ 'virtual_note'|trans }}</h1>
+    {% endblock %}
+    <div id="menu">
+        <nav>
+            <ul>
+                <li id="todo">{{ 'title_notes_list'|trans }}
+                    <ul id="pod">
+                        <li><a href="{{ url('notes_index') }}" title="record list">{{ 'button_view'|trans }}</a></li>
+                        <li><a href="">{{ 'add'|trans }}</a></li>
+                        <li><a href="">{{ 'delete'|trans }}</a></li>
+                    </ul>
+                </li>
+                <li id="task">{{ 'title_task_list'|trans }}
+                    <ul id="pod">
+                        <li><a href="{{ url('task_index') }}" title="tasks list">{{ 'button_view'|trans }}</a></li>
+                        <li><a href="">{{ 'add'|trans }}</a></li>
+                        <li><a href="">{{ 'delete'|trans }}</a></li>
+                    </ul>
+                </li>
+                <li id="categories">{{ 'title_categories_list'|trans }}
+                    <ul id="pod">
+                        <li><a href="">{{ 'button_view'|trans }}</a></li>
+                        <li><a href="">{{ 'add'|trans }}</a></li>
+                        <li><a href="">{{ 'delete'|trans }}</a></li>
+                    </ul>
+                </li>
+                <li id="tags">{{ 'title_tags_list'|trans }}
+                    <ul id="pod">
+                        <li><a href="">{{ 'button_view'|trans }}</a></li>
+                        <li><a href="">{{ 'add'|trans }}</a></li>
+                        <li><a href="">{{ 'delete'|trans }}</a></li>
+                    </ul>
+                </li>
+                <li><a href="">{{ 'sign_up'|trans }}</a></li>
+            </ul>
+        </nav>
+    </div>
+    <h2>{{ 'title_notes_list'|trans }}</h2>
+    {% if pagination is defined and pagination.items|length %}
+
+        <div class="navigation text-center">
+            {{ knp_pagination_render(pagination) }}
+        </div>
+
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>{{ knp_pagination_sortable(pagination, 'label_id'|trans, 'note.id') }}</th>
+                <th>{{ knp_pagination_sortable(pagination, 'label_title'|trans, 'note.title') }}</th>
+                <th>{{ knp_pagination_sortable(pagination, 'label_comment'|trans, 'note.comment') }}</th>
+                <th>{{ 'label_actions'|trans }}</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for note in pagination.items %}
+                <tr>
+                    <td>{{ note.id }}</td>
+                    <td>{{ note.title }}</td>
+                    <td>{{ note.comment }}</td>
+                    <td>
+                        <a href="{{ url('notes_show', {id: note.id}) }}" title="{{ 'button_view'|trans }}">
+                            {{ 'button_view'|trans }}
+                        </a>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+        <div class="navigation text-center">
+            {{ knp_pagination_render(pagination) }}
+        </div>
+
+    {% else %}
+        <p>
+            {{ 'message_empty_list'|trans }}
+        </p>
+    {% endif %}
+{% endblock %}

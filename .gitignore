@@ -1,5 +1,4 @@
 /.idea/
-/data/
-/vendor
+/app/vendor
 .php_cs.cache
 .phpunit.result.cache
