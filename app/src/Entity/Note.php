@@ -3,7 +3,9 @@
 namespace App\Entity;
 
 use App\Repository\NoteRepository;
+use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * @ORM\Entity(repositoryClass=NoteRepository::class)
@@ -28,6 +30,34 @@ class Note
      */
     private $comment;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Tags::class, inversedBy="notes")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $tags;
+
+    /**
+     * Created at.
+     *
+     * @var DateTimeInterface
+     *
+     * @ORM\Column(type="datetime")
+     *
+     * @Gedmo\Timestampable(on="update")
+     */
+    private $createdAt;
+
+    /**
+     * Updated at.
+     *
+     * @var DateTimeInterface
+     *
+     * @ORM\Column(type="datetime")
+     *
+     * @Gedmo\Timestampable(on="update")
+     */
+    private $updatedAt;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -51,5 +81,35 @@ class Note
     public function setComment(string $comment): void
     {
         $this->comment = $comment;
+    }
+
+    public function getTags(): ?Tags
+    {
+        return $this->tags;
+    }
+
+    public function setTags(?Tags $tags): void
+    {
+        $this->tags = $tags;
+    }
+
+    public function getCreatedAt(): ?\DateTimeInterface
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt(\DateTimeInterface $createdAt): void
+    {
+        $this->createdAt = $createdAt;
+    }
+
+    public function getUpdatedAt(): ?\DateTimeInterface
+    {
+        return $this->updatedAt;
+    }
+
+    public function setUpdatedAt(\DateTimeInterface $updatedAt): void
+    {
+        $this->updatedAt = $updatedAt;
     }
 }

@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    {{ 'title_note_delete'|trans({'%id%': note.id|default('')}) }}
+{% endblock %}
+
+{% block body %}
+    {{ include('menu.html.twig') }}
+    {% include 'default/_form.html.twig' with {
+        page_title: 'title_note_delete',
+        page_title_param: {'%id%': note.id},
+        attr: {
+            method: 'DELETE',
+            action: url('notes_delete', {'id': note.id}),
+        },
+        form: form,
+        submit_label: 'action_delete'|trans,
+        message: 'message_deleted_successfully'|trans,
+        back_to_list_path: 'notes_index',
+    } %}
+{% endblock %}

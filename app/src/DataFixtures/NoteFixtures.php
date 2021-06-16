@@ -6,47 +6,44 @@
 namespace App\DataFixtures;
 
 use App\Entity\Note;
-use Doctrine\Bundle\FixturesBundle\Fixture;
+use App\Entity\Tags;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
-use Faker\Factory;
-use Faker\Generator;
 
 /**
  * Class NoteFixtures.
  */
-class NoteFixtures extends Fixture
+class NoteFixtures extends AbstractBaseFixtures implements DependentFixtureInterface
 {
     /**
-     * Faker.
-     *
-     * @var Generator
-     */
-    protected $faker;
-
-    /**
-     * Persistence object manager.
-     *
-     * @var ObjectManager
-     */
-    protected $manager;
-
-    /**
-     * Load.
+     * Load data.
      *
      * @param ObjectManager $manager Persistence object manager
      */
-    public function load(ObjectManager $manager): void
+    public function loadData(ObjectManager $manager): void
     {
-        $this->faker = Factory::create();
-        $this->manager = $manager;
-
-        for ($i = 0; $i < 20; ++$i) {
+        $this->createMany(50, 'notes', function ($i) {
             $note = new Note();
             $note->setTitle($this->faker->sentence);
-            $note->setComment($this->faker->paragraph(2));
-            $this->manager->persist($note);
-        }
+            $note->setComment($this->faker->paragraph(5));
+            $note->setTags($this->getRandomReference('tags'));
+            $note->setCreatedAt($this->faker->dateTimeBetween('-100 days', '-1 days'));
+            $note->setUpdatedAt($this->faker->dateTimeBetween('-100 days', '-1 days'));
+
+            return $note;
+        });
 
         $manager->flush();
+    }
+
+    /**
+     * This method must return an array of fixtures classes
+     * on which the implementing class depends on.
+     *
+     * @return array Array of dependencies
+     */
+    public function getDependencies(): array
+    {
+        return [TagsFixtures::class];
     }
 }

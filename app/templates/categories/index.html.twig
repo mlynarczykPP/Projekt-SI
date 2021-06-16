@@ -1,0 +1,62 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    {{ 'title_categories_list'|trans }}
+{% endblock %}
+
+{% block body %}
+    {{ include('menu.html.twig') }}
+    <h2>{{ 'title_categories_list'|trans }}</h2>
+    {% if pagination is defined and pagination.items|length %}
+
+        <div class="navigation text-center">
+            {{ knp_pagination_render(pagination) }}
+        </div>
+
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>{{ knp_pagination_sortable(pagination, 'label_id'|trans, 'categories.id') }}</th>
+                <th>{{ knp_pagination_sortable(pagination, 'label_created_at'|trans, 'categories.createdAt') }}</th>
+                <th>{{ knp_pagination_sortable(pagination, 'label_updated_at'|trans, 'categories.updatedAt') }}</th>
+                <th>{{ knp_pagination_sortable(pagination, 'label_name'|trans, 'categories.name') }}</th>
+                {% if is_granted('ROLE_ADMIN') %}<th>{{ 'label_actions'|trans }}</th>{% endif %}
+            </tr>
+            </thead>
+            <tbody>
+            {% for categories in pagination.items %}
+                <tr>
+                    <td>{{ categories.id }}</td>
+                    <td>{{ categories.createdAt|format_date('long') }}</td>
+                    <td>{{ categories.updatedAt|format_date('long') }}</td>
+                    <td>{{ categories.name }}</td>
+                    {% if is_granted('ROLE_ADMIN') %}
+                    <td>
+                        <a href="{{ url('categories_show', {code: categories.code}) }}" title="{{ 'button_view'|trans }}">
+                            &#128269;{{ 'button_view'|trans }}
+                        </a>
+                        <a href="{{ url('categories_edit', {code: categories.code}) }}" title="{{ 'button_edit'|trans }}" id="op">
+                            &#128736;{{ 'button_edit'|trans }}
+                        </a>
+                        {% if not categories.tasks|length %}
+                            <a href="{{ url('categories_delete', {code: categories.code}) }}" title="{{ 'delete'|trans }}" id="op">
+                                &#10060;{{ 'delete'|trans }}
+                            </a>
+                        {% endif %}
+                    </td>
+                    {% endif %}
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+        <div class="navigation text-center">
+            {{ knp_pagination_render(pagination) }}
+        </div>
+
+    {% else %}
+        <p>
+            {{ 'message_empty_list'|trans }}
+        </p>
+    {% endif %}
+{% endblock %}

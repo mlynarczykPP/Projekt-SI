@@ -29,8 +29,12 @@ th{
 #menu {
     background-color: #092D34;
     border-radius: 10px;
-    text-align: center;
+    text-align: left;
     font-size: 1.2em;
+}
+
+#sign {
+    float: right;
 }
 
 nav ul{
@@ -83,4 +87,31 @@ nav a {
 
 #tags:hover #pod {
     display: block;
+}
+
+#usr:hover #pod {
+    display: block;
+}
+
+#log:hover #pod {
+    display: block;
+    text-align: center;
+}
+
+.col-sm-10 {
+    margin-right: 10px;
+}
+
+#in {
+    display: flex;
+    justify-content: left;
+    margin-left: 15px;
+}
+
+#op {
+    padding-left: 10px;
+}
+
+#form {
+    font-weight: bold;
 }

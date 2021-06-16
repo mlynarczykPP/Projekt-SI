@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="pl">
 <head>
     <meta charset="UTF-8">
     <title>{% block title %}Welcome!{% endblock %}</title>
@@ -10,6 +10,7 @@
 </head>
 <body>
 <div class="container-fluid">
+    {% include 'default/_flash_messages.html.twig' %}
     {% block body %}{% endblock %}
 </div>
 {% block javascripts %}

@@ -1,0 +1,31 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    {{ 'title_categories_details'|trans }}
+{% endblock %}
+
+{% block body %}
+    {{ include('menu.html.twig') }}
+    <h2>{{ 'title_categories_details'|trans }}</h2>
+    {% if categories is defined and categories|length %}
+        <dl>
+            <dt>{{ 'label_id'|trans }}</dt>
+            <dd>{{ categories.id }}</dd>
+            <dt>{{ 'label_created_at'|trans }}</dt>
+            <dd>{{ categories.createdAt|format_date('long') }}</dd>
+            <dt>{{ 'label_updated_at'|trans }}</dt>
+            <dd>{{ categories.updatedAt|format_date('long') }}</dd>
+            <dt>{{ 'label_name'|trans }}</dt>
+            <dd>{{  categories.name }}</dd>
+        </dl>
+        <p>
+            <a href="{{ url('categories_index') }}" title="back to the list">
+                &#11013;{{ 'button_back'|trans }}
+            </a>
+        </p>
+    {% else %}
+        <p>
+            {{ 'message_item_not_found'|trans }}
+        </p>
+    {% endif %}
+{% endblock %}

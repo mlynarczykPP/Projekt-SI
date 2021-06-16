@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    {{ 'title_tags_create'|trans }}
+{% endblock %}
+
+{% block body %}
+    {{ include('menu.html.twig') }}
+    {% include 'default/_form.html.twig' with {
+        page_title: 'title_tags_create',
+        attr: {
+            method: 'POST',
+            action: url('tags_create')
+        },
+        form: form,
+        submit_label: 'action_create'|trans,
+        message: 'message_created_successfully'|trans,
+        back_to_list_path: 'tags_index',
+    } %}
+{% endblock %}

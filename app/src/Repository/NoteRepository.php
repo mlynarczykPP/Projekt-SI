@@ -1,13 +1,20 @@
 <?php
+/**
+ * Note Repository
+ */
 
 namespace App\Repository;
 
 use App\Entity\Note;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\OptimisticLockException;
+use Doctrine\ORM\ORMException;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
+ * Class NoteRepository.
+ *
  * @method Note|null find($id, $lockMode = null, $lockVersion = null)
  * @method Note|null findOneBy(array $criteria, array $orderBy = null)
  * @method Note[]    findAll()
@@ -24,10 +31,10 @@ class NoteRepository extends ServiceEntityRepository
      *
      * @constant int
      */
-    const PAGINATOR_ITEMS_PER_PAGE = 5;
+    const PAGINATOR_ITEMS_PER_PAGE = 10;
 
     /**
-     * TaskRepository constructor.
+     * NoteRepository constructor.
      *
      * @param ManagerRegistry $registry Manager registry
      */
@@ -35,6 +42,34 @@ class NoteRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Note::class);
+    }
+
+    /**
+     * Save note.
+     *
+     * @param Note $note Note entity
+     *
+     * @throws ORMException
+     * @throws OptimisticLockException
+     */
+    public function save(Note $note): void
+    {
+        $this->_em->persist($note);
+        $this->_em->flush();
+    }
+
+    /**
+     * Delete note.
+     *
+     * @param Note $note Note entity
+     *
+     * @throws ORMException
+     * @throws OptimisticLockException
+     */
+    public function delete(Note $note): void
+    {
+        $this->_em->remove($note);
+        $this->_em->flush();
     }
 
     /**
@@ -46,7 +81,7 @@ class NoteRepository extends ServiceEntityRepository
     public function queryAll(): QueryBuilder
     {
         return $this->getOrCreateQueryBuilder()
-            ->orderBy('note.id', 'ASC');
+            ->orderBy('note.updatedAt', 'DESC');
     }
 
     /**

@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    {{ 'title_categories_edit'|trans({'%id%': categories.id|default('')}) }}
+{% endblock %}
+
+{% block body %}
+    {{ include('menu.html.twig') }}
+    {% include 'default/_form.html.twig' with {
+        page_title: 'title_categories_edit',
+        page_title_param: {'%id%': categories.id},
+        attr: {
+            method: 'PUT',
+            action: url('categories_edit', {'code': categories.code}),
+        },
+        form: form,
+        submit_label: 'action_edited'|trans,
+        message: 'message_updated_successfully'|trans,
+        back_to_list_path: 'categories_index',
+    } %}
+{% endblock %}
