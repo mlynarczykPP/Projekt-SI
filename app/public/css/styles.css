@@ -115,3 +115,25 @@ nav a {
 #form {
     font-weight: bold;
 }
+
+#art {
+    width: 100%;
+    text-align: left;
+    border-radius: 10px;
+}
+
+#art p {
+    margin-left: 20px;
+    margin-bottom: 0;
+}
+
+#artindex{
+    text-align: center;
+    border-radius: 10px;
+    color: #092D34;
+    vertical-align: top;
+}
+
+footer {
+    text-align: center;
+}

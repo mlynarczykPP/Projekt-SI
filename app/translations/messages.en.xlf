@@ -106,6 +106,10 @@
                 <source>sign_up</source>
                 <target>Sign up</target>
             </trans-unit>
+            <trans-unit id="register">
+                <source>register</source>
+                <target>Sign up</target>
+            </trans-unit>
             <trans-unit id="add">
                 <source>add</source>
                 <target>Add</target>

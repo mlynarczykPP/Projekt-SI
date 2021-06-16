@@ -180,7 +180,7 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implements P
             return new RedirectResponse($targetPath);
         }
 
-        return new RedirectResponse($this->urlGenerator->generate('task_index'));
+        return new RedirectResponse($this->urlGenerator->generate('notes_index'));
     }
 
     /**
@@ -190,6 +190,6 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implements P
      */
     protected function getLoginUrl(): string
     {
-        return $this->urlGenerator->generate('app_login');
+        return $this->urlGenerator->generate('notes_index');
     }
 }
