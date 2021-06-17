@@ -94,8 +94,6 @@ class Task
      *     nullable=true,
      *     options={"unsigned":true, "default":0}
      *)
-     *
-     * )
      */
     private $priority;
 

@@ -5,6 +5,7 @@
 
 namespace App\Repository;
 
+use App\Entity\Categories;
 use App\Entity\Task;
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -74,15 +75,16 @@ class TaskRepository extends ServiceEntityRepository
     }
 
     /**
-     * Query by author
+     * Query tasks by author.
      *
-     * @param User $user
-     * @return QueryBuilder
+     * @param User      $user    User entity
+     * @param array     $filters Filters array
+     *
+     * @return QueryBuilder Query builder
      */
-
-    public function queryByAuthor(User $user): QueryBuilder
+    public function queryByAuthor(User $user, array $filters = []): QueryBuilder
     {
-        $queryBuilder = $this->queryAll();
+        $queryBuilder = $this->queryAll($filters);
         $queryBuilder->andWhere('task.author = :author')
             ->setParameter('author', $user);
 
@@ -92,18 +94,22 @@ class TaskRepository extends ServiceEntityRepository
     /**
      * Query all records.
      *
+     * @param array $filters Filters array
+     *
      * @return QueryBuilder Query builder
      */
-
-    public function queryAll(): QueryBuilder
+    public function queryAll(array $filters = []): QueryBuilder
     {
-        return $this->getOrCreateQueryBuilder()
+        $queryBuilder = $this->getOrCreateQueryBuilder()
             ->select(
                 'partial task.{id, createdAt, updatedAt, title, priority}',
-                'partial categories.{id, name}',
+                'partial categories.{id, name}'
             )
             ->join('task.categories', 'categories')
             ->orderBy('task.updatedAt', 'DESC');
+        $queryBuilder = $this->applyFiltersToList($queryBuilder, $filters);
+
+        return $queryBuilder;
     }
 
     /**
@@ -117,5 +123,24 @@ class TaskRepository extends ServiceEntityRepository
     private function getOrCreateQueryBuilder(QueryBuilder $queryBuilder = null): QueryBuilder
     {
         return $queryBuilder ?? $this->createQueryBuilder('task');
+    }
+
+
+    /**
+     * Apply filters to paginated list.
+     *
+     * @param QueryBuilder $queryBuilder Query builder
+     * @param array        $filters      Filters array
+     *
+     * @return QueryBuilder Query builder
+     */
+    private function applyFiltersToList(QueryBuilder $queryBuilder, array $filters = []): QueryBuilder
+    {
+        if (isset($filters['categories']) && $filters['categories'] instanceof Categories) {
+            $queryBuilder->andWhere('categories = :categories')
+                ->setParameter('categories', $filters['categories']);
+        }
+
+        return $queryBuilder;
     }
 }

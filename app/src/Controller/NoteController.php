@@ -7,11 +7,9 @@ namespace App\Controller;
 
 use App\Entity\Note;
 use App\Form\NoteType;
-use App\Repository\NoteRepository;
+use App\Service\NoteService;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
-use Knp\Component\Pager\PaginatorInterface;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\HttpFoundation\Request;
@@ -26,11 +24,26 @@ use Symfony\Component\Routing\Annotation\Route;
 class NoteController extends AbstractController
 {
     /**
+     * Note service.
+     *
+     * @var NoteService
+     */
+    private NoteService $noteService;
+
+    /**
+     * NoteController constructor.
+     *
+     * @param NoteService $noteService Note service
+     */
+    public function __construct(NoteService $noteService)
+    {
+        $this->noteService = $noteService;
+    }
+
+    /**
      * Index action.
      *
-     * @param Request               $request            HTTP request
-     * @param NoteRepository        $noteRepository     Note repository
-     * @param PaginatorInterface    $paginator          Paginator
+     * @param Request $request HTTP request
      *
      * @return Response HTTP response
      *
@@ -40,12 +53,15 @@ class NoteController extends AbstractController
      *     name="notes_index",
      * )
      */
-    public function index(Request $request, NoteRepository $noteRepository, PaginatorInterface $paginator): Response
+    public function index(Request $request): Response
     {
-        $pagination = $paginator->paginate(
-            $noteRepository->queryByAuthor($this->getUser()),
+        $filters = [];
+        $filters['tags_id'] = $request->query->getInt('filters_tags_id');
+
+        $pagination = $this->noteService->createPaginatedList(
             $request->query->getInt('page', 1),
-            NoteRepository::PAGINATOR_ITEMS_PER_PAGE
+            $this->getUser(),
+            $filters
         );
 
         return $this->render(
@@ -67,25 +83,19 @@ class NoteController extends AbstractController
      *     name="notes_show",
      *     requirements={"id": "[1-9]\d*"},
      * )
-     *
-     * @IsGranted(
-     *     "VIEW",
-     *     subject="note"
-     * )
      */
     public function show(Note $note): Response
     {
         return $this->render(
             'notes/show.html.twig',
-            ['note' => $note]
+            ['notes' => $note]
         );
     }
 
     /**
      * Create action.
      *
-     * @param Request           $request        HTTP request
-     * @param NoteRepository    $noteRepository Note repository
+     * @param Request $request HTTP request
      *
      * @return Response HTTP response
      *
@@ -98,15 +108,14 @@ class NoteController extends AbstractController
      *     name="notes_create",
      * )
      */
-    public function create(Request $request, NoteRepository $noteRepository): Response
+    public function create(Request $request): Response
     {
         $note = new Note();
         $form = $this->createForm(NoteType::class, $note);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $note->setAuthor($this->getUser());
-            $noteRepository->save($note);
+            $this->noteService->save($note);
             $this->addFlash('success', 'message_created_successfully');
 
             return $this->redirectToRoute('notes_index');
@@ -121,9 +130,8 @@ class NoteController extends AbstractController
     /**
      * Edit action.
      *
-     * @param Request           $request        HTTP request
-     * @param Note              $note           Note entity
-     * @param NoteRepository    $noteRepository Note repository
+     * @param Request  $request    HTTP request
+     * @param Note     $note       Note entity
      *
      * @return Response HTTP response
      *
@@ -136,19 +144,14 @@ class NoteController extends AbstractController
      *     requirements={"id": "[1-9]\d*"},
      *     name="notes_edit",
      * )
-     *
-     * @IsGranted(
-     *     "EDIT",
-     *     subject="note"
-     * )
      */
-    public function edit(Request $request, Note $note, NoteRepository $noteRepository): Response
+    public function edit(Request $request, Note $note): Response
     {
         $form = $this->createForm(NoteType::class, $note, ['method' => 'PUT']);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $noteRepository->save($note);
+            $this->noteService->save($note);
             $this->addFlash('success', 'message_updated_successfully');
 
             return $this->redirectToRoute('notes_index');
@@ -158,7 +161,7 @@ class NoteController extends AbstractController
             'notes/edit.html.twig',
             [
                 'form' => $form->createView(),
-                'note' => $note,
+                'notes' => $note,
             ]
         );
     }
@@ -166,9 +169,8 @@ class NoteController extends AbstractController
     /**
      * Delete action.
      *
-     * @param Request           $request        HTTP request
-     * @param Note              $note           Note entity
-     * @param NoteRepository    $noteRepository Note repository
+     * @param Request   $request    HTTP request
+     * @param Note      $note       Note entity
      *
      * @return Response HTTP response
      *
@@ -181,13 +183,8 @@ class NoteController extends AbstractController
      *     requirements={"id": "[1-9]\d*"},
      *     name="notes_delete",
      * )
-     *
-     * @IsGranted(
-     *     "DELETE",
-     *     subject="note"
-     * )
      */
-    public function delete(Request $request, Note $note, NoteRepository $noteRepository): Response
+    public function delete(Request $request, Note $note): Response
     {
         $form = $this->createForm(FormType::class, $note, ['method' => 'DELETE']);
         $form->handleRequest($request);
@@ -197,7 +194,7 @@ class NoteController extends AbstractController
         }
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $noteRepository->delete($note);
+            $this->noteService->delete($note);
             $this->addFlash('success', 'message_deleted_successfully');
 
             return $this->redirectToRoute('notes_index');
@@ -207,7 +204,7 @@ class NoteController extends AbstractController
             'notes/delete.html.twig',
             [
                 'form' => $form->createView(),
-                'note' => $note,
+                'notes' => $note,
             ]
         );
     }

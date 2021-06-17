@@ -7,9 +7,9 @@ namespace App\Controller;
 
 use App\Entity\Tags;
 use App\Form\TagsType;
-use App\Repository\TagsRepository;
+use App\Service\TagService;
+use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
-use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\HttpFoundation\Request;
@@ -23,43 +23,40 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class TagController extends AbstractController
 {
-    private TagsRepository $tagsRepository;
-
-    private PaginatorInterface  $paginator;
+    /**
+     * Tag service.
+     *
+     * @var TagService
+     */
+    private TagService $tagService;
 
     /**
      * TagController constructor.
      *
-     * @param TagsRepository            $tagsRepository           Tags repository
-     * @param PaginatorInterface        $paginator                Paginator interface
+     * @param TagService $tagService Tag service
      */
-    public function __construct(TagsRepository $tagsRepository, PaginatorInterface $paginator)
+    public function __construct(TagService $tagService)
     {
-        $this->tagsRepository = $tagsRepository;
-        $this->paginator = $paginator;
+        $this->tagService = $tagService;
     }
 
     /**
      * Index action.
      *
-     * @param Request                   $request                    HTTP request
-     * @param TagsRepository            $tagsRepository             Tags repository
-     * @param PaginatorInterface        $paginator                  Paginator
+     * @param Request $request HTTP request
      *
-     * @return Response                                             HTTP response
+     * @return Response HTTP response
      *
      * @Route(
      *     "/",
+     *     methods={"GET"},
      *     name="tags_index",
      * )
      */
-    public function index(Request $request, TagsRepository $tagsRepository, PaginatorInterface $paginator): Response
+    public function index(Request $request): Response
     {
-        $pagination = $paginator->paginate(
-            $tagsRepository->queryAll(),
-            $request->query->getInt('page', 1),
-            TagsRepository::PAGINATOR_ITEMS_PER_PAGE
-        );
+        $page = $request->query->getInt('page', 1);
+        $pagination = $this->tagService->createPaginatedList($page);
 
         return $this->render(
             'tags/index.html.twig',
@@ -70,15 +67,15 @@ class TagController extends AbstractController
     /**
      * Show action.
      *
-     * @param int $id   Record id
+     * @param Tags $tags Tag entity
      *
      * @return Response HTTP response
      *
      * @Route(
-     *     "/tags/{code}",
+     *     "/{id}",
      *     methods={"GET"},
      *     name="tags_show",
-     *     requirements={"code"},
+     *     requirements={"id": "[1-9]\d*"},
      * )
      */
     public function show(Tags $tags): Response
@@ -92,13 +89,12 @@ class TagController extends AbstractController
     /**
      * Create action.
      *
-     * @param Request $request                  HTTP request
-     * @param TagsRepository $tagsRepository    Tags repository
+     * @param Request $request HTTP request
      *
      * @return Response HTTP response
      *
      * @throws ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
+     * @throws OptimisticLockException
      *
      * @Route(
      *     "/create",
@@ -106,15 +102,14 @@ class TagController extends AbstractController
      *     name="tags_create",
      * )
      */
-    public function create(Request $request, TagsRepository $tagsRepository): Response
+    public function create(Request $request): Response
     {
         $tags = new Tags();
         $form = $this->createForm(TagsType::class, $tags);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $tagsRepository->save($tags);
-
+            $this->tagService->save($tags);
             $this->addFlash('success', 'message_created_successfully');
 
             return $this->redirectToRoute('tags_index');
@@ -129,30 +124,28 @@ class TagController extends AbstractController
     /**
      * Edit action.
      *
-     * @param Request           $request                HTTP request
-     * @param Tags              $tags                   Tags entity
-     * @param TagsRepository    $tagsRepository         Tags repository
+     * @param Request  $request    HTTP request
+     * @param Tags     $tags       Tag entity
      *
      * @return Response HTTP response
      *
      * @throws ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
+     * @throws OptimisticLockException
      *
      * @Route(
-     *     "/{code}/edit",
+     *     "/{id}/edit",
      *     methods={"GET", "PUT"},
-     *     requirements={"code"},
+     *     requirements={"id": "[1-9]\d*"},
      *     name="tags_edit",
      * )
      */
-    public function edit(Request $request, Tags $tags, TagsRepository $tagsRepository): Response
+    public function edit(Request $request, Tags $tags): Response
     {
         $form = $this->createForm(TagsType::class, $tags, ['method' => 'PUT']);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $tagsRepository->save($tags);
-
+            $this->tagService->save($tags);
             $this->addFlash('success', 'message_updated_successfully');
 
             return $this->redirectToRoute('tags_index');
@@ -170,26 +163,25 @@ class TagController extends AbstractController
     /**
      * Delete action.
      *
-     * @param \Symfony\Component\HttpFoundation\Request $request    HTTP request
-     * @param \App\Entity\Tags                          $tags       Tags entity
-     * @param \App\Repository\TagsRepository            $repository Category repository
+     * @param Request   $request    HTTP request
+     * @param Tags      $tags       Tags entity
      *
-     * @return \Symfony\Component\HttpFoundation\Response HTTP response
+     * @return Response HTTP response
      *
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
+     * @throws ORMException
+     * @throws OptimisticLockException
      *
      * @Route(
-     *     "/{code}/delete",
+     *     "/{id}/delete",
      *     methods={"GET", "DELETE"},
-     *     requirements={"code"},
+     *     requirements={"id": "[1-9]\d*"},
      *     name="tags_delete",
      * )
      */
-    public function delete(Request $request, Tags $tags, TagsRepository $repository): Response
+    public function delete(Request $request, Tags $tags): Response
     {
         if ($tags->getNotes()->count()) {
-            $this->addFlash('warning', 'message_tags_contains_notes');
+            $this->addFlash('warning', 'message_tags_contains_note');
 
             return $this->redirectToRoute('tags_index');
         }
@@ -202,7 +194,7 @@ class TagController extends AbstractController
         }
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $repository->delete($tags);
+            $this->tagService->delete($tags);
             $this->addFlash('success', 'message_deleted_successfully');
 
             return $this->redirectToRoute('tags_index');

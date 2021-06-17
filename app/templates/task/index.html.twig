@@ -36,7 +36,11 @@
                     <td>{{ task.updatedAt|format_date('long') }}</td>
                     <td>{{ task.title }}</td>
                     <td>{{ task.priority }}</td>
-                    <td>{{ task.categories.name }}</td>
+                    <td>
+                        <a href="{{ url('task_index', {'filters.categories_id' : task.categories.id}) }}" title="{{ task.categories.name }}">
+                            {{ task.categories.name }}
+                        </a>
+                    </td>
                     {% if is_granted('ROLE_ADMIN') %}
                         <td>{{ task.author.email }}</td>
                     {% endif %}

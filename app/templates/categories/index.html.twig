@@ -32,14 +32,14 @@
                     <td>{{ categories.name }}</td>
                     {% if is_granted('ROLE_ADMIN') %}
                     <td>
-                        <a href="{{ url('categories_show', {code: categories.code}) }}" title="{{ 'button_view'|trans }}">
+                        <a href="{{ url('categories_show', {id: categories.id}) }}" title="{{ 'button_view'|trans }}">
                             &#128269;{{ 'button_view'|trans }}
                         </a>
-                        <a href="{{ url('categories_edit', {code: categories.code}) }}" title="{{ 'button_edit'|trans }}" id="op">
+                        <a href="{{ url('categories_edit', {id: categories.id}) }}" title="{{ 'button_edit'|trans }}" id="op">
                             &#128736;{{ 'button_edit'|trans }}
                         </a>
                         {% if not categories.tasks|length %}
-                            <a href="{{ url('categories_delete', {code: categories.code}) }}" title="{{ 'delete'|trans }}" id="op">
+                            <a href="{{ url('categories_delete', {id: categories.id}) }}" title="{{ 'delete'|trans }}" id="op">
                                 &#10060;{{ 'delete'|trans }}
                             </a>
                         {% endif %}

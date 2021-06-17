@@ -34,7 +34,11 @@
                     <td>{{ note.createdAt|format_date('long') }}</td>
                     <td>{{ note.updatedAt|format_date('long') }}</td>
                     <td>{{ note.title }}</td>
-                    <td>{{ note.tags.name }}</td>
+                    <td>
+                        <a href="{{ url('notes_index', {'filters.tags_id' : note.tags.id}) }}" title="{{ note.tags.name }}">
+                            {{ note.tags.name }}
+                        </a>
+                    </td>
                     {% if is_granted('ROLE_ADMIN') %}
                         <td>{{ note.author.email }}</td>
                     {% endif %}

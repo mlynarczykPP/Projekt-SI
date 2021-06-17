@@ -3,6 +3,7 @@
 namespace App\Security\Voter;
 
 use App\Entity\Task;
+use App\Entity\User;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -24,12 +25,10 @@ class TaskAuthorVoter extends Voter
         }
 
         switch ($attribute) {
-            case 'VIEW':
-            case 'EDIT':
             case 'DELETE':
-                if ($subject->getAuthor() === $user) {
-                    return true;
-                }
+            case 'EDIT':
+            case 'VIEW':
+                return $this->isAuthor($subject, $user);
                 break;
             default:
                 return false;
@@ -37,5 +36,10 @@ class TaskAuthorVoter extends Voter
         }
 
         return false;
+    }
+
+    private function isAuthor($subject, User $user): bool
+    {
+        return $subject->getAuthor() === $user;
     }
 }

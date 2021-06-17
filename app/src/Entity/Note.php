@@ -88,6 +88,11 @@ class Note
     private $author;
 
     /**
+     * @ORM\OneToOne(targetEntity=Image::class, mappedBy="note", cascade={"persist", "remove"})
+     */
+    private $image;
+
+    /**
      * Getter for Id.
      *
      * @return int|null Result
@@ -215,5 +220,35 @@ class Note
     public function setAuthor(?User $author): void
     {
         $this->author = $author;
+    }
+
+    /**
+     * Getter for image
+     *
+     * @return Image|null Image
+     */
+    public function getImage(): ?Image
+    {
+        return $this->image;
+    }
+
+    /**
+     * Setter for image
+     *
+     * @param Image|null $image Image
+     */
+    public function setImage(?Image $image): void
+    {
+        // unset the owning side of the relation if necessary
+        if ($image === null && $this->image !== null) {
+            $this->image->setNote(null);
+        }
+
+        // set the owning side of the relation if necessary
+        if ($image !== null && $image->getNote() !== $this) {
+            $image->setNote($this);
+        }
+
+        $this->image = $image;
     }
 }

@@ -32,23 +32,23 @@
                     <td>{{ tags.name }}</td>
                     <td>
                         {% if is_granted('ROLE_ADMIN') %}
-                        <a href="{{ url('tags_show', {code: tags.code}) }}" title="{{ 'button_view'|trans }}">
+                        <a href="{{ url('tags_show', {id: tags.id}) }}" title="{{ 'button_view'|trans }}">
                             &#128269;{{ 'button_view'|trans }}
                         </a>
                         {% if not tags.notes|length %}
-                            <a href="{{ url('tags_delete', {code: tags.code}) }}" title="{{ 'delete'|trans }}" id="op">
+                            <a href="{{ url('tags_delete', {id: tags.id}) }}" title="{{ 'delete'|trans }}" id="op">
                                 &#10060;{{ 'delete'|trans }}
                             </a>
                         {% endif %}
                         {% else %}
-                            <a href="{{ url('tags_show', {code: tags.code}) }}" title="{{ 'button_view'|trans }}">
+                            <a href="{{ url('tags_show', {id: tags.id}) }}" title="{{ 'button_view'|trans }}">
                                 &#128269;{{ 'button_view'|trans }}
                             </a>
-                            <a href="{{ url('tags_edit', {code: tags.code}) }}" title="{{ 'button_edit'|trans }}" id="op">
+                            <a href="{{ url('tags_edit', {id: tags.id}) }}" title="{{ 'button_edit'|trans }}" id="op">
                                 &#128736;{{ 'button_edit'|trans }}
                             </a>
                             {% if not tags.notes|length %}
-                                <a href="{{ url('tags_delete', {code: tags.code}) }}" title="{{ 'delete'|trans }}" id="op">
+                                <a href="{{ url('tags_delete', {id: tags.id}) }}" title="{{ 'delete'|trans }}" id="op">
                                     &#10060;{{ 'delete'|trans }}
                                 </a>
                             {% endif %}

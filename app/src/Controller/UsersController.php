@@ -22,7 +22,6 @@ use Symfony\Component\Routing\Annotation\Route;
  *
  * @Route("/users")
  *
- * @IsGranted("ROLE_USER")
  */
 class UsersController extends AbstractController
 {
@@ -74,6 +73,42 @@ class UsersController extends AbstractController
         return $this->render(
             'users/show.html.twig',
             ['users' => $user]
+        );
+    }
+
+    /**
+     * Create user.
+     *
+     * @param Request           $request        HTTP request
+     * @param UserRepository    $userRepository User repository
+     *
+     * @return Response HTTP response
+     *
+     * @throws ORMException
+     * @throws OptimisticLockException
+     *
+     * @Route(
+     *     "/create",
+     *     methods={"GET", "POST"},
+     *     name="users_create",
+     * )
+     */
+    public function create(Request $request, UserRepository $userRepository): Response
+    {
+        $user = new User();
+        $form = $this->createForm(UsersType::class, $user);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $userRepository->save($user);
+            $this->addFlash('success', 'message_created_successfully');
+
+            return $this->redirectToRoute('/index');
+        }
+
+        return $this->render(
+            'users/create.html.twig',
+            ['form' => $form->createView()]
         );
     }
 

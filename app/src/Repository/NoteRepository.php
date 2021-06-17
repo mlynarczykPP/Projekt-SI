@@ -6,6 +6,7 @@
 namespace App\Repository;
 
 use App\Entity\Note;
+use App\Entity\Tags;
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\OptimisticLockException;
@@ -74,15 +75,16 @@ class NoteRepository extends ServiceEntityRepository
     }
 
     /**
-     * Query by author
+     * Query tasks by author.
      *
-     * @param User $user
-     * @return QueryBuilder
+     * @param User      $user    User entity
+     * @param array     $filters Filters array
+     *
+     * @return QueryBuilder Query builder
      */
-
-    public function queryByAuthor(User $user): QueryBuilder
+    public function queryByAuthor(User $user, array $filters = []): QueryBuilder
     {
-        $queryBuilder = $this->queryAll();
+        $queryBuilder = $this->queryAll($filters);
         $queryBuilder->andWhere('note.author = :author')
             ->setParameter('author', $user);
 
@@ -92,18 +94,40 @@ class NoteRepository extends ServiceEntityRepository
     /**
      * Query all records.
      *
+     * @param array $filters Filters array
+     *
      * @return QueryBuilder Query builder
      */
-
-    public function queryAll(): QueryBuilder
+    public function queryAll(array $filters = []): QueryBuilder
     {
-        return $this->getOrCreateQueryBuilder()
+        $queryBuilder = $this->getOrCreateQueryBuilder()
             ->select(
                 'partial note.{id, createdAt, updatedAt, title}',
-                'partial tags.{id, name}',
+                'partial tags.{id, name}'
             )
             ->join('note.tags', 'tags')
             ->orderBy('note.updatedAt', 'DESC');
+        $queryBuilder = $this->applyFiltersToList($queryBuilder, $filters);
+
+        return $queryBuilder;
+    }
+
+    /**
+     * Apply filters to paginated list.
+     *
+     * @param QueryBuilder $queryBuilder Query builder
+     * @param array        $filters      Filters array
+     *
+     * @return QueryBuilder Query builder
+     */
+    private function applyFiltersToList(QueryBuilder $queryBuilder, array $filters = []): QueryBuilder
+    {
+        if (isset($filters['tags']) && $filters['tags'] instanceof Tags) {
+            $queryBuilder->andWhere('tags IN (:tags)')
+                ->setParameter('tags', $filters['tags']);
+        }
+
+        return $queryBuilder;
     }
 
     /**

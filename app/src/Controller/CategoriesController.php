@@ -1,15 +1,15 @@
 <?php
 /**
- * Categories controller.
+ * Category controller.
  */
 
 namespace App\Controller;
 
 use App\Entity\Categories;
 use App\Form\CategoriesType;
-use App\Repository\CategoriesRepository;
+use App\Service\CategoriesService;
+use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
-use Knp\Component\Pager\PaginatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
@@ -26,43 +26,40 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class CategoriesController extends AbstractController
 {
-    private CategoriesRepository $categoriesRepository;
-
-    private PaginatorInterface  $paginator;
+    /**
+     * Category service.
+     *
+     * @var CategoriesService
+     */
+    private CategoriesService $categoriesService;
 
     /**
      * CategoriesController constructor.
      *
-     * @param CategoriesRepository      $categoriesRepository       Categories repository
-     * @param PaginatorInterface        $paginator                  Paginator interface
+     * @param CategoriesService $categoriesService Category service
      */
-    public function __construct(CategoriesRepository $categoriesRepository, PaginatorInterface $paginator)
+    public function __construct(CategoriesService $categoriesService)
     {
-        $this->categoriesRepository = $categoriesRepository;
-        $this->paginator = $paginator;
+        $this->categoriesService = $categoriesService;
     }
 
     /**
      * Index action.
      *
-     * @param Request                   $request                    HTTP request
-     * @param CategoriesRepository      $categoriesRepository       Categories repository
-     * @param PaginatorInterface        $paginator                  Paginator
+     * @param Request $request HTTP request
      *
-     * @return Response                                             HTTP response
+     * @return Response HTTP response
      *
      * @Route(
      *     "/",
+     *     methods={"GET"},
      *     name="categories_index",
      * )
      */
-    public function index(Request $request, CategoriesRepository $categoriesRepository, PaginatorInterface $paginator): Response
+    public function index(Request $request): Response
     {
-        $pagination = $paginator->paginate(
-            $categoriesRepository->queryAll(),
-            $request->query->getInt('page', 1),
-            CategoriesRepository::PAGINATOR_ITEMS_PER_PAGE
-        );
+        $page = $request->query->getInt('page', 1);
+        $pagination = $this->categoriesService->createPaginatedList($page);
 
         return $this->render(
             'categories/index.html.twig',
@@ -71,32 +68,51 @@ class CategoriesController extends AbstractController
     }
 
     /**
+     * Show action.
+     *
+     * @param Categories $categories Category entity
+     *
+     * @return Response HTTP response
+     *
+     * @Route(
+     *     "/{id}",
+     *     methods={"GET"},
+     *     name="categories_show",
+     *     requirements={"id": "[1-9]\d*"},
+     * )
+     */
+    public function show(Categories $categories): Response
+    {
+        return $this->render(
+            'categories/show.html.twig',
+            ['categories' => $categories]
+        );
+    }
+
+    /**
      * Create action.
      *
-     * @param Request               $request                HTTP request
-     * @param CategoriesRepository  $categoriesRepository   Category repository
+     * @param Request $request HTTP request
      *
      * @return Response HTTP response
      *
      * @throws ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
+     * @throws OptimisticLockException
      *
      * @Route(
      *     "/create",
      *     methods={"GET", "POST"},
      *     name="categories_create",
-     *
      * )
      */
-    public function create(Request $request, CategoriesRepository $categoriesRepository): Response
+    public function create(Request $request): Response
     {
         $categories = new Categories();
         $form = $this->createForm(CategoriesType::class, $categories);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $categoriesRepository->save($categories);
-
+            $this->categoriesService->save($categories);
             $this->addFlash('success', 'message_created_successfully');
 
             return $this->redirectToRoute('categories_index');
@@ -109,54 +125,30 @@ class CategoriesController extends AbstractController
     }
 
     /**
-     * Show action.
-     *
-     * @param int $id   Record id
-     *
-     * @return Response HTTP response
-     *
-     * @Route(
-     *     "/categories/{code}",
-     *     methods={"GET"},
-     *     name="categories_show",
-     *     requirements={"code"},
-     * )
-     */
-    public function show(Categories $categories): Response
-    {
-        return $this->render(
-            'categories/show.html.twig',
-            ['categories' => $categories]
-        );
-    }
-
-    /**
      * Edit action.
      *
-     * @param Request                   $request                HTTP request
-     * @param Categories                $categories             Categories entity
-     * @param CategoriesRepository      $categoriesRepository   Categories repository
+     * @param Request       $request  HTTP request
+     * @param Categories    $categories Category entity
      *
      * @return Response HTTP response
      *
      * @throws ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
+     * @throws OptimisticLockException
      *
      * @Route(
-     *     "/{code}/edit",
+     *     "/{id}/edit",
      *     methods={"GET", "PUT"},
-     *     requirements={"code"},
+     *     requirements={"id": "[1-9]\d*"},
      *     name="categories_edit",
      * )
      */
-    public function edit(Request $request, Categories $categories, CategoriesRepository $categoriesRepository): Response
+    public function edit(Request $request, Categories $categories): Response
     {
         $form = $this->createForm(CategoriesType::class, $categories, ['method' => 'PUT']);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $categoriesRepository->save($categories);
-
+            $this->categoriesService->save($categories);
             $this->addFlash('success', 'message_updated_successfully');
 
             return $this->redirectToRoute('categories_index');
@@ -174,26 +166,25 @@ class CategoriesController extends AbstractController
     /**
      * Delete action.
      *
-     * @param \Symfony\Component\HttpFoundation\Request     $request        HTTP request
-     * @param \App\Entity\Categories                        $categories     Categories entity
-     * @param \App\Repository\CategoriesRepository          $repositories   Categories repository
+     * @param Request       $request  HTTP request
+     * @param Categories    $categories Category entity
      *
-     * @return \Symfony\Component\HttpFoundation\Response HTTP response
+     * @return Response HTTP response
      *
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
+     * @throws ORMException
+     * @throws OptimisticLockException
      *
      * @Route(
-     *     "/{code}/delete",
+     *     "/{id}/delete",
      *     methods={"GET", "DELETE"},
-     *     requirements={"code"},
+     *     requirements={"id": "[1-9]\d*"},
      *     name="categories_delete",
      * )
      */
-    public function delete(Request $request, Categories $categories, CategoriesRepository $repository): Response
+    public function delete(Request $request, Categories $categories): Response
     {
         if ($categories->getTasks()->count()) {
-            $this->addFlash('warning', 'message_categories_contains_tasks');
+            $this->addFlash('warning', 'message_category_contains_tasks');
 
             return $this->redirectToRoute('categories_index');
         }
@@ -206,7 +197,7 @@ class CategoriesController extends AbstractController
         }
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $repository->delete($categories);
+            $this->categoriesService->delete($categories);
             $this->addFlash('success', 'message_deleted_successfully');
 
             return $this->redirectToRoute('categories_index');
