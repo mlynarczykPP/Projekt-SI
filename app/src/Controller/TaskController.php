@@ -45,7 +45,7 @@ class TaskController extends AbstractController
     public function index(Request $request, TaskRepository $taskRepository, PaginatorInterface $paginator): Response
     {
         $pagination = $paginator->paginate(
-            $taskRepository->queryAll(),
+            $taskRepository->queryByAuthor($this->getUser()),
             $request->query->getInt('page', 1),
             TaskRepository::PAGINATOR_ITEMS_PER_PAGE
         );
@@ -68,6 +68,11 @@ class TaskController extends AbstractController
      *     methods={"GET"},
      *     name="task_show",
      *     requirements={"id": "[1-9]\d*"},
+     * )
+     *
+     * @IsGranted(
+     *     "VIEW",
+     *     subject="task"
      * )
      */
     public function show(Task $task): Response
@@ -133,6 +138,11 @@ class TaskController extends AbstractController
      *     requirements={"id": "[1-9]\d*"},
      *     name="task_edit",
      * )
+     *
+     * @IsGranted(
+     *     "EDIT",
+     *     subject="task"
+     * )
      */
     public function edit(Request $request, Task $task, TaskRepository $taskRepository): Response
     {
@@ -172,6 +182,11 @@ class TaskController extends AbstractController
      *     methods={"GET", "DELETE"},
      *     requirements={"id": "[1-9]\d*"},
      *     name="task_delete",
+     * )
+     *
+     * @IsGranted(
+     *     "DELETE",
+     *     subject="task"
      * )
      */
     public function delete(Request $request, Task $task, TaskRepository $taskRepository): Response

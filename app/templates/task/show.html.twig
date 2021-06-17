@@ -17,6 +17,12 @@
             <dd>{{ task.updatedAt|format_date('long') }}</dd>
             <dt>{{ 'label_category'|trans }}</dt>
             <dd>{{  task.categories.name }}</dd>
+            <dt>{{ 'label_priority'|trans }}</dt>
+            <dd>{{  task.priority }}</dd>
+            {% if is_granted('ROLE_ADMIN') %}
+                <dt>{{ 'label_author'|trans }}</dt>
+                <dd>{{  task.author.email }}</dd>
+            {% endif %}
             <dt>{{ 'label_title'|trans }}</dt>
             <dd>{{  task.title }}</dd>
             <dt>{{ 'label_comment'|trans }}</dt>

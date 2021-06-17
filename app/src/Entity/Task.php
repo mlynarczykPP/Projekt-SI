@@ -39,11 +39,15 @@ class Task
     private $title;
 
     /**
+     * Comment
+     *
      * @ORM\Column(type="text")
      */
     private $comment;
 
     /**
+     * Categories
+     *
      * @ORM\ManyToOne(targetEntity=Categories::class, inversedBy="tasks")
      * @ORM\JoinColumn(nullable=false)
      */
@@ -72,6 +76,8 @@ class Task
     private $updatedAt;
 
     /**
+     * Author
+     *
      * @ORM\ManyToOne(
      *     targetEntity=User::class,
      *     fetch="EXTRA_LAZY"
@@ -79,6 +85,19 @@ class Task
      * @ORM\JoinColumn(nullable=false)
      */
     private $author;
+
+    /**
+     * Priority
+     *
+     * @ORM\Column(
+     *     type="integer",
+     *     nullable=true,
+     *     options={"unsigned":true, "default":0}
+     *)
+     *
+     * )
+     */
+    private $priority;
 
     /**
      * Getter for Id.
@@ -168,5 +187,15 @@ class Task
     public function setAuthor(?User $author): void
     {
         $this->author = $author;
+    }
+
+    public function getPriority(): ?int
+    {
+        return $this->priority;
+    }
+
+    public function setPriority(?int $priority): void
+    {
+        $this->priority = $priority;
     }
 }

@@ -105,7 +105,7 @@ class UsersController extends AbstractController
             $userRepository->save($user);
             $this->addFlash('success', 'message_updated_successfully');
 
-            return $this->redirectToRoute('notes/index.html.twig');
+            return $this->redirectToRoute('index.html.twig');
         }
 
         return $this->render(

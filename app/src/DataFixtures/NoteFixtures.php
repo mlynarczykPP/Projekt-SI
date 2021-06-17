@@ -29,6 +29,7 @@ class NoteFixtures extends AbstractBaseFixtures implements DependentFixtureInter
             $note->setTags($this->getRandomReference('tags'));
             $note->setCreatedAt($this->faker->dateTimeBetween('-100 days', '-1 days'));
             $note->setUpdatedAt($this->faker->dateTimeBetween('-100 days', '-1 days'));
+            $note->setAuthor($this->getRandomReference('users'));
 
             return $note;
         });
@@ -44,6 +45,6 @@ class NoteFixtures extends AbstractBaseFixtures implements DependentFixtureInter
      */
     public function getDependencies(): array
     {
-        return [TagsFixtures::class];
+        return [TagsFixtures::class, UserFixtures::class];
     }
 }

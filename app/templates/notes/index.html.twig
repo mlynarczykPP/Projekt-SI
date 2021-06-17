@@ -21,6 +21,9 @@
                 <th>{{ knp_pagination_sortable(pagination, 'label_updated_at'|trans, 'note.updatedAt') }}</th>
                 <th>{{ knp_pagination_sortable(pagination, 'label_title'|trans, 'note.title') }}</th>
                 <th>{{ 'label_tags'|trans }}</th>
+                {% if is_granted('ROLE_ADMIN') %}
+                    <th>{{ knp_pagination_sortable(pagination, 'label_author'|trans, 'author.email') }}</th>
+                {% endif %}
                 <th>{{ 'label_actions'|trans }}</th>
             </tr>
             </thead>
@@ -32,6 +35,9 @@
                     <td>{{ note.updatedAt|format_date('long') }}</td>
                     <td>{{ note.title }}</td>
                     <td>{{ note.tags.name }}</td>
+                    {% if is_granted('ROLE_ADMIN') %}
+                        <td>{{ note.author.email }}</td>
+                    {% endif %}
                     <td>
                         <a href="{{ url('notes_show', {id: note.id}) }}" title="{{ 'button_view'|trans }}">
                             &#128269;{{ 'button_view'|trans }}

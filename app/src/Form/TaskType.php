@@ -7,8 +7,10 @@ namespace App\Form;
 
 use App\Entity\Categories;
 use App\Entity\Task;
+use phpDocumentor\Reflection\Types\Integer;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -60,6 +62,15 @@ class TaskType extends AbstractType
                 'label' => 'label_category',
                 'placeholder' => 'label_none',
                 'required' => true,
+            ]
+        );
+        $builder->add(
+            'priority',
+            IntegerType::class,
+            [
+                'label' => 'label_priority',
+                'required' => false,
+                'attr' => ['max_length' => 2],
             ]
         );
     }

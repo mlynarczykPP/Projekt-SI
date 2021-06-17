@@ -6,6 +6,7 @@
 namespace App\Repository;
 
 use App\Entity\Task;
+use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
@@ -73,6 +74,22 @@ class TaskRepository extends ServiceEntityRepository
     }
 
     /**
+     * Query by author
+     *
+     * @param User $user
+     * @return QueryBuilder
+     */
+
+    public function queryByAuthor(User $user): QueryBuilder
+    {
+        $queryBuilder = $this->queryAll();
+        $queryBuilder->andWhere('task.author = :author')
+            ->setParameter('author', $user);
+
+        return $queryBuilder;
+    }
+
+    /**
      * Query all records.
      *
      * @return QueryBuilder Query builder
@@ -81,6 +98,11 @@ class TaskRepository extends ServiceEntityRepository
     public function queryAll(): QueryBuilder
     {
         return $this->getOrCreateQueryBuilder()
+            ->select(
+                'partial task.{id, createdAt, updatedAt, title, priority}',
+                'partial categories.{id, name}',
+            )
+            ->join('task.categories', 'categories')
             ->orderBy('task.updatedAt', 'DESC');
     }
 

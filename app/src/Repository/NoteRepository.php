@@ -6,6 +6,7 @@
 namespace App\Repository;
 
 use App\Entity\Note;
+use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
@@ -73,6 +74,22 @@ class NoteRepository extends ServiceEntityRepository
     }
 
     /**
+     * Query by author
+     *
+     * @param User $user
+     * @return QueryBuilder
+     */
+
+    public function queryByAuthor(User $user): QueryBuilder
+    {
+        $queryBuilder = $this->queryAll();
+        $queryBuilder->andWhere('note.author = :author')
+            ->setParameter('author', $user);
+
+        return $queryBuilder;
+    }
+
+    /**
      * Query all records.
      *
      * @return QueryBuilder Query builder
@@ -81,6 +98,11 @@ class NoteRepository extends ServiceEntityRepository
     public function queryAll(): QueryBuilder
     {
         return $this->getOrCreateQueryBuilder()
+            ->select(
+                'partial note.{id, createdAt, updatedAt, title}',
+                'partial tags.{id, name}',
+            )
+            ->join('note.tags', 'tags')
             ->orderBy('note.updatedAt', 'DESC');
     }
 

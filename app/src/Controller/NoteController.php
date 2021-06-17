@@ -11,6 +11,7 @@ use App\Repository\NoteRepository;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
 use Knp\Component\Pager\PaginatorInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\HttpFoundation\Request;
@@ -42,7 +43,7 @@ class NoteController extends AbstractController
     public function index(Request $request, NoteRepository $noteRepository, PaginatorInterface $paginator): Response
     {
         $pagination = $paginator->paginate(
-            $noteRepository->queryAll(),
+            $noteRepository->queryByAuthor($this->getUser()),
             $request->query->getInt('page', 1),
             NoteRepository::PAGINATOR_ITEMS_PER_PAGE
         );
@@ -65,6 +66,11 @@ class NoteController extends AbstractController
      *     methods={"GET"},
      *     name="notes_show",
      *     requirements={"id": "[1-9]\d*"},
+     * )
+     *
+     * @IsGranted(
+     *     "VIEW",
+     *     subject="note"
      * )
      */
     public function show(Note $note): Response
@@ -99,6 +105,7 @@ class NoteController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $note->setAuthor($this->getUser());
             $noteRepository->save($note);
             $this->addFlash('success', 'message_created_successfully');
 
@@ -128,6 +135,11 @@ class NoteController extends AbstractController
      *     methods={"GET", "PUT"},
      *     requirements={"id": "[1-9]\d*"},
      *     name="notes_edit",
+     * )
+     *
+     * @IsGranted(
+     *     "EDIT",
+     *     subject="note"
      * )
      */
     public function edit(Request $request, Note $note, NoteRepository $noteRepository): Response
@@ -168,6 +180,11 @@ class NoteController extends AbstractController
      *     methods={"GET", "DELETE"},
      *     requirements={"id": "[1-9]\d*"},
      *     name="notes_delete",
+     * )
+     *
+     * @IsGranted(
+     *     "DELETE",
+     *     subject="note"
      * )
      */
     public function delete(Request $request, Note $note, NoteRepository $noteRepository): Response

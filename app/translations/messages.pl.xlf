@@ -50,6 +50,14 @@
                 <source>label_password</source>
                 <target>Hasło</target>
             </trans-unit>
+            <trans-unit id="label_priority">
+                <source>label_priority</source>
+                <target>Waga (0-10)</target>
+            </trans-unit>
+            <trans-unit id="label_author">
+                <source>label_author</source>
+                <target>Autor</target>
+            </trans-unit>
             <trans-unit id="message_empty_list">
                 <source>message_empty_list</source>
                 <target>Brak listy.</target>

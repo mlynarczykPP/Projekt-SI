@@ -20,7 +20,11 @@
                 <th>{{ knp_pagination_sortable(pagination, 'label_created_at'|trans, 'task.createdAt') }}</th>
                 <th>{{ knp_pagination_sortable(pagination, 'label_updated_at'|trans, 'task.updatedAt') }}</th>
                 <th>{{ knp_pagination_sortable(pagination, 'label_title'|trans, 'task.title') }}</th>
+                <th>{{ knp_pagination_sortable(pagination, 'label_priority'|trans, 'task.priority') }}</th>
                 <th>{{ 'label_category'|trans }}</th>
+                {% if is_granted('ROLE_ADMIN') %}
+                    <th>{{ knp_pagination_sortable(pagination, 'label_author'|trans, 'author.email') }}</th>
+                {% endif %}
                 <th>{{ 'label_actions'|trans }}</th>
             </tr>
             </thead>
@@ -31,7 +35,11 @@
                     <td>{{ task.createdAt|format_date('long') }}</td>
                     <td>{{ task.updatedAt|format_date('long') }}</td>
                     <td>{{ task.title }}</td>
+                    <td>{{ task.priority }}</td>
                     <td>{{ task.categories.name }}</td>
+                    {% if is_granted('ROLE_ADMIN') %}
+                        <td>{{ task.author.email }}</td>
+                    {% endif %}
                     <td>
                         <a href="{{ url('task_show', {id: task.id}) }}" title="{{ 'button_view'|trans }}">
                             &#128269;{{ 'button_view'|trans }}
