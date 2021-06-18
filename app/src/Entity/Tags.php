@@ -43,7 +43,12 @@ class Tags
     private $name;
 
     /**
-     * @ORM\OneToMany(targetEntity=Note::class, mappedBy="tags")
+     * Note
+     *
+     * @ORM\OneToMany(
+     *     targetEntity=Note::class,
+     *     mappedBy="tags"
+     * )
      */
     private $notes;
 

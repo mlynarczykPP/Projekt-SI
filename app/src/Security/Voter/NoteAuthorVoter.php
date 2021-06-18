@@ -1,4 +1,7 @@
 <?php
+/**
+ * NoteAuthor Voter.
+ */
 
 namespace App\Security\Voter;
 

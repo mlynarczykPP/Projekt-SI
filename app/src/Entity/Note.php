@@ -24,7 +24,7 @@ class Note
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private int $id;
 
     /**
      * Title.
@@ -36,22 +36,25 @@ class Note
      *     length=255,
      * )
      */
-    private $title;
+    private string $title;
 
     /**
      * Comment
      *
      * @ORM\Column(type="text")
      */
-    private $comment;
+    private ?string $comment;
 
     /**
      * Tags
      *
-     * @ORM\ManyToOne(targetEntity=Tags::class, inversedBy="notes")
+     * @ORM\ManyToOne(
+     *     targetEntity=Tags::class,
+     *     inversedBy="notes"
+     * )
      * @ORM\JoinColumn(nullable=false)
      */
-    private $tags;
+    private ?Tags $tags;
 
     /**
      * Created at.
@@ -62,7 +65,7 @@ class Note
      *
      * @Gedmo\Timestampable(on="update")
      */
-    private $createdAt;
+    private DateTimeInterface $createdAt;
 
     /**
      * Updated at.
@@ -73,7 +76,7 @@ class Note
      *
      * @Gedmo\Timestampable(on="update")
      */
-    private $updatedAt;
+    private DateTimeInterface $updatedAt;
 
     /**
      * Author
@@ -85,12 +88,14 @@ class Note
      *
      * @ORM\JoinColumn(nullable=false)
      */
-    private $author;
+    private ?User $author;
 
     /**
+     * Image
+     *
      * @ORM\OneToOne(targetEntity=Image::class, mappedBy="note", cascade={"persist", "remove"})
      */
-    private $image;
+    private ?Image $image;
 
     /**
      * Getter for Id.
@@ -167,7 +172,7 @@ class Note
      *
      * @return DateTimeInterface|null Created At
      */
-    public function getCreatedAt(): ?\DateTimeInterface
+    public function getCreatedAt(): ?DateTimeInterface
     {
         return $this->createdAt;
     }
@@ -177,7 +182,7 @@ class Note
      *
      * @param DateTimeInterface $createdAt Created At
      */
-    public function setCreatedAt(\DateTimeInterface $createdAt): void
+    public function setCreatedAt(DateTimeInterface $createdAt): void
     {
         $this->createdAt = $createdAt;
     }
@@ -187,7 +192,7 @@ class Note
      *
      * @return DateTimeInterface|null Updated At
      */
-    public function getUpdatedAt(): ?\DateTimeInterface
+    public function getUpdatedAt(): ?DateTimeInterface
     {
         return $this->updatedAt;
     }
@@ -197,7 +202,7 @@ class Note
      *
      * @param DateTimeInterface $updatedAt Updated At
      */
-    public function setUpdatedAt(\DateTimeInterface $updatedAt): void
+    public function setUpdatedAt(DateTimeInterface $updatedAt): void
     {
         $this->updatedAt = $updatedAt;
     }

@@ -1,4 +1,7 @@
 <?php
+/**
+ * TaskAuthor Voter.
+ */
 
 namespace App\Security\Voter;
 
