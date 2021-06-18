@@ -19,7 +19,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 class NoteService
 {
     /**
-     * Category repository.
+     * Note repository.
      *
      * @var NoteRepository
      */

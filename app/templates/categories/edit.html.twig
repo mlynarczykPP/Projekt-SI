@@ -11,7 +11,7 @@
         page_title_param: {'%id%': categories.id},
         attr: {
             method: 'PUT',
-            action: url('categories_edit', {'code': categories.code}),
+            action: url('categories_edit', {'id': categories.id}),
         },
         form: form,
         submit_label: 'action_edited'|trans,

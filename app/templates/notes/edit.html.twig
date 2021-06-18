@@ -1,17 +1,17 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}
-    {{ 'title_note_edit'|trans({'%id%': note.id|default('')}) }}
+    {{ 'title_note_edit'|trans({'%id%': notes.id|default('')}) }}
 {% endblock %}
 
 {% block body %}
     {{ include('menu.html.twig') }}
     {% include 'default/_form.html.twig' with {
         page_title: 'title_note_edit',
-        page_title_param: {'%id%': note.id},
+        page_title_param: {'%id%': notes.id},
         attr: {
             method: 'PUT',
-            action: url('notes_edit', {'id': note.id}),
+            action: url('notes_edit', {'id': notes.id}),
         },
         form: form,
         submit_label: 'action_edited'|trans,

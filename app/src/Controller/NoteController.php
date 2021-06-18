@@ -115,6 +115,7 @@ class NoteController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $note->setAuthor($this->getUser());
             $this->noteService->save($note);
             $this->addFlash('success', 'message_created_successfully');
 
@@ -151,6 +152,7 @@ class NoteController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $note->setAuthor($this->getUser());
             $this->noteService->save($note);
             $this->addFlash('success', 'message_updated_successfully');
 

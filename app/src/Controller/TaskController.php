@@ -64,7 +64,6 @@ class TaskController extends AbstractController
             $filters
         );
 
-
         return $this->render(
             'task/index.html.twig',
             ['pagination' => $pagination]
@@ -116,6 +115,7 @@ class TaskController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $task->setAuthor($this->getUser());
             $this->taskService->save($task);
             $this->addFlash('success', 'message_created_successfully');
 
@@ -152,6 +152,7 @@ class TaskController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $task->setAuthor($this->getUser());
             $this->taskService->save($task);
             $this->addFlash('success', 'message_updated_successfully');
 

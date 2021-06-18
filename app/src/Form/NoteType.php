@@ -64,27 +64,6 @@ class NoteType extends AbstractType
                 'required' => true,
             ]
         );
-        $builder->add(
-            'file',
-            FileType::class,
-            [
-                'mapped' => false,
-                'label' => 'label_image',
-                'required' => true,
-                'constraints' => new Image(
-                    [
-                        'maxSize' => '1024M',
-                        'mimeTypes' => [
-                            'image/png',
-                            'image/jpeg',
-                            'image/pjpeg',
-                            'image/jpeg',
-                            'image/pjpeg',
-                        ],
-                    ]
-                ),
-            ]
-        );
     }
 
     /**

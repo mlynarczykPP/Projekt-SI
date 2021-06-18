@@ -11,7 +11,7 @@
         page_title_param: {'%id%': categories.id},
         attr: {
             method: 'DELETE',
-            action: url('categories_delete', {'code': categories.code}),
+            action: url('categories_delete', {'id': categories.id}),
         },
         form: form,
         submit_label: 'action_delete'|trans,

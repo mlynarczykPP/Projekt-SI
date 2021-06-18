@@ -11,7 +11,7 @@
         page_title_param: {'%id%': tags.id},
         attr: {
             method: 'DELETE',
-            action: url('tags_delete', {'code': tags.code}),
+            action: url('tags_delete', {'id': tags.id}),
         },
         form: form,
         submit_label: 'action_delete'|trans,

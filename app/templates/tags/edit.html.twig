@@ -11,7 +11,7 @@
         page_title_param: {'%id%': tags.id},
         attr: {
             method: 'PUT',
-            action: url('tags_edit', {'code': tags.code}),
+            action: url('tags_edit', {'id': tags.id}),
         },
         form: form,
         submit_label: 'action_edited'|trans,
