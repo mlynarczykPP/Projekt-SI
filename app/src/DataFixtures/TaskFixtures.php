@@ -23,7 +23,7 @@ class TaskFixtures extends AbstractBaseFixtures implements DependentFixtureInter
     {
         $this->createMany(50, 'tasks', function ($i) {
             $task = new Task();
-            $task->setTitle($this->faker->sentence);
+            $task->setTitle($this->faker->word);
             $task->setComment($this->faker->paragraph(5));
             $task->setCreatedAt($this->faker->dateTimeBetween('-100 days', '-1 days'));
             $task->setUpdatedAt($this->faker->dateTimeBetween('-100 days', '-1 days'));

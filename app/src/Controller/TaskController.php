@@ -87,6 +87,12 @@ class TaskController extends AbstractController
      */
     public function show(Task $task): Response
     {
+        if ($task->getAuthor() !== $this->getUser()) {
+            $this->addFlash('warning', 'message_item_not_found');
+
+            return $this->redirectToRoute('task_index');
+        }
+
         return $this->render(
             'task/show.html.twig',
             ['task' => $task]
@@ -149,6 +155,12 @@ class TaskController extends AbstractController
      */
     public function edit(Request $request, Task $task): Response
     {
+        if ($task->getAuthor() !== $this->getUser()) {
+            $this->addFlash('warning', 'message_item_not_found');
+
+            return $this->redirectToRoute('task_index');
+        }
+
         $form = $this->createForm(TaskType::class, $task, ['method' => 'PUT']);
         $form->handleRequest($request);
 
@@ -189,6 +201,12 @@ class TaskController extends AbstractController
      */
     public function delete(Request $request, Task $task): Response
     {
+        if ($task->getAuthor() !== $this->getUser()) {
+            $this->addFlash('warning', 'message_item_not_found');
+
+            return $this->redirectToRoute('task_index');
+        }
+
         $form = $this->createForm(FormType::class, $task, ['method' => 'DELETE']);
         $form->handleRequest($request);
 

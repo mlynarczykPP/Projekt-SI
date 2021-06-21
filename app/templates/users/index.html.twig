@@ -18,24 +18,24 @@
             <thead>
             <tr>
                 <th>{{ knp_pagination_sortable(pagination, 'label_id'|trans, 'users.id') }}</th>
-                <th>{{ knp_pagination_sortable(pagination, 'label_firstname'|trans, 'usersdata.firstname') }}</th>
-                <th>{{ knp_pagination_sortable(pagination, 'label_lastname'|trans, 'usersdata.lastname') }}</th>
+                <th>{{ knp_pagination_sortable(pagination, 'label_firstname'|trans, 'users.firstname') }}</th>
+                <th>{{ knp_pagination_sortable(pagination, 'label_lastname'|trans, 'users.lastname') }}</th>
                 <th>{{ knp_pagination_sortable(pagination, 'label_email'|trans, 'users.email') }}</th>
                 <th>{{ 'label_actions'|trans }}</th>
             </tr>
             </thead>
             <tbody>
-            {% for usersdata in pagination.items %}
+            {% for users in pagination.items %}
                 <tr>
-                    <td>{{ usersdata.user.id }}</td>
-                    <td>{{ usersdata.firstname }}</td>
-                    <td>{{ usersdata.lastname }}</td>
-                    <td>{{ usersdata.user.email }}</td>
+                    <td>{{ users.id }}</td>
+                    <td>{{ users.firstname }}</td>
+                    <td>{{ users.lastname }}</td>
+                    <td>{{ users.email }}</td>
                     <td>
-                        <a href="{{ url('users_show', {id: usersdata.id}) }}" title="{{ 'button_view'|trans }}">
+                        <a href="{{ url('users_show', {id: users.id}) }}" title="{{ 'button_view'|trans }}">
                             &#128269;{{ 'button_view'|trans }}
                         </a>
-                        <a href="{{ url('users_edit', {id: usersdata.id}) }}" title="{{ 'button_edit'|trans }}" id="op">
+                        <a href="{{ url('users_edit', {id: users.id}) }}" title="{{ 'button_edit'|trans }}" id="op">
                             &#128736;{{ 'button_edit'|trans }}
                         </a>
                     </td>

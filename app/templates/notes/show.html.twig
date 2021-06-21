@@ -16,11 +16,11 @@
             <dt>{{ 'label_updated_at'|trans }}</dt>
             <dd>{{ notes.updatedAt|format_date('long') }}</dd>
             <dt>{{ 'label_category'|trans }}</dt>
-            <dd>{{ note.categories.name }}</dd>
+            <dd>{{ notes.categories.name }}</dd>
             <dt>{{ 'label_tags'|trans }}</dt>
             <dd>
-                {% if note.tags is defined and note.tags|length %}
-                    {% for tags in note.tags %}
+                {% if notes.tags is defined and notes.tags|length %}
+                    {% for tags in notes.tags %}
                         {{ tags.name }}
                     {% endfor %}
                 {% else %}

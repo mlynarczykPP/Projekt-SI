@@ -23,7 +23,7 @@ class NoteFixtures extends AbstractBaseFixtures implements DependentFixtureInter
     {
         $this->createMany(50, 'notes', function ($i) {
             $note = new Note();
-            $note->setTitle($this->faker->sentence);
+            $note->setTitle($this->faker->word);
             $note->setComment($this->faker->paragraph(5));
             $note->setCreatedAt($this->faker->dateTimeBetween('-100 days', '-1 days'));
             $note->setUpdatedAt($this->faker->dateTimeBetween('-100 days', '-1 days'));

@@ -6,9 +6,9 @@
 namespace App\Form;
 
 use App\Entity\User;
-use App\Entity\UserData;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -49,6 +49,24 @@ class UsersType extends AbstractType
                 'attr' => ['max_length' => 255],
             ]
         );
+        $builder->add(
+            'email',
+            EmailType::class,
+            [
+                'label' => 'label_email',
+                'required' => true,
+                'attr' => ['max_length' => 255],
+            ]
+        );
+        $builder->add(
+            'password',
+            PasswordType::class,
+            [
+                'label' => 'label_password',
+                'required' => true,
+                'attr' => ['max_length' => 255],
+            ]
+        );
     }
 
     /**
@@ -58,7 +76,7 @@ class UsersType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver): void
     {
-        $resolver->setDefaults(['data_class' => UserData::class]);
+        $resolver->setDefaults(['data_class' => User::class]);
     }
 
     /**
@@ -71,6 +89,6 @@ class UsersType extends AbstractType
      */
     public function getBlockPrefix(): string
     {
-        return 'usersdata';
+        return 'users';
     }
 }
