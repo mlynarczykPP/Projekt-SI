@@ -6,7 +6,6 @@
 namespace App\DataFixtures;
 
 use App\Entity\Note;
-use App\Entity\Tags;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 
@@ -26,10 +25,19 @@ class NoteFixtures extends AbstractBaseFixtures implements DependentFixtureInter
             $note = new Note();
             $note->setTitle($this->faker->sentence);
             $note->setComment($this->faker->paragraph(5));
-            $note->setTags($this->getRandomReference('tags'));
             $note->setCreatedAt($this->faker->dateTimeBetween('-100 days', '-1 days'));
             $note->setUpdatedAt($this->faker->dateTimeBetween('-100 days', '-1 days'));
+            $note->setCategories($this->getRandomReference('categories'));
             $note->setAuthor($this->getRandomReference('users'));
+
+            $tags = $this->getRandomReferences(
+                'tags',
+                $this->faker->numberBetween(3, 3)
+            );
+
+            foreach($tags as $tags){
+                $note->addTag($tags);
+            }
 
             return $note;
         });
@@ -45,6 +53,6 @@ class NoteFixtures extends AbstractBaseFixtures implements DependentFixtureInter
      */
     public function getDependencies(): array
     {
-        return [TagsFixtures::class, UserFixtures::class];
+        return [CategoriesFixtures::class, UserFixtures::class, TagsFixtures::class];
     }
 }

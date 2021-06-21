@@ -1,9 +1,14 @@
 <?php
+/**
+ * Note Entity.
+ */
 
 namespace App\Entity;
 
 use App\Repository\NoteRepository;
 use DateTimeInterface;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 
@@ -24,7 +29,7 @@ class Note
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
-    private int $id;
+    private $id;
 
     /**
      * Title.
@@ -36,25 +41,32 @@ class Note
      *     length=255,
      * )
      */
-    private string $title;
+    private $title;
 
     /**
-     * Comment
+     * Comment.
      *
      * @ORM\Column(type="text")
      */
-    private ?string $comment;
+    private $comment;
 
     /**
-     * Tags
+     * Tags.
      *
-     * @ORM\ManyToOne(
-     *     targetEntity=Tags::class,
-     *     inversedBy="notes"
+     * @var array
+     *
+     * @ORM\ManyToMany(
+     *     targetEntity="App\Entity\Tags",
+     *     inversedBy="notes",
      * )
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinTable(name="note_tags")
      */
-    private ?Tags $tags;
+    private $tags;
+
+    public function __construct()
+    {
+        $this->tags = new ArrayCollection();
+    }
 
     /**
      * Created at.
@@ -65,7 +77,7 @@ class Note
      *
      * @Gedmo\Timestampable(on="update")
      */
-    private DateTimeInterface $createdAt;
+    private $createdAt;
 
     /**
      * Updated at.
@@ -76,10 +88,10 @@ class Note
      *
      * @Gedmo\Timestampable(on="update")
      */
-    private DateTimeInterface $updatedAt;
+    private $updatedAt;
 
     /**
-     * Author
+     * Author.
      *
      * @ORM\ManyToOne(
      *     targetEntity=User::class,
@@ -88,14 +100,17 @@ class Note
      *
      * @ORM\JoinColumn(nullable=false)
      */
-    private ?User $author;
+    private $author;
 
     /**
-     * Image
+     * Categories.
      *
-     * @ORM\OneToOne(targetEntity=Image::class, mappedBy="note", cascade={"persist", "remove"})
+     * @ORM\ManyToOne(
+     *     targetEntity=Categories::class,
+     *     inversedBy="tasks"
+     * )
      */
-    private ?Image $image;
+    private $categories;
 
     /**
      * Getter for Id.
@@ -148,27 +163,41 @@ class Note
     }
 
     /**
-     * Getter for tags
+     * Getter for tags.
      *
-     * @return Tags|null Tags
+     * @return \Doctrine\Common\Collections\Collection|Tags[] Tags collection
      */
-    public function getTags(): ?Tags
+    public function getTags(): Collection
     {
         return $this->tags;
     }
 
     /**
-     * Setter for tags
+     * Add tag to collection.
      *
-     * @param Tags|null $tags Tags
+     * @param Tags $tags Tag entity
      */
-    public function setTags(?Tags $tags): void
+    public function addTag(Tags $tags): void
     {
-        $this->tags = $tags;
+        if (!$this->tags->contains($tags)) {
+            $this->tags[] = $tags;
+        }
     }
 
     /**
-     * Getter for created at
+     * Remove tag from collection.
+     *
+     * @param Tags $tags Tag entity
+     */
+    public function removeTag(Tags $tags): void
+    {
+        if ($this->tags->contains($tags)) {
+            $this->tags->removeElement($tags);
+        }
+    }
+
+    /**
+     * Getter for created at.
      *
      * @return DateTimeInterface|null Created At
      */
@@ -178,7 +207,7 @@ class Note
     }
 
     /**
-     * Setter for created at
+     * Setter for created at.
      *
      * @param DateTimeInterface $createdAt Created At
      */
@@ -188,7 +217,7 @@ class Note
     }
 
     /**
-     * Getter for updated at
+     * Getter for updated at.
      *
      * @return DateTimeInterface|null Updated At
      */
@@ -198,7 +227,7 @@ class Note
     }
 
     /**
-     * Setter for updated at
+     * Setter for updated at.
      *
      * @param DateTimeInterface $updatedAt Updated At
      */
@@ -208,7 +237,7 @@ class Note
     }
 
     /**
-     * Getter fo author
+     * Getter fo author.
      *
      * @return User|null Author
      */
@@ -218,7 +247,7 @@ class Note
     }
 
     /**
-     * Setter for author
+     * Setter for author.
      *
      * @param User|null $author Author
      */
@@ -228,32 +257,22 @@ class Note
     }
 
     /**
-     * Getter for image
+     * Getter for categories.
      *
-     * @return Image|null Image
+     * @return Categories|null Categories
      */
-    public function getImage(): ?Image
+    public function getCategories(): ?Categories
     {
-        return $this->image;
+        return $this->categories;
     }
 
     /**
-     * Setter for image
+     * Setter for categories.
      *
-     * @param Image|null $image Image
+     * @param Categories|null $categories Categories
      */
-    public function setImage(?Image $image): void
+    public function setCategories(?Categories $categories): void
     {
-        // unset the owning side of the relation if necessary
-        if ($image === null && $this->image !== null) {
-            $this->image->setNote(null);
-        }
-
-        // set the owning side of the relation if necessary
-        if ($image !== null && $image->getNote() !== $this) {
-            $image->setNote($this);
-        }
-
-        $this->image = $image;
+        $this->categories = $categories;
     }
 }

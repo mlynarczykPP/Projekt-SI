@@ -57,6 +57,7 @@ class TaskController extends AbstractController
     {
         $filters = [];
         $filters['categories_id'] = $request->query->getInt('filters_categories_id');
+        $filters['tags_id'] = $request->query->getInt('filters_tags_id');
 
         $pagination = $this->taskService->createPaginatedList(
             $request->query->getInt('page', 1),

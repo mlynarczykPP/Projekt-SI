@@ -189,6 +189,12 @@ class CategoriesController extends AbstractController
             return $this->redirectToRoute('categories_index');
         }
 
+        if ($categories->getNotes()->count()) {
+            $this->addFlash('warning', 'message_category_contains_notes');
+
+            return $this->redirectToRoute('categories_index');
+        }
+
         $form = $this->createForm(FormType::class, $categories, ['method' => 'DELETE']);
         $form->handleRequest($request);
 

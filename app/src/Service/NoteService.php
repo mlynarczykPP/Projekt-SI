@@ -23,33 +23,42 @@ class NoteService
      *
      * @var NoteRepository
      */
-    private NoteRepository $noteRepository;
+    private $noteRepository;
 
     /**
      * Paginator.
      *
      * @var PaginatorInterface
      */
-    private PaginatorInterface $paginator;
+    private $paginator;
+
+    /**
+     * Category service.
+     *
+     * @var CategoriesService
+     */
+    private $categoriesService;
 
     /**
      * Tag service.
      *
      * @var TagService
      */
-    private TagService $tagService;
+    private $tagService;
 
     /**
-     * TaskService constructor.
+     * NoteService constructor.
      *
-     * @param NoteRepository        $noteRepository  Note repository
-     * @param PaginatorInterface    $paginator       Paginator
-     * @param TagService            $tagService      Tag service
+     * @param NoteRepository        $noteRepository     Note repository
+     * @param PaginatorInterface    $paginator          Paginator
+     * @param CategoriesService     $categoriesService  Category service
+     * @param TagService            $tagService         Tag service
      */
-    public function __construct(NoteRepository $noteRepository, PaginatorInterface $paginator, TagService $tagService)
+    public function __construct(NoteRepository $noteRepository, PaginatorInterface $paginator, CategoriesService $categoriesService, TagService $tagService)
     {
         $this->noteRepository = $noteRepository;
         $this->paginator = $paginator;
+        $this->categoriesService = $categoriesService;
         $this->tagService = $tagService;
     }
 
@@ -60,7 +69,7 @@ class NoteService
      * @param UserInterface $user    User entity
      * @param array         $filters Filters array
      *
-     * @return \Knp\Component\Pager\Pagination\PaginationInterface Paginated list
+     * @return PaginationInterface Paginated list
      */
     public function createPaginatedList(int $page, UserInterface $user, array $filters = []): PaginationInterface
     {
@@ -100,7 +109,7 @@ class NoteService
     }
 
     /**
-     * Prepare filters for the tasks list.
+     * Prepare filters for the notes list.
      *
      * @param array $filters Raw filters from request
      *
@@ -109,8 +118,19 @@ class NoteService
     private function prepareFilters(array $filters): array
     {
         $resultFilters = [];
+        if (isset($filters['categories_id']) && is_numeric($filters['categories_id'])) {
+            $categories = $this->categoriesService->findOneById(
+                $filters['categories_id']
+            );
+            if (null !== $categories) {
+                $resultFilters['categories'] = $categories;
+            }
+        }
+
         if (isset($filters['tags_id']) && is_numeric($filters['tags_id'])) {
-            $tags = $this->tagService->findOneById($filters['tags_id']);
+            $tags = $this->tagService->findOneById(
+                $filters['tags_id']
+            );
             if (null !== $tags) {
                 $resultFilters['tags'] = $tags;
             }

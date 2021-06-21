@@ -55,7 +55,7 @@ class User implements UserInterface
      *     options={"unsigned"=true},
      * )
      */
-    private int $id;
+    private $id;
 
     /**
      * E-mail.
@@ -71,14 +71,14 @@ class User implements UserInterface
      * @Assert\NotBlank
      * @Assert\Email
      */
-    private string $email;
+    private $email;
 
     /**
      * Roles.
      *
      * @ORM\Column(type="json")
      */
-    private array $roles = [];
+    private $roles = [];
 
     /**
      * The hashed password.
@@ -91,7 +91,7 @@ class User implements UserInterface
      * @Assert\Type(type="string")
      * @SecurityAssert\UserPassword
      */
-    private string $password;
+    private $password;
 
     /**
      * Getter for the Id.

@@ -186,6 +186,12 @@ class TagController extends AbstractController
             return $this->redirectToRoute('tags_index');
         }
 
+        if ($tags->getTasks()->count()) {
+            $this->addFlash('warning', 'message_tags_contains_tasks');
+
+            return $this->redirectToRoute('tags_index');
+        }
+
         $form = $this->createForm(FormType::class, $tags, ['method' => 'DELETE']);
         $form->handleRequest($request);
 

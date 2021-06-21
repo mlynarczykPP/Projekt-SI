@@ -43,14 +43,25 @@ class Tags
     private $name;
 
     /**
-     * Note
+     * Notes.
      *
-     * @ORM\OneToMany(
-     *     targetEntity=Note::class,
+     * @var ArrayCollection|Note[] Note
+     *
+     * @ORM\ManyToMany(
+     *     targetEntity="App\Entity\Note",
      *     mappedBy="tags"
      * )
      */
     private $notes;
+
+    /**
+     * Tag constructor.
+     */
+    public function __construct()
+    {
+        $this->notes = new ArrayCollection();
+        $this->tasks = new ArrayCollection();
+    }
 
     /**
      * Code.
@@ -88,10 +99,15 @@ class Tags
      */
     private $updatedAt;
 
-    public function __construct()
-    {
-        $this->notes = new ArrayCollection();
-    }
+    /**
+     * Tasks.
+     *
+     * @ORM\ManyToMany(
+     *     targetEntity=Task::class,
+     *     mappedBy="tags"
+     * )
+     */
+    private $tasks;
 
     /**
      * Getter for Id.
@@ -124,28 +140,38 @@ class Tags
     }
 
     /**
-     * @return Collection|Note[]
+     * Getter for notes.
+     *
+     * @return Collection|Note[] Notes collection
      */
     public function getNotes(): Collection
     {
         return $this->notes;
     }
 
-    public function addNote(Note $note): void
+    /**
+     * Add note to collection.
+     *
+     * @param Note $notes Note entity
+     */
+    public function addTask(Note $notes): void
     {
-        if (!$this->notes->contains($note)) {
-            $this->notes[] = $note;
-            $note->setTags($this);
+        if (!$this->notes->contains($notes)) {
+            $this->notes[] = $notes;
+            $notes->addTag($this);
         }
     }
 
-    public function removeNote(Note $note): void
+    /**
+     * Remove note from collection.
+     *
+     * @param Note $notes Note entity
+     */
+    public function removeTask(Note $notes): void
     {
-        if ($this->notes->removeElement($note)) {
-            // set the owning side to null (unless already changed)
-            if ($note->getTags() === $this) {
-                $note->setTags(null);
-            }
+        if ($this->notes->contains($notes)) {
+            $this->notes->removeElement($notes);
+            $notes->removeTag($this);
         }
     }
 
@@ -177,5 +203,13 @@ class Tags
     public function setUpdatedAt(\DateTimeInterface $updatedAt): void
     {
         $this->updatedAt = $updatedAt;
+    }
+
+    /**
+     * @return Collection|Task[]
+     */
+    public function getTasks(): Collection
+    {
+        return $this->tasks;
     }
 }

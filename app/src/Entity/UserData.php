@@ -48,6 +48,16 @@ class UserData
     private ?string $lastname;
 
     /**
+     * User.
+     *
+     * @ORM\OneToOne(
+     *     targetEntity=User::class,
+     *     cascade={"persist", "remove"}
+     * )
+     */
+    private $user;
+
+    /**
      * Getter for id
      *
      * @return int|null Id
@@ -105,5 +115,15 @@ class UserData
     public function __toString()
     {
         return (string) $this->getId();
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): void
+    {
+        $this->user = $user;
     }
 }

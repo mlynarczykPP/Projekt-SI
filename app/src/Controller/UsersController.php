@@ -5,13 +5,12 @@
 
 namespace App\Controller;
 
-use App\Entity\User;
+use App\Entity\UserData;
 use App\Form\UsersType;
-use App\Repository\UserRepository;
+use App\Repository\UserDataRepository;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
 use Knp\Component\Pager\PaginatorInterface;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -28,9 +27,9 @@ class UsersController extends AbstractController
     /**
      * Index action.
      *
-     * @param Request               $request            HTTP request
-     * @param UserRepository        $userRepository     User repository
-     * @param PaginatorInterface    $paginator          Paginator
+     * @param Request                   $request                HTTP request
+     * @param UserDataRepository        $userdataRepository     Userdata repository
+     * @param PaginatorInterface        $paginator              Paginator
      *
      * @return Response HTTP response
      *
@@ -40,12 +39,12 @@ class UsersController extends AbstractController
      *     name="users_index",
      * )
      */
-    public function index(Request $request, UserRepository $userRepository, PaginatorInterface $paginator): Response
+    public function index(Request $request, UserDataRepository $userdataRepository, PaginatorInterface $paginator): Response
     {
         $pagination = $paginator->paginate(
-            $userRepository->queryAll(),
+            $userdataRepository->queryAll(),
             $request->query->getInt('page', 1),
-            UserRepository::PAGINATOR_ITEMS_PER_PAGE
+            UserDataRepository::PAGINATOR_ITEMS_PER_PAGE
         );
 
         return $this->render(
@@ -57,7 +56,7 @@ class UsersController extends AbstractController
     /**
      * Show action.
      *
-     * @param User $user User entity
+     * @param UserData $userdata Userdata entity
      *
      * @return Response HTTP response
      *
@@ -68,19 +67,19 @@ class UsersController extends AbstractController
      *     requirements={"id": "[1-9]\d*"},
      * )
      */
-    public function show(User $user): Response
+    public function show(UserData $userdata): Response
     {
         return $this->render(
             'users/show.html.twig',
-            ['users' => $user]
+            ['usersdata' => $userdata]
         );
     }
 
     /**
      * Create user.
      *
-     * @param Request           $request        HTTP request
-     * @param UserRepository    $userRepository User repository
+     * @param Request               $request            HTTP request
+     * @param UserDataRepository    $userdataRepository Userdata repository
      *
      * @return Response HTTP response
      *
@@ -93,14 +92,14 @@ class UsersController extends AbstractController
      *     name="users_create",
      * )
      */
-    public function create(Request $request, UserRepository $userRepository): Response
+    public function create(Request $request, UserDataRepository $userdataRepository): Response
     {
-        $user = new User();
-        $form = $this->createForm(UsersType::class, $user);
+        $userdata = new UserData();
+        $form = $this->createForm(UsersType::class, $userdata);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $userRepository->save($user);
+            $userdataRepository->save($userdata);
             $this->addFlash('success', 'message_created_successfully');
 
             return $this->redirectToRoute('/index');
@@ -115,9 +114,9 @@ class UsersController extends AbstractController
     /**
      * Edit action.
      *
-     * @param Request           $request        HTTP request
-     * @param User              $user           User entity
-     * @param UserRepository    $userRepository User repository
+     * @param Request               $request            HTTP request
+     * @param UserData              $userdata           Userdata entity
+     * @param UserDataRepository    $userdataRepository Userdata repository
      *
      * @return Response HTTP response
      *
@@ -131,23 +130,23 @@ class UsersController extends AbstractController
      *     name="users_edit",
      * )
      */
-    public function edit(Request $request, User $user, UserRepository $userRepository): Response
+    public function edit(Request $request, UserData $userdata, UserDataRepository $userdataRepository): Response
     {
-        $form = $this->createForm(UsersType::class, $user, ['method' => 'PUT']);
+        $form = $this->createForm(UsersType::class, $userdata, ['method' => 'PUT']);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $userRepository->save($user);
+            $userdataRepository->save($userdata);
             $this->addFlash('success', 'message_updated_successfully');
 
-            return $this->redirectToRoute('index.html.twig');
+            return $this->redirectToRoute('users/index.html.twig');
         }
 
         return $this->render(
             'users/edit.html.twig',
             [
                 'form' => $form->createView(),
-                'users' => $user,
+                'usersdata' => $userdata,
             ]
         );
     }

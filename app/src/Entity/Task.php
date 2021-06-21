@@ -7,6 +7,8 @@ namespace App\Entity;
 
 use App\Repository\TaskRepository;
 use DateTimeInterface;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 
@@ -42,16 +44,19 @@ class Task
     private $title;
 
     /**
-     * Comment
+     * Comment.
      *
      * @ORM\Column(type="text")
      */
     private $comment;
 
     /**
-     * Categories
+     * Categories.
      *
-     * @ORM\ManyToOne(targetEntity=Categories::class, inversedBy="tasks")
+     * @ORM\ManyToOne(
+     *     targetEntity=Categories::class,
+     *     inversedBy="tasks"
+     * )
      * @ORM\JoinColumn(nullable=false)
      */
     private $categories;
@@ -79,7 +84,7 @@ class Task
     private $updatedAt;
 
     /**
-     * Author
+     * Author.
      *
      * @ORM\ManyToOne(
      *     targetEntity=User::class,
@@ -90,7 +95,7 @@ class Task
     private $author;
 
     /**
-     * Priority
+     * Priority.
      *
      * @ORM\Column(
      *     type="integer",
@@ -99,6 +104,24 @@ class Task
      *)
      */
     private $priority;
+
+    /**
+     * Tags.
+     *
+     * @var array
+     *
+     * @ORM\ManyToMany(
+     *     targetEntity="App\Entity\Tags",
+     *     inversedBy="tasks",
+     * )
+     * @ORM\JoinTable(name="task_tags")
+     */
+    private $tags;
+
+    public function __construct()
+    {
+        $this->tags = new ArrayCollection();
+    }
 
     /**
      * Getter for Id.
@@ -150,53 +173,137 @@ class Task
         $this->comment = $comment;
     }
 
+    /**
+     * Getter for categories.
+     *
+     * @return categories|null Categories
+     */
     public function getCategories(): ?categories
     {
         return $this->categories;
     }
 
+    /**
+     * Setter for categories.
+     *
+     * @param categories|null $categories Categories
+     */
     public function setCategories(?categories $categories): void
     {
         $this->categories = $categories;
     }
 
+    /**
+     * Getter for created at.
+     *
+     * @return DateTimeInterface|null Created At
+     */
     public function getCreatedAt(): ?\DateTimeInterface
     {
         return $this->createdAt;
     }
 
+    /**
+     * Setter for created at.
+     *
+     * @param DateTimeInterface $createdAt Created At
+     */
     public function setCreatedAt(\DateTimeInterface $createdAt): void
     {
         $this->createdAt = $createdAt;
     }
 
+    /**
+     * Getter for updated at.
+     *
+     * @return DateTimeInterface|null Updated At
+     */
     public function getUpdatedAt(): ?\DateTimeInterface
     {
         return $this->updatedAt;
     }
 
+    /**
+     * Setter for updated at.
+     *
+     * @param DateTimeInterface $updatedAt Updated At
+     */
     public function setUpdatedAt(\DateTimeInterface $updatedAt): void
     {
         $this->updatedAt = $updatedAt;
     }
 
+    /**
+     * Getter fo author.
+     *
+     * @return User|null Author
+     */
     public function getAuthor(): ?User
     {
         return $this->author;
     }
 
+    /**
+     * Setter for author.
+     *
+     * @param User|null $author Author
+     */
     public function setAuthor(?User $author): void
     {
         $this->author = $author;
     }
 
+    /**
+     * Getter for priority.
+     *
+     * @return int|null Priority
+     */
     public function getPriority(): ?int
     {
         return $this->priority;
     }
 
+    /**
+     * Setter for priority.
+     *
+     * @param int|null $priority Priority
+     */
     public function setPriority(?int $priority): void
     {
         $this->priority = $priority;
+    }
+
+    /**
+     * Getter for Tag.
+     *
+     * @return Collection|Tags[]
+     */
+    public function getTags(): Collection
+    {
+        return $this->tags;
+    }
+
+    /**
+     * Add tag to collection.
+     *
+     * @param Tags $tags Tag entity
+     */
+    public function addTag(Tags $tags): void
+    {
+        if (!$this->tags->contains($tags)) {
+            $this->tags[] = $tags;
+        }
+    }
+
+    /**
+     * Remove tag from collection.
+     *
+     * @param Tags $tags Tag entity
+     */
+    public function removeTag(Tags $tags): void
+    {
+        if ($this->tags->contains($tags)) {
+            $this->tags->removeElement($tags);
+        }
     }
 }

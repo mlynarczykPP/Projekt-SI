@@ -56,6 +56,7 @@ class NoteController extends AbstractController
     public function index(Request $request): Response
     {
         $filters = [];
+        $filters['categories_id'] = $request->query->getInt('filters_categories_id');
         $filters['tags_id'] = $request->query->getInt('filters_tags_id');
 
         $pagination = $this->noteService->createPaginatedList(

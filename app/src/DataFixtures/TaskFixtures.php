@@ -31,6 +31,15 @@ class TaskFixtures extends AbstractBaseFixtures implements DependentFixtureInter
             $task->setAuthor($this->getRandomReference('users'));
             $task->setPriority($this->faker->numberBetween(0, 10));
 
+            $tags = $this->getRandomReferences(
+                'tags',
+                $this->faker->numberBetween(3, 3)
+            );
+
+            foreach($tags as $tags){
+                $task->addTag($tags);
+            }
+
             return $task;
         });
 
@@ -45,6 +54,6 @@ class TaskFixtures extends AbstractBaseFixtures implements DependentFixtureInter
      */
     public function getDependencies(): array
     {
-        return [CategoriesFixtures::class, UserFixtures::class];
+        return [CategoriesFixtures::class, UserFixtures::class, TagsFixtures::class];
     }
 }

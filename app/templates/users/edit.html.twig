@@ -1,7 +1,7 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}
-    {{ 'title_users_edit'|trans({'%id%': users.id|default('')}) }}
+    {{ 'title_users_edit'|trans({'%id%': usersdata.id|default('')}) }}
 {% endblock %}
 
 {% block body %}
@@ -9,10 +9,10 @@
     {% if is_granted('ROLE_ADMIN') %}
         {% include 'default/_form.html.twig' with {
             page_title: 'title_users_edit',
-            page_title_param: {'%id%': users.id},
+            page_title_param: {'%id%': usersdata.id},
             attr: {
                 method: 'PUT',
-                action: url('users_edit', {'id': users.id}),
+                action: url('users_edit', {'id': usersdata.id}),
             },
             form: form,
             submit_label: 'action_edited'|trans,
@@ -22,10 +22,10 @@
     {% else %}
         {% include 'default/_form.html.twig' with {
             page_title: 'title_users_edit',
-            page_title_param: {'%id%': users.id},
+            page_title_param: {'%id%': usersdata.id},
             attr: {
                 method: 'PUT',
-                action: url('users_edit', {'id': users.id}),
+                action: url('users_edit', {'id': usersdata.id}),
             },
             form: form,
             submit_label: 'action_edited'|trans,

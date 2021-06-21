@@ -66,6 +66,18 @@ class Categories
     private $tasks;
 
     /**
+     * Notes.
+     *
+     * @var ArrayCollection|Note[] $note Notes
+     *
+     * @ORM\OneToMany(
+     *     targetEntity="App\Entity\Note",
+     *     mappedBy="categories",
+     * )
+     */
+    private $note;
+
+    /**
      * Code.
      *
      * @var string
@@ -143,13 +155,20 @@ class Categories
     }
 
     /**
-     * @return Collection|Task[]
+     * Getter for task
+     *
+     * @return Collection|Task[] Task
      */
     public function getTasks(): Collection
     {
         return $this->tasks;
     }
 
+    /**
+     * Adding tasks
+     *
+     * @param Task $task Task entity
+     */
     public function addTask(Task $task): void
     {
         if (!$this->tasks->contains($task)) {
@@ -158,6 +177,11 @@ class Categories
         }
     }
 
+    /**
+     * Removing tasks
+     *
+     * @param Task $task Task entity
+     */
     public function removeTask(Task $task): void
     {
         if ($this->tasks->removeElement($task)) {
@@ -168,31 +192,99 @@ class Categories
         }
     }
 
+    /**
+     * Getter for notes
+     *
+     * @return Collection|Note[] Note
+     */
+    public function getNotes(): Collection
+    {
+        return $this->note;
+    }
+
+    /**
+     * Adding notes
+     *
+     * @param Note $note Note entity
+     */
+    public function addNotes(Note $note): void
+    {
+        if (!$this->note->contains($note)) {
+            $this->note[] = $note;
+            $note->setCategories($this);
+        }
+    }
+
+    /**
+     * Removing notes
+     *
+     * @param Note $note Note entity
+     */
+    public function removeNote(Note $note): void
+    {
+        if ($this->note->removeElement($note)) {
+            // set the owning side to null (unless already changed)
+            if ($note->getCategories() === $this) {
+                $note->setCategories(null);
+            }
+        }
+    }
+
+    /**
+     * Getter for code
+     *
+     * @return string|null Code
+     */
     public function getCode(): ?string
     {
         return $this->code;
     }
 
+    /**
+     * Setter for code
+     *
+     * @param string $code Code
+     */
     public function setCode(string $code): void
     {
         $this->code = $code;
     }
 
+    /**
+     * Getter for created at
+     *
+     * @return DateTimeInterface|null Created At
+     */
     public function getCreatedAt(): ?\DateTimeInterface
     {
         return $this->createdAt;
     }
 
+    /**
+     * Setter for created at
+     *
+     * @param DateTimeInterface $createdAt Created At
+     */
     public function setCreatedAt(\DateTimeInterface $createdAt): void
     {
         $this->createdAt = $createdAt;
     }
 
+    /**
+     * Getter for updated at
+     *
+     * @return DateTimeInterface|null Updated At
+     */
     public function getUpdatedAt(): ?\DateTimeInterface
     {
         return $this->updatedAt;
     }
 
+    /**
+     * Setter for updated at
+     *
+     * @param DateTimeInterface $updatedAt Updated At
+     */
     public function setUpdatedAt(\DateTimeInterface $updatedAt): void
     {
         $this->updatedAt = $updatedAt;

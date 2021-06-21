@@ -22,9 +22,7 @@
                 <th>{{ knp_pagination_sortable(pagination, 'label_title'|trans, 'task.title') }}</th>
                 <th>{{ knp_pagination_sortable(pagination, 'label_priority'|trans, 'task.priority') }}</th>
                 <th>{{ 'label_category'|trans }}</th>
-                {% if is_granted('ROLE_ADMIN') %}
-                    <th>{{ knp_pagination_sortable(pagination, 'label_author'|trans, 'author.email') }}</th>
-                {% endif %}
+                <th>{{ 'label_tags'|trans }}</th>
                 <th>{{ 'label_actions'|trans }}</th>
             </tr>
             </thead>
@@ -41,9 +39,17 @@
                             {{ task.categories.name }}
                         </a>
                     </td>
-                    {% if is_granted('ROLE_ADMIN') %}
-                        <td>{{ task.author.email }}</td>
-                    {% endif %}
+                    <td>
+                        {% if task.tags is defined and task.tags|length %}
+                            {% for tags in task.tags %}
+                                <a href="{{ url('task_index', {'filters.tags_id' : tags.id}) }}" title="{{ tags.name }}">
+                                    {{ tags.name }}
+                                </a>
+                            {% endfor %}
+                        {% else %}
+                            &nbsp;
+                        {% endif %}
+                    </td>
                     <td>
                         <a href="{{ url('task_show', {id: task.id}) }}" title="{{ 'button_view'|trans }}">
                             &#128269;{{ 'button_view'|trans }}

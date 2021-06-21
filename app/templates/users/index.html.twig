@@ -7,6 +7,7 @@
 {% block body %}
     {{ include('menu.html.twig') }}
     <h2>{{ 'title_users_list'|trans }}</h2>
+    {% if is_granted('ROLE_ADMIN') %}
     {% if pagination is defined and pagination.items|length %}
 
         <div class="navigation text-center">
@@ -17,22 +18,24 @@
             <thead>
             <tr>
                 <th>{{ knp_pagination_sortable(pagination, 'label_id'|trans, 'users.id') }}</th>
+                <th>{{ knp_pagination_sortable(pagination, 'label_firstname'|trans, 'usersdata.firstname') }}</th>
+                <th>{{ knp_pagination_sortable(pagination, 'label_lastname'|trans, 'usersdata.lastname') }}</th>
                 <th>{{ knp_pagination_sortable(pagination, 'label_email'|trans, 'users.email') }}</th>
-                <th>{{ knp_pagination_sortable(pagination, 'label_password'|trans, 'users.password') }}</th>
                 <th>{{ 'label_actions'|trans }}</th>
             </tr>
             </thead>
             <tbody>
-            {% for users in pagination.items %}
+            {% for usersdata in pagination.items %}
                 <tr>
-                    <td>{{ users.id }}</td>
-                    <td>{{ users.email }}</td>
-                    <td>{{ users.password }}</td>
+                    <td>{{ usersdata.user.id }}</td>
+                    <td>{{ usersdata.firstname }}</td>
+                    <td>{{ usersdata.lastname }}</td>
+                    <td>{{ usersdata.user.email }}</td>
                     <td>
-                        <a href="{{ url('users_show', {id: users.id}) }}" title="{{ 'button_view'|trans }}">
+                        <a href="{{ url('users_show', {id: usersdata.id}) }}" title="{{ 'button_view'|trans }}">
                             &#128269;{{ 'button_view'|trans }}
                         </a>
-                        <a href="{{ url('users_edit', {id: users.id}) }}" title="{{ 'button_edit'|trans }}" id="op">
+                        <a href="{{ url('users_edit', {id: usersdata.id}) }}" title="{{ 'button_edit'|trans }}" id="op">
                             &#128736;{{ 'button_edit'|trans }}
                         </a>
                     </td>
@@ -49,5 +52,6 @@
         <p>
             {{ 'message_empty_list'|trans }}
         </p>
+    {% endif %}
     {% endif %}
 {% endblock %}

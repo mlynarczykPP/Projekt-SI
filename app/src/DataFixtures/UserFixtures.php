@@ -6,6 +6,7 @@
 namespace App\DataFixtures;
 
 use App\Entity\User;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 

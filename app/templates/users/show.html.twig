@@ -1,20 +1,24 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}
-    {{ 'title_users_details'|trans({'%id%': users.id|default('')}) }}
+    {{ 'title_users_details'|trans({'%id%': usersdata.id|default('')}) }}
 {% endblock %}
 
 {% block body %}
     {{ include('menu.html.twig') }}
-    <h2>{{ 'title_users_details'|trans({'%id%': users.id|default('')}) }}</h2>
-    {% if users is defined and users|length %}
+    <h2>{{ 'title_users_details'|trans({'%id%': usersdata.id|default('')}) }}</h2>
+    {% if usersdata is defined and usersdata|length %}
         <dl>
             <dt>{{ 'label_id'|trans }}</dt>
-            <dd>{{ users.id }}</dd>
+            <dd>{{ usersdata.user.id }}</dd>
+            <dt>{{ 'label_firstname'|trans }}</dt>
+            <dd>{{ usersdata.firstname }}</dd>
+            <dt>{{ 'label_lastname'|trans }}</dt>
+            <dd>{{ usersdata.lastname }}</dd>
             <dt>{{ 'label_email'|trans }}</dt>
-            <dd>{{ users.email }}</dd>
+            <dd>{{ usersdata.user.email }}</dd>
             <dt>{{ 'label_password'|trans }}</dt>
-            <dd>{{ users.password }}</dd>
+            <dd>{{ usersdata.user.password }}</dd>
         </dl>
         <p>
             <a href="{{ url('users_index') }}" title="back to the list">

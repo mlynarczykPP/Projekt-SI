@@ -58,6 +58,14 @@
                 <source>label_author</source>
                 <target>Author</target>
             </trans-unit>
+            <trans-unit id="label_firstname">
+                <source>label_firstname</source>
+                <target>Firstname</target>
+            </trans-unit>
+            <trans-unit id="label_lastname">
+                <source>label_lastname</source>
+                <target>Lastname</target>
+            </trans-unit>
             <trans-unit id="message_empty_list">
                 <source>message_empty_list</source>
                 <target>Empty list.</target>

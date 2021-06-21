@@ -7,6 +7,7 @@ namespace App\Repository;
 
 use App\Entity\Categories;
 use App\Entity\Task;
+use App\Entity\Tags;
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\OptimisticLockException;
@@ -40,7 +41,6 @@ class TaskRepository extends ServiceEntityRepository
      *
      * @param ManagerRegistry $registry Manager registry
      */
-
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Task::class);
@@ -103,9 +103,11 @@ class TaskRepository extends ServiceEntityRepository
         $queryBuilder = $this->getOrCreateQueryBuilder()
             ->select(
                 'partial task.{id, createdAt, updatedAt, title, priority}',
-                'partial categories.{id, name}'
+                'partial categories.{id, name}',
+                'partial tags.{id, name}'
             )
             ->join('task.categories', 'categories')
+            ->leftJoin('task.tags', 'tags')
             ->orderBy('task.updatedAt', 'DESC');
         $queryBuilder = $this->applyFiltersToList($queryBuilder, $filters);
 
@@ -139,6 +141,11 @@ class TaskRepository extends ServiceEntityRepository
         if (isset($filters['categories']) && $filters['categories'] instanceof Categories) {
             $queryBuilder->andWhere('categories = :categories')
                 ->setParameter('categories', $filters['categories']);
+        }
+
+        if (isset($filters['tags']) && $filters['tags'] instanceof Tags) {
+            $queryBuilder->andWhere('tags = :tags')
+                ->setParameter('tags', $filters['tags']);
         }
 
         return $queryBuilder;

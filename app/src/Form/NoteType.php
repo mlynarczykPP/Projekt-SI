@@ -5,21 +5,38 @@
 
 namespace App\Form;
 
-use App\Entity\Tags;
+use App\Entity\Categories;
 use App\Entity\Note;
+use App\Form\DataTransformer\TagsDataTransformer;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Validator\Constraints\Image;
 
 /**
  * Class NoteType.
  */
 class NoteType extends AbstractType
 {
+    /**
+     * Tags data transformer.
+     *
+     * @var TagsDataTransformer
+     */
+    private $tagsDataTransformer;
+
+    /**
+     * NoteType constructor.
+     *
+     * @param TagsDataTransformer $tagsDataTransformer Tags data transformer
+     */
+    public function __construct(TagsDataTransformer $tagsDataTransformer)
+    {
+        $this->tagsDataTransformer = $tagsDataTransformer;
+    }
+
     /**
      * Builds the form.
      *
@@ -44,7 +61,7 @@ class NoteType extends AbstractType
         );
         $builder->add(
             'comment',
-            TextType::class,
+            TextareaType::class,
             [
                 'label' => 'label_comment',
                 'required' => true,
@@ -52,17 +69,30 @@ class NoteType extends AbstractType
             ]
         );
         $builder->add(
-            'tags',
+            'categories',
             EntityType::class,
             [
-                'class' => Tags::class,
-                'choice_label' => function ($tags) {
-                    return $tags->getName();
+                'class' => Categories::class,
+                'choice_label' => function ($categories) {
+                    return $categories->getName();
                 },
                 'label' => 'label_category',
                 'placeholder' => 'label_none',
                 'required' => true,
             ]
+        );
+        $builder->add(
+            'tags',
+            TextType::class,
+            [
+                'label' => 'label_tags',
+                'required' => false,
+                'attr' => ['max_length' => 128],
+            ]
+        );
+
+        $builder->get('tags')->addModelTransformer(
+            $this->tagsDataTransformer
         );
     }
 

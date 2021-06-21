@@ -38,12 +38,14 @@ class TaskService
      * @param TaskRepository        $taskRepository     Task repository
      * @param PaginatorInterface    $paginator          Paginator
      * @param CategoriesService     $categoriesService  Category service
+     * @param TagService            $tagService         Tag service
      */
-    public function __construct(TaskRepository $taskRepository, PaginatorInterface $paginator, CategoriesService $categoriesService)
+    public function __construct(TaskRepository $taskRepository, PaginatorInterface $paginator, CategoriesService $categoriesService, TagService $tagService)
     {
         $this->taskRepository = $taskRepository;
         $this->paginator = $paginator;
         $this->categoriesService = $categoriesService;
+        $this->tagService = $tagService;
     }
 
     /**
@@ -97,7 +99,14 @@ class TaskService
      *
      * @var CategoriesService
      */
-    private CategoriesService $categoriesService;
+    private $categoriesService;
+
+    /**
+     * Tag service.
+     *
+     * @var TagService
+     */
+    private $tagService;
 
     /**
      * Prepare filters for the tasks list.
@@ -115,6 +124,15 @@ class TaskService
             );
             if (null !== $categories) {
                 $resultFilters['categories'] = $categories;
+            }
+        }
+
+        if (isset($filters['tags_id']) && is_numeric($filters['tags_id'])) {
+            $tags = $this->tagService->findOneById(
+                $filters['tags_id']
+            );
+            if (null !== $tags) {
+                $resultFilters['tags'] = $tags;
             }
         }
 

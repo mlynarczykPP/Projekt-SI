@@ -5,6 +5,7 @@
 
 namespace App\Repository;
 
+use App\Entity\Categories;
 use App\Entity\Note;
 use App\Entity\Tags;
 use App\Entity\User;
@@ -40,7 +41,6 @@ class NoteRepository extends ServiceEntityRepository
      *
      * @param ManagerRegistry $registry Manager registry
      */
-
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Note::class);
@@ -103,29 +103,13 @@ class NoteRepository extends ServiceEntityRepository
         $queryBuilder = $this->getOrCreateQueryBuilder()
             ->select(
                 'partial note.{id, createdAt, updatedAt, title}',
+                'partial categories.{id, name}',
                 'partial tags.{id, name}'
             )
-            ->join('note.tags', 'tags')
+            ->join('note.categories', 'categories')
+            ->leftJoin('note.tags', 'tags')
             ->orderBy('note.updatedAt', 'DESC');
         $queryBuilder = $this->applyFiltersToList($queryBuilder, $filters);
-
-        return $queryBuilder;
-    }
-
-    /**
-     * Apply filters to paginated list.
-     *
-     * @param QueryBuilder $queryBuilder Query builder
-     * @param array        $filters      Filters array
-     *
-     * @return QueryBuilder Query builder
-     */
-    private function applyFiltersToList(QueryBuilder $queryBuilder, array $filters = []): QueryBuilder
-    {
-        if (isset($filters['tags']) && $filters['tags'] instanceof Tags) {
-            $queryBuilder->andWhere('tags IN (:tags)')
-                ->setParameter('tags', $filters['tags']);
-        }
 
         return $queryBuilder;
     }
@@ -141,5 +125,29 @@ class NoteRepository extends ServiceEntityRepository
     private function getOrCreateQueryBuilder(QueryBuilder $queryBuilder = null): QueryBuilder
     {
         return $queryBuilder ?? $this->createQueryBuilder('note');
+    }
+
+
+    /**
+     * Apply filters to paginated list.
+     *
+     * @param QueryBuilder $queryBuilder Query builder
+     * @param array        $filters      Filters array
+     *
+     * @return QueryBuilder Query builder
+     */
+    private function applyFiltersToList(QueryBuilder $queryBuilder, array $filters = []): QueryBuilder
+    {
+        if (isset($filters['categories']) && $filters['categories'] instanceof Categories) {
+            $queryBuilder->andWhere('categories = :categories')
+                ->setParameter('categories', $filters['categories']);
+        }
+
+        if (isset($filters['tags']) && $filters['tags'] instanceof Tags) {
+            $queryBuilder->andWhere('tags = :tags')
+                ->setParameter('tags', $filters['tags']);
+        }
+
+        return $queryBuilder;
     }
 }

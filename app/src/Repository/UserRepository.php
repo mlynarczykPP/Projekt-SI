@@ -37,11 +37,10 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
     const PAGINATOR_ITEMS_PER_PAGE = 10;
 
     /**
-     * TaskRepository constructor.
+     * UserRepository constructor.
      *
      * @param ManagerRegistry $registry Manager registry
      */
-
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, User::class);
@@ -101,7 +100,13 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
     public function queryAll(): QueryBuilder
     {
         return $this->getOrCreateQueryBuilder()
-            ->orderBy('users.id', 'DESC');
+            ->select(
+                'partial user.{id, email, password}',
+                'partial usersdata.{id, firstname, lastname}'
+            )
+
+            ->join('user.usersdata', 'usersdata')
+            ->orderBy('user.id', 'DESC');
     }
 
     /**
