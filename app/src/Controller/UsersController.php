@@ -16,7 +16,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 /**
  * Class UsersController.
@@ -99,29 +98,8 @@ class UsersController extends AbstractController
      */
     public function edit(Request $request, User $user, UserRepository $userRepository): Response
     {
-        if ($user->setRoles([User::ROLE_ADMIN])){
-            $userIn = $this->getUser();
-            $form = $this->createForm(UsersdataType::class, $userIn, ['method' => 'PUT']);
-            $form->handleRequest($request);
-
-            if ($form->isSubmitted() && $form->isValid()) {
-                $newPassword = $form->get('newPassword')->getData();
-                $userRepository->save($userIn, $newPassword);
-
-                $this->addFlash('success', 'message_updated_successfully');
-
-                return $this->redirectToRoute('notes_index');
-            }
-
-            return $this->render(
-                'users/edit.html.twig',
-                [
-                    'form' => $form->createView(),
-                    'users' => $userIn,
-                ]
-            );
-        }
-        else {
+        $User = $this->getUser();
+        if ([User::ROLE_ADMIN]){
             $form = $this->createForm(UsersdataType::class, $user, ['method' => 'PUT']);
             $form->handleRequest($request);
 
@@ -131,7 +109,7 @@ class UsersController extends AbstractController
 
                 $this->addFlash('success', 'message_updated_successfully');
 
-                return $this->redirectToRoute('notes_index');
+                return $this->redirectToRoute('users_index');
             }
 
             return $this->render(
@@ -139,6 +117,27 @@ class UsersController extends AbstractController
                 [
                     'form' => $form->createView(),
                     'users' => $user,
+                ]
+            );
+        }
+        else {
+            $form = $this->createForm(UsersdataType::class, $User, ['method' => 'PUT']);
+            $form->handleRequest($request);
+
+            if ($form->isSubmitted() && $form->isValid()) {
+                $newPassword = $form->get('newPassword')->getData();
+                $userRepository->save($User, $newPassword);
+
+                $this->addFlash('success', 'message_updated_successfully');
+
+                return $this->redirectToRoute('notes_index');
+            }
+
+            return $this->render(
+                'users/edit.html.twig',
+                [
+                    'form' => $form->createView(),
+                    'users' => $User,
                 ]
             );
         }

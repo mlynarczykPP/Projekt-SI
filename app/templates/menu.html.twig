@@ -50,7 +50,7 @@
                     <div id="sign">
                     {% if app.user %}
                         <li id="log">
-                            &#128100; {{ app.user.username }}
+                            &#128100; <a href="{{ url('users_show', {id: app.user.id}) }}" title="show user">{{ app.user.username }}</a>
                                 <ul id="pod">
                                     <li><a href="{{ url('users_edit', {id: app.user.id}) }}">{{ 'button_user_edit'|trans }}</a></li>
                                     <li><a href="{{ path('app_logout') }}">{{ 'button_log_out'|trans }}</a></li>

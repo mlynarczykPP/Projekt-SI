@@ -17,13 +17,17 @@
             <dd>{{ users.lastname }}</dd>
             <dt>{{ 'label_email'|trans }}</dt>
             <dd>{{ users.email }}</dd>
-            <dt>{{ 'label_password'|trans }}</dt>
-            <dd>{{ users.password }}</dd>
         </dl>
         <p>
-            <a href="{{ url('users_index') }}" title="back to the list">
-                &#11013;{{ 'button_back'|trans }}
-            </a>
+            {% if is_granted('ROLE_ADMIN') %}
+                <a href="{{ url('users_index') }}" title="back to the list">
+                    &#11013;{{ 'button_back'|trans }}
+                </a>
+            {% else %}
+                <a href="{{ url('notes_index') }}" title="back to the list">
+                    &#11013;{{ 'button_back'|trans }}
+                </a>
+            {% endif %}
         </p>
     {% else %}
         <p>

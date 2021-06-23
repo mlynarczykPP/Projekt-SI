@@ -42,6 +42,10 @@
                 <source>label_email</source>
                 <target>Email</target>
             </trans-unit>
+            <trans-unit id="label_new_email">
+                <source>label_new_email</source>
+                <target>New Email</target>
+            </trans-unit>
             <trans-unit id="label_role">
                 <source>label_role</source>
                 <target>Role</target>
