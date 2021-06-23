@@ -6,15 +6,17 @@
 namespace App\Controller;
 
 use App\Entity\User;
-use App\Form\UsersType;
+use App\Form\UsersdataType;
 use App\Repository\UserRepository;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
 use Knp\Component\Pager\PaginatorInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 /**
  * Class UsersController.
@@ -38,6 +40,8 @@ class UsersController extends AbstractController
      *     methods={"GET"},
      *     name="users_index",
      * )
+     *
+     * @IsGranted("ROLE_ADMIN")
      */
     public function index(Request $request, UserRepository $userRepository, PaginatorInterface $paginator): Response
     {
@@ -76,46 +80,9 @@ class UsersController extends AbstractController
     }
 
     /**
-     * Create user.
-     *
-     * @param Request           $request            HTTP request
-     * @param UserRepository    $userRepository     User repository
-     *
-     * @return Response HTTP response
-     *
-     * @throws ORMException
-     * @throws OptimisticLockException
-     *
-     * @Route(
-     *     "/create",
-     *     methods={"GET", "POST"},
-     *     name="users_create",
-     * )
-     */
-    public function create(Request $request, UserRepository $userRepository): Response
-    {
-        $user = new User();
-        $form = $this->createForm(UsersType::class, $user);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $userRepository->save($user);
-            $this->addFlash('success', 'message_created_successfully');
-
-            return $this->redirectToRoute('/index');
-        }
-
-        return $this->render(
-            'users/create.html.twig',
-            ['form' => $form->createView()]
-        );
-    }
-
-    /**
      * Edit action.
      *
      * @param Request           $request            HTTP request
-     * @param User              $userdata           User entity
      * @param UserRepository    $userdataRepository User repository
      *
      * @return Response HTTP response
@@ -132,22 +99,49 @@ class UsersController extends AbstractController
      */
     public function edit(Request $request, User $user, UserRepository $userRepository): Response
     {
-        $form = $this->createForm(UsersType::class, $user, ['method' => 'PUT']);
-        $form->handleRequest($request);
+        if ($user->setRoles([User::ROLE_ADMIN])){
+            $userIn = $this->getUser();
+            $form = $this->createForm(UsersdataType::class, $userIn, ['method' => 'PUT']);
+            $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $userRepository->save($user);
-            $this->addFlash('success', 'message_updated_successfully');
+            if ($form->isSubmitted() && $form->isValid()) {
+                $newPassword = $form->get('newPassword')->getData();
+                $userRepository->save($userIn, $newPassword);
 
-            return $this->redirectToRoute('users_index');
+                $this->addFlash('success', 'message_updated_successfully');
+
+                return $this->redirectToRoute('notes_index');
+            }
+
+            return $this->render(
+                'users/edit.html.twig',
+                [
+                    'form' => $form->createView(),
+                    'users' => $userIn,
+                ]
+            );
+        }
+        else {
+            $form = $this->createForm(UsersdataType::class, $user, ['method' => 'PUT']);
+            $form->handleRequest($request);
+
+            if ($form->isSubmitted() && $form->isValid()) {
+                $newPassword = $form->get('newPassword')->getData();
+                $userRepository->save($user, $newPassword);
+
+                $this->addFlash('success', 'message_updated_successfully');
+
+                return $this->redirectToRoute('notes_index');
+            }
+
+            return $this->render(
+                'users/edit.html.twig',
+                [
+                    'form' => $form->createView(),
+                    'users' => $user,
+                ]
+            );
         }
 
-        return $this->render(
-            'users/edit.html.twig',
-            [
-                'form' => $form->createView(),
-                'users' => $user,
-            ]
-        );
     }
 }

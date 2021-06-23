@@ -31,6 +31,12 @@
             <dd>{{  notes.title }}</dd>
             <dt>{{ 'label_comment'|trans }}</dt>
             <dd>{{  notes.comment|markdown_to_html }}</dd>
+            {% if notes.filename is defined and notes.filename|length %}
+                <dt>{{ 'label_image'|trans }}</dt>
+                <dd>
+                    <img class="nav-profile-img" src="{{ asset('uploads/images/'~ notes.filename) }}">
+                </dd>
+            {% endif %}
         </dl>
         <p>
             <a href="{{ url('notes_index') }}" title="back to the list">

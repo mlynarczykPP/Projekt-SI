@@ -104,6 +104,8 @@ class CategoriesController extends AbstractController
      *     methods={"GET", "POST"},
      *     name="categories_create",
      * )
+     *
+     * @IsGranted("ROLE_ADMIN")
      */
     public function create(Request $request): Response
     {
@@ -141,6 +143,8 @@ class CategoriesController extends AbstractController
      *     requirements={"id": "[1-9]\d*"},
      *     name="categories_edit",
      * )
+     *
+     * @IsGranted("ROLE_ADMIN")
      */
     public function edit(Request $request, Categories $categories): Response
     {
@@ -180,6 +184,8 @@ class CategoriesController extends AbstractController
      *     requirements={"id": "[1-9]\d*"},
      *     name="categories_delete",
      * )
+     *
+     * @IsGranted("ROLE_ADMIN")
      */
     public function delete(Request $request, Categories $categories): Response
     {

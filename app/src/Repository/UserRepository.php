@@ -11,6 +11,7 @@ use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -25,6 +26,13 @@ use Symfony\Component\Security\Core\User\UserInterface;
  */
 class UserRepository extends ServiceEntityRepository implements PasswordUpgraderInterface
 {
+    /**
+     * Password encoder.
+     *
+     * @var UserPasswordEncoderInterface
+     */
+    private $passwordEncoder;
+
     /**
      * Items per page.
      *
@@ -41,8 +49,9 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
      *
      * @param ManagerRegistry $registry Manager registry
      */
-    public function __construct(ManagerRegistry $registry)
+    public function __construct(ManagerRegistry $registry, UserPasswordEncoderInterface $passwordEncoder)
     {
+        $this->passwordEncoder = $passwordEncoder;
         parent::__construct($registry, User::class);
     }
 
@@ -61,15 +70,25 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
     }
 
     /**
-     * Save task.
+     * Save user.
      *
      * @param User $user User entity
+     * @param string|null $newPassword
      *
      * @throws ORMException
      * @throws OptimisticLockException
      */
-    public function save(User $user): void
+    public function save(User $user, string $newPassword = null)
     {
+        if($newPassword) {
+            $user->setPassword(
+                $this->passwordEncoder->encodePassword(
+                    $user,
+                    $newPassword
+                )
+            );
+        }
+
         $this->_em->persist($user);
         $this->_em->flush();
     }
@@ -96,7 +115,6 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
      *
      * @return QueryBuilder Query builder
      */
-
     public function queryAll(): QueryBuilder
     {
         return $this->getOrCreateQueryBuilder()
@@ -110,7 +128,6 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
      *
      * @return QueryBuilder                     Query builder
      */
-
     private function getOrCreateQueryBuilder(QueryBuilder $queryBuilder = null): QueryBuilder
     {
         return $queryBuilder ?? $this->createQueryBuilder('users');

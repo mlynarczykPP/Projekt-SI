@@ -50,6 +50,10 @@
                 <source>label_password</source>
                 <target>Password</target>
             </trans-unit>
+            <trans-unit id="label_new_password">
+                <source>label_new_password</source>
+                <target>New Password</target>
+            </trans-unit>
             <trans-unit id="label_priority">
                 <source>label_priority</source>
                 <target>Priority (0-10)</target>
@@ -66,13 +70,37 @@
                 <source>label_lastname</source>
                 <target>Lastname</target>
             </trans-unit>
-            <trans-unit id="message_empty_list">
-                <source>message_empty_list</source>
-                <target>Empty list.</target>
+            <trans-unit id="label_new_firstname">
+                <source>label_new_firstname</source>
+                <target>New Firstname</target>
             </trans-unit>
-            <trans-unit id="message_item_not_found">
-                <source>message_item_not_found</source>
-                <target>Item not found.</target>
+            <trans-unit id="label_new_lastname">
+                <source>label_new_lastname</source>
+                <target>New Lastname</target>
+            </trans-unit>
+            <trans-unit id="label_created_at">
+                <source>label_created_at</source>
+                <target>Created at</target>
+            </trans-unit>
+            <trans-unit id="label_updated_at">
+                <source>label_updated_at</source>
+                <target>Updated at</target>
+            </trans-unit>
+            <trans-unit id="label_none">
+                <source>label_none</source>
+                <target>Label none</target>
+            </trans-unit>
+            <trans-unit id="label_password_repeat">
+                <source>label_password_repeat</source>
+                <target>Repeat Password</target>
+            </trans-unit>
+            <trans-unit id="label_new_password_repeat">
+                <source>label_new_password_repeat</source>
+                <target>Repeat New Password</target>
+            </trans-unit>
+            <trans-unit id="label_image">
+                <source>label_image</source>
+                <target>Image</target>
             </trans-unit>
             <trans-unit id="button_view">
                 <source>button_view</source>
@@ -254,17 +282,17 @@
                 <source>message_tags_contains_notes</source>
                 <target>Tag contains note</target>
             </trans-unit>
-            <trans-unit id="label_created_at">
-                <source>label_created_at</source>
-                <target>Created at</target>
+            <trans-unit id="message_register_successfully">
+                <source>message_register_successfully</source>
+                <target>Registered Successfully!</target>
             </trans-unit>
-            <trans-unit id="label_updated_at">
-                <source>label_updated_at</source>
-                <target>Updated at</target>
+            <trans-unit id="message_empty_list">
+                <source>message_empty_list</source>
+                <target>Empty list.</target>
             </trans-unit>
-            <trans-unit id="label_none">
-                <source>label_none</source>
-                <target>Label none</target>
+            <trans-unit id="message_item_not_found">
+                <source>message_item_not_found</source>
+                <target>Item not found.</target>
             </trans-unit>
         </body>
     </file>

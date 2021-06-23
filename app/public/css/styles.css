@@ -127,9 +127,14 @@ nav a {
     margin-bottom: 0;
 }
 
-#artindex{
+#artindex {
     text-align: center;
     border-radius: 10px;
     color: #092D34;
     vertical-align: top;
+}
+
+img {
+    height: 500px;
+    width: auto;
 }

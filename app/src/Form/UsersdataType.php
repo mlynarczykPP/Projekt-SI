@@ -1,6 +1,6 @@
 <?php
 /**
- * Users type.
+ * Userdata type.
  */
 
 namespace App\Form;
@@ -15,9 +15,9 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * Class UserType.
+ * Class UserdataType.
  */
-class UsersType extends AbstractType
+class UsersdataType extends AbstractType
 {
     /**
      * Builds the form.
@@ -36,7 +36,7 @@ class UsersType extends AbstractType
             'firstname',
             TextType::class,
             [
-                'label' => 'label_firstname',
+                'label' => 'label_new_firstname',
                 'required' => true,
                 'attr' => ['max_length' => 64],
             ]
@@ -45,7 +45,7 @@ class UsersType extends AbstractType
             'lastname',
             TextType::class,
             [
-                'label' => 'label_lastname',
+                'label' => 'label_new_lastname',
                 'required' => true,
                 'attr' => ['max_length' => 255],
             ]
@@ -54,18 +54,19 @@ class UsersType extends AbstractType
             'email',
             EmailType::class,
             [
-                'label' => 'label_email',
+                'label' => 'label_new_email',
                 'required' => true,
                 'attr' => ['max_length' => 255],
             ]
         );
         $builder->add(
-            'password',
+            'newPassword',
             RepeatedType::class,
             [
+                'mapped' => false,
                 'type' => PasswordType::class,
-                'first_options' => array('label'=>'label_password'),
-                'second_options' => array('label'=>'label_password_repeat'),
+                'first_options' => array('label'=>'label_new_password'),
+                'second_options' => array('label'=>'label_new_password_repeat'),
             ]
         );
     }

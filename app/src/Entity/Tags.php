@@ -110,7 +110,7 @@ class Tags
     private $tasks;
 
     /**
-     * Getter for Id.
+     * Getter for the Id.
      *
      * @return int|null Result
      */
@@ -120,7 +120,7 @@ class Tags
     }
 
     /**
-     * Getter for Name.
+     * Getter for the Name.
      *
      * @return string|null Name
      */
@@ -130,7 +130,7 @@ class Tags
     }
 
     /**
-     * Setter for Name.
+     * Setter for the Name.
      *
      * @param string $name Name
      */
@@ -140,7 +140,7 @@ class Tags
     }
 
     /**
-     * Getter for notes.
+     * Getter for the notes.
      *
      * @return Collection|Note[] Notes collection
      */
@@ -150,7 +150,7 @@ class Tags
     }
 
     /**
-     * Add note to collection.
+     * Add note to the collection.
      *
      * @param Note $notes Note entity
      */
@@ -163,7 +163,7 @@ class Tags
     }
 
     /**
-     * Remove note from collection.
+     * Remove note from the collection.
      *
      * @param Note $notes Note entity
      */
@@ -175,38 +175,70 @@ class Tags
         }
     }
 
+    /**
+     * Getter for the code.
+     *
+     * @return string|null Code
+     */
     public function getCode(): ?string
     {
         return $this->code;
     }
 
+    /**
+     * Setter for the code.
+     *
+     * @param string $code Code
+     */
     public function setCode(string $code): void
     {
         $this->code = $code;
     }
 
+    /**
+     * Getter for the created at.
+     *
+     * @return DateTimeInterface|null Created At
+     */
     public function getCreatedAt(): ?\DateTimeInterface
     {
         return $this->createdAt;
     }
 
+    /**
+     * Setter for the created at.
+     *
+     * @param DateTimeInterface $createdAt Created At
+     */
     public function setCreatedAt(\DateTimeInterface $createdAt): void
     {
         $this->createdAt = $createdAt;
     }
 
+    /**
+     * Getter for the updated at.
+     *
+     * @return DateTimeInterface|null Updated At
+     */
     public function getUpdatedAt(): ?\DateTimeInterface
     {
         return $this->updatedAt;
     }
 
+    /**
+     * Setter for the updated at.
+     *
+     * @param DateTimeInterface $updatedAt Updated At
+     */
     public function setUpdatedAt(\DateTimeInterface $updatedAt): void
     {
         $this->updatedAt = $updatedAt;
     }
 
     /**
-     * @return Collection|Task[]
+     * Getter for the task.
+     *
+     * @return Collection|Task[] Task
      */
     public function getTasks(): Collection
     {

@@ -7,6 +7,7 @@ namespace App\Controller;
 
 use App\Entity\Note;
 use App\Form\NoteType;
+use App\Service\FileUploader;
 use App\Service\NoteService;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
@@ -31,13 +32,22 @@ class NoteController extends AbstractController
     private NoteService $noteService;
 
     /**
+     * File uploader.
+     *
+     * @var FileUploader
+     */
+    private $fileUploader;
+
+    /**
      * NoteController constructor.
      *
      * @param NoteService $noteService Note service
+     * @param FileUploader $fileUploader File uploader
      */
-    public function __construct(NoteService $noteService)
+    public function __construct(NoteService $noteService, FileUploader $fileUploader)
     {
         $this->noteService = $noteService;
+        $this->fileUploader = $fileUploader;
     }
 
     /**
@@ -122,6 +132,10 @@ class NoteController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $imageFilename = $this->fileUploader->upload(
+                $form->get('file')->getData()
+            );
+            $note->setFilename($imageFilename);
             $note->setAuthor($this->getUser());
             $this->noteService->save($note);
             $this->addFlash('success', 'message_created_successfully');

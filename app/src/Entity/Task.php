@@ -90,6 +90,7 @@ class Task
      *     targetEntity=User::class,
      *     fetch="EXTRA_LAZY"
      * )
+     *
      * @ORM\JoinColumn(nullable=false)
      */
     private $author;
@@ -124,7 +125,7 @@ class Task
     }
 
     /**
-     * Getter for Id.
+     * Getter for the Id.
      *
      * @return int|null Result
      */
@@ -134,7 +135,7 @@ class Task
     }
 
     /**
-     * Getter for Title.
+     * Getter for the Title.
      *
      * @return string|null Title
      */
@@ -144,7 +145,7 @@ class Task
     }
 
     /**
-     * Getter for Comment.
+     * Getter for the Comment.
      *
      * @return string|null Comment
      */
@@ -154,7 +155,7 @@ class Task
     }
 
     /**
-     * Setter for Title.
+     * Setter for the Title.
      *
      * @param string $title Title
      */
@@ -164,7 +165,7 @@ class Task
     }
 
     /**
-     * Setter for Comment.
+     * Setter for the Comment.
      *
      * @param string $comment Comment
      */
@@ -174,7 +175,7 @@ class Task
     }
 
     /**
-     * Getter for categories.
+     * Getter for the categories.
      *
      * @return categories|null Categories
      */
@@ -184,7 +185,7 @@ class Task
     }
 
     /**
-     * Setter for categories.
+     * Setter for the categories.
      *
      * @param categories|null $categories Categories
      */
@@ -194,7 +195,7 @@ class Task
     }
 
     /**
-     * Getter for created at.
+     * Getter for the created at.
      *
      * @return DateTimeInterface|null Created At
      */
@@ -204,7 +205,7 @@ class Task
     }
 
     /**
-     * Setter for created at.
+     * Setter for the created at.
      *
      * @param DateTimeInterface $createdAt Created At
      */
@@ -214,7 +215,7 @@ class Task
     }
 
     /**
-     * Getter for updated at.
+     * Getter for the updated at.
      *
      * @return DateTimeInterface|null Updated At
      */
@@ -224,7 +225,7 @@ class Task
     }
 
     /**
-     * Setter for updated at.
+     * Setter for the updated at.
      *
      * @param DateTimeInterface $updatedAt Updated At
      */
@@ -234,7 +235,7 @@ class Task
     }
 
     /**
-     * Getter fo author.
+     * Getter for the author.
      *
      * @return User|null Author
      */
@@ -244,7 +245,7 @@ class Task
     }
 
     /**
-     * Setter for author.
+     * Setter for the author.
      *
      * @param User|null $author Author
      */
@@ -254,7 +255,7 @@ class Task
     }
 
     /**
-     * Getter for priority.
+     * Getter for the priority.
      *
      * @return int|null Priority
      */
@@ -264,7 +265,7 @@ class Task
     }
 
     /**
-     * Setter for priority.
+     * Setter for the priority.
      *
      * @param int|null $priority Priority
      */
@@ -274,7 +275,7 @@ class Task
     }
 
     /**
-     * Getter for Tag.
+     * Getter for the Tag.
      *
      * @return Collection|Tags[]
      */
@@ -284,7 +285,7 @@ class Task
     }
 
     /**
-     * Add tag to collection.
+     * Add tag to the collection.
      *
      * @param Tags $tags Tag entity
      */
@@ -296,7 +297,7 @@ class Task
     }
 
     /**
-     * Remove tag from collection.
+     * Remove tag from the collection.
      *
      * @param Tags $tags Tag entity
      */

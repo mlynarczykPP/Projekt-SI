@@ -125,7 +125,7 @@ class Categories
     }
 
     /**
-     * Getter for Id.
+     * Getter for the Id.
      *
      * @return int|null Result
      */
@@ -135,7 +135,7 @@ class Categories
     }
 
     /**
-     * Getter for Name.
+     * Getter for the Name.
      *
      * @return string|null Name
      */
@@ -145,7 +145,7 @@ class Categories
     }
 
     /**
-     * Setter for Name.
+     * Setter for the Name.
      *
      * @param string $name Name
      */
@@ -155,7 +155,7 @@ class Categories
     }
 
     /**
-     * Getter for task
+     * Getter for the Task.
      *
      * @return Collection|Task[] Task
      */
@@ -165,7 +165,7 @@ class Categories
     }
 
     /**
-     * Adding tasks
+     * Adding tasks.
      *
      * @param Task $task Task entity
      */
@@ -178,7 +178,7 @@ class Categories
     }
 
     /**
-     * Removing tasks
+     * Removing tasks.
      *
      * @param Task $task Task entity
      */
@@ -193,7 +193,7 @@ class Categories
     }
 
     /**
-     * Getter for notes
+     * Getter for the notes.
      *
      * @return Collection|Note[] Note
      */
@@ -203,7 +203,7 @@ class Categories
     }
 
     /**
-     * Adding notes
+     * Adding notes.
      *
      * @param Note $note Note entity
      */
@@ -216,7 +216,7 @@ class Categories
     }
 
     /**
-     * Removing notes
+     * Removing notes.
      *
      * @param Note $note Note entity
      */
@@ -231,7 +231,7 @@ class Categories
     }
 
     /**
-     * Getter for code
+     * Getter for the code.
      *
      * @return string|null Code
      */
@@ -241,7 +241,7 @@ class Categories
     }
 
     /**
-     * Setter for code
+     * Setter for the code.
      *
      * @param string $code Code
      */
@@ -251,7 +251,7 @@ class Categories
     }
 
     /**
-     * Getter for created at
+     * Getter for the created at.
      *
      * @return DateTimeInterface|null Created At
      */
@@ -261,7 +261,7 @@ class Categories
     }
 
     /**
-     * Setter for created at
+     * Setter for the created at.
      *
      * @param DateTimeInterface $createdAt Created At
      */
@@ -271,7 +271,7 @@ class Categories
     }
 
     /**
-     * Getter for updated at
+     * Getter for the updated at.
      *
      * @return DateTimeInterface|null Updated At
      */
@@ -281,7 +281,7 @@ class Categories
     }
 
     /**
-     * Setter for updated at
+     * Setter for the updated at.
      *
      * @param DateTimeInterface $updatedAt Updated At
      */

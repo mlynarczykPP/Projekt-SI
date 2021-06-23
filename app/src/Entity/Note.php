@@ -113,7 +113,18 @@ class Note
     private $categories;
 
     /**
-     * Getter for Id.
+     * Filename.
+     *
+     * @ORM\Column(
+     *     type="string",
+     *     length=128,
+     *     nullable=true
+     * )
+     */
+    private $filename;
+
+    /**
+     * Getter for the Id.
      *
      * @return int|null Result
      */
@@ -123,7 +134,7 @@ class Note
     }
 
     /**
-     * Getter for Title.
+     * Getter for the Title.
      *
      * @return string|null Title
      */
@@ -133,7 +144,7 @@ class Note
     }
 
     /**
-     * Getter for Comment.
+     * Getter for the Comment.
      *
      * @return string|null Comment
      */
@@ -143,7 +154,7 @@ class Note
     }
 
     /**
-     * Setter for Title.
+     * Setter for the Title.
      *
      * @param string $title Title
      */
@@ -153,7 +164,7 @@ class Note
     }
 
     /**
-     * Setter for Comment.
+     * Setter for the Comment.
      *
      * @param string $comment Comment
      */
@@ -163,7 +174,7 @@ class Note
     }
 
     /**
-     * Getter for tags.
+     * Getter for the tags.
      *
      * @return \Doctrine\Common\Collections\Collection|Tags[] Tags collection
      */
@@ -173,7 +184,7 @@ class Note
     }
 
     /**
-     * Add tag to collection.
+     * Add tag to the collection.
      *
      * @param Tags $tags Tag entity
      */
@@ -185,7 +196,7 @@ class Note
     }
 
     /**
-     * Remove tag from collection.
+     * Remove tag from the collection.
      *
      * @param Tags $tags Tag entity
      */
@@ -197,7 +208,7 @@ class Note
     }
 
     /**
-     * Getter for created at.
+     * Getter for the created at.
      *
      * @return DateTimeInterface|null Created At
      */
@@ -207,7 +218,7 @@ class Note
     }
 
     /**
-     * Setter for created at.
+     * Setter for the created at.
      *
      * @param DateTimeInterface $createdAt Created At
      */
@@ -217,27 +228,27 @@ class Note
     }
 
     /**
-     * Getter for updated at.
+     * Getter for the updated at.
      *
      * @return DateTimeInterface|null Updated At
      */
-    public function getUpdatedAt(): ?DateTimeInterface
+    public function getUpdatedAt(): ?\DateTimeInterface
     {
         return $this->updatedAt;
     }
 
     /**
-     * Setter for updated at.
+     * Setter for the updated at.
      *
      * @param DateTimeInterface $updatedAt Updated At
      */
-    public function setUpdatedAt(DateTimeInterface $updatedAt): void
+    public function setUpdatedAt(\DateTimeInterface $updatedAt): void
     {
         $this->updatedAt = $updatedAt;
     }
 
     /**
-     * Getter fo author.
+     * Getter for the author.
      *
      * @return User|null Author
      */
@@ -247,7 +258,7 @@ class Note
     }
 
     /**
-     * Setter for author.
+     * Setter for the author.
      *
      * @param User|null $author Author
      */
@@ -257,7 +268,7 @@ class Note
     }
 
     /**
-     * Getter for categories.
+     * Getter for the categories.
      *
      * @return Categories|null Categories
      */
@@ -267,12 +278,32 @@ class Note
     }
 
     /**
-     * Setter for categories.
+     * Setter for the categories.
      *
      * @param Categories|null $categories Categories
      */
     public function setCategories(?Categories $categories): void
     {
         $this->categories = $categories;
+    }
+
+    /**
+     * Getter for the filename.
+     *
+     * @return string|null Filename
+     */
+    public function getFilename(): ?string
+    {
+        return $this->filename;
+    }
+
+    /**
+     * Setter for the filename.
+     *
+     * @param string|null $filename Filename
+     */
+    public function setFilename(?string $filename): void
+    {
+        $this->filename = $filename;
     }
 }
