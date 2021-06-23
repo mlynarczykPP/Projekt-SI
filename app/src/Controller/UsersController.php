@@ -98,8 +98,8 @@ class UsersController extends AbstractController
      */
     public function edit(Request $request, User $user, UserRepository $userRepository): Response
     {
-        $User = $this->getUser();
-        if ([User::ROLE_ADMIN]){
+        $log = $this->getUser();
+        if ([User::ROLE_USER]) {
             $form = $this->createForm(UsersdataType::class, $user, ['method' => 'PUT']);
             $form->handleRequest($request);
 
@@ -121,12 +121,12 @@ class UsersController extends AbstractController
             );
         }
         else {
-            $form = $this->createForm(UsersdataType::class, $User, ['method' => 'PUT']);
+            $form = $this->createForm(UsersdataType::class, $log, ['method' => 'PUT']);
             $form->handleRequest($request);
 
             if ($form->isSubmitted() && $form->isValid()) {
                 $newPassword = $form->get('newPassword')->getData();
-                $userRepository->save($User, $newPassword);
+                $userRepository->save($log, $newPassword);
 
                 $this->addFlash('success', 'message_updated_successfully');
 
@@ -137,7 +137,7 @@ class UsersController extends AbstractController
                 'users/edit.html.twig',
                 [
                     'form' => $form->createView(),
-                    'users' => $User,
+                    'users' => $log,
                 ]
             );
         }
