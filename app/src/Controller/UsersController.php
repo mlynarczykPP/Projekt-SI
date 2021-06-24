@@ -69,7 +69,13 @@ class UsersController extends AbstractController
      */
     public function show(User $user): Response
     {
-        return $this->render('users/show.html.twig', ['users' => $user]);
+        $log = $this->getUser();
+        if ($this->isGranted('ROLE_ADMIN')) {
+            return $this->render('users/show.html.twig', ['users' => $user]);
+        }
+        else {
+            return $this->render('users/show.html.twig', ['users' => $log]);
+        }
     }
 
     /**
