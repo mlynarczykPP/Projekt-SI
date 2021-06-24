@@ -84,12 +84,6 @@ class TagController extends AbstractController
      */
     public function show(Tags $tags): Response
     {
-        if ($tags->getAuthor() !== $this->getUser()) {
-            $this->addFlash('warning', 'message_item_not_found');
-
-            return $this->redirectToRoute('tags_index');
-        }
-
         return $this->render('tags/show.html.twig', ['tags' => $tags]);
     }
 
