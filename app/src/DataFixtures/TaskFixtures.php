@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Task fixtures.
  */
@@ -21,7 +22,7 @@ class TaskFixtures extends AbstractBaseFixtures implements DependentFixtureInter
      */
     public function loadData(ObjectManager $manager): void
     {
-        $this->createMany(50, 'tasks', function ($i) {
+        $this->createMany(50, 'tasks', function () {
             $task = new Task();
             $task->setTitle($this->faker->word);
             $task->setComment($this->faker->paragraph(5));
@@ -36,7 +37,7 @@ class TaskFixtures extends AbstractBaseFixtures implements DependentFixtureInter
                 $this->faker->numberBetween(3, 3)
             );
 
-            foreach($tags as $tags){
+            foreach ($tags as $tags) {
                 $task->addTag($tags);
             }
 

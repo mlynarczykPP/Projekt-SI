@@ -1,13 +1,14 @@
 <?php
+
 /**
- * Task Repository
+ * Task Repository.
  */
 
 namespace App\Repository;
 
 use App\Entity\Categories;
-use App\Entity\Task;
 use App\Entity\Tags;
+use App\Entity\Task;
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\OptimisticLockException;
@@ -34,7 +35,7 @@ class TaskRepository extends ServiceEntityRepository
      *
      * @constant int
      */
-    const PAGINATOR_ITEMS_PER_PAGE = 10;
+    public const PAGINATOR_ITEMS_PER_PAGE = 10;
 
     /**
      * TaskRepository constructor.
@@ -77,8 +78,8 @@ class TaskRepository extends ServiceEntityRepository
     /**
      * Query tasks by author.
      *
-     * @param User      $user    User entity
-     * @param array     $filters Filters array
+     * @param User  $user    User entity
+     * @param array $filters Filters array
      *
      * @return QueryBuilder Query builder
      */
@@ -117,16 +118,14 @@ class TaskRepository extends ServiceEntityRepository
     /**
      * Get or create new query builder.
      *
-     * @param QueryBuilder|null $queryBuilder   Query builder
+     * @param QueryBuilder|null $queryBuilder Query builder
      *
-     * @return QueryBuilder                     Query builder
+     * @return QueryBuilder Query builder
      */
-
     private function getOrCreateQueryBuilder(QueryBuilder $queryBuilder = null): QueryBuilder
     {
         return $queryBuilder ?? $this->createQueryBuilder('task');
     }
-
 
     /**
      * Apply filters to paginated list.

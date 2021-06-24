@@ -1,6 +1,7 @@
 <?php
+
 /**
- * Note Repository
+ * Note Repository.
  */
 
 namespace App\Repository;
@@ -34,7 +35,7 @@ class NoteRepository extends ServiceEntityRepository
      *
      * @constant int
      */
-    const PAGINATOR_ITEMS_PER_PAGE = 10;
+    public const PAGINATOR_ITEMS_PER_PAGE = 10;
 
     /**
      * NoteRepository constructor.
@@ -77,8 +78,8 @@ class NoteRepository extends ServiceEntityRepository
     /**
      * Query tasks by author.
      *
-     * @param User      $user    User entity
-     * @param array     $filters Filters array
+     * @param User  $user    User entity
+     * @param array $filters Filters array
      *
      * @return QueryBuilder Query builder
      */
@@ -117,16 +118,14 @@ class NoteRepository extends ServiceEntityRepository
     /**
      * Get or create new query builder.
      *
-     * @param QueryBuilder|null $queryBuilder   Query builder
+     * @param QueryBuilder|null $queryBuilder Query builder
      *
-     * @return QueryBuilder                     Query builder
+     * @return QueryBuilder Query builder
      */
-
     private function getOrCreateQueryBuilder(QueryBuilder $queryBuilder = null): QueryBuilder
     {
         return $queryBuilder ?? $this->createQueryBuilder('note');
     }
-
 
     /**
      * Apply filters to paginated list.

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * User repository.
  */
@@ -17,7 +18,7 @@ use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
- * Class UserRepository
+ * Class UserRepository.
  *
  * @method User|null find($id, $lockMode = null, $lockVersion = null)
  * @method User|null findOneBy(array $criteria, array $orderBy = null)
@@ -42,7 +43,7 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
      *
      * @constant int
      */
-    const PAGINATOR_ITEMS_PER_PAGE = 10;
+    public const PAGINATOR_ITEMS_PER_PAGE = 10;
 
     /**
      * UserRepository constructor.
@@ -73,14 +74,13 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
      * Save user.
      *
      * @param User $user User entity
-     * @param string|null $newPassword
      *
      * @throws ORMException
      * @throws OptimisticLockException
      */
     public function save(User $user, string $newPassword = null)
     {
-        if($newPassword) {
+        if ($newPassword) {
             $user->setPassword(
                 $this->passwordEncoder->encodePassword(
                     $user,
@@ -124,9 +124,9 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
     /**
      * Get or create new query builder.
      *
-     * @param QueryBuilder|null $queryBuilder   Query builder
+     * @param QueryBuilder|null $queryBuilder Query builder
      *
-     * @return QueryBuilder                     Query builder
+     * @return QueryBuilder Query builder
      */
     private function getOrCreateQueryBuilder(QueryBuilder $queryBuilder = null): QueryBuilder
     {

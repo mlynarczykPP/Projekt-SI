@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Tags data transformer.
  */
@@ -46,7 +47,6 @@ class TagsDataTransformer implements DataTransformerInterface
         }
 
         $tagNames = [];
-
         foreach ($tags as $tag) {
             $tagNames[] = $tag->getName();
         }
@@ -67,9 +67,7 @@ class TagsDataTransformer implements DataTransformerInterface
     public function reverseTransform($value): array
     {
         $tagName = explode(',', $value);
-
         $tags = [];
-
         foreach ($tagName as $tagName) {
             if ('' !== trim($tagName)) {
                 $tag = $this->repository->findOneByName(strtolower($tagName));

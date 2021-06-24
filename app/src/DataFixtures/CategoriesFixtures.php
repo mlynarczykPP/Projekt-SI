@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Categories fixture.
  */
@@ -20,11 +21,12 @@ class CategoriesFixtures extends AbstractBaseFixtures
      */
     public function loadData(ObjectManager $manager): void
     {
-        $this->createMany(10, 'categories', function ($i) {
+        $this->createMany(10, 'categories', function () {
             $categories = new Categories();
             $categories->setName($this->faker->word);
             $categories->setCreatedAt($this->faker->dateTimeBetween('-100 days', '-1 days'));
             $categories->setUpdatedAt($this->faker->dateTimeBetween('-100 days', '-1 days'));
+
             return $categories;
         });
 

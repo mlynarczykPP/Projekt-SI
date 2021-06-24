@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Note Entity.
  */
@@ -13,7 +14,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
- * Class Note
+ * Class Note.
  *
  * @ORM\Entity(repositoryClass=NoteRepository::class)
  * @ORM\Table(name="notes")
@@ -63,6 +64,9 @@ class Note
      */
     private $tags;
 
+    /**
+     * Note constructor.
+     */
     public function __construct()
     {
         $this->tags = new ArrayCollection();
@@ -176,7 +180,7 @@ class Note
     /**
      * Getter for the tags.
      *
-     * @return \Doctrine\Common\Collections\Collection|Tags[] Tags collection
+     * @return Collection Tags collection
      */
     public function getTags(): Collection
     {
@@ -232,7 +236,7 @@ class Note
      *
      * @return DateTimeInterface|null Updated At
      */
-    public function getUpdatedAt(): ?\DateTimeInterface
+    public function getUpdatedAt(): ?DateTimeInterface
     {
         return $this->updatedAt;
     }
@@ -242,7 +246,7 @@ class Note
      *
      * @param DateTimeInterface $updatedAt Updated At
      */
-    public function setUpdatedAt(\DateTimeInterface $updatedAt): void
+    public function setUpdatedAt(DateTimeInterface $updatedAt): void
     {
         $this->updatedAt = $updatedAt;
     }

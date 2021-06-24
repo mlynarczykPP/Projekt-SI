@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Category controller.
  */
@@ -28,8 +29,6 @@ class CategoriesController extends AbstractController
 {
     /**
      * Category service.
-     *
-     * @var CategoriesService
      */
     private CategoriesService $categoriesService;
 
@@ -61,10 +60,7 @@ class CategoriesController extends AbstractController
         $page = $request->query->getInt('page', 1);
         $pagination = $this->categoriesService->createPaginatedList($page);
 
-        return $this->render(
-            'categories/index.html.twig',
-            ['pagination' => $pagination]
-        );
+        return $this->render('categories/index.html.twig', ['pagination' => $pagination]);
     }
 
     /**
@@ -83,10 +79,7 @@ class CategoriesController extends AbstractController
      */
     public function show(Categories $categories): Response
     {
-        return $this->render(
-            'categories/show.html.twig',
-            ['categories' => $categories]
-        );
+        return $this->render('categories/show.html.twig', ['categories' => $categories]);
     }
 
     /**
@@ -112,7 +105,6 @@ class CategoriesController extends AbstractController
         $categories = new Categories();
         $form = $this->createForm(CategoriesType::class, $categories);
         $form->handleRequest($request);
-
         if ($form->isSubmitted() && $form->isValid()) {
             $this->categoriesService->save($categories);
             $this->addFlash('success', 'message_created_successfully');
@@ -120,17 +112,14 @@ class CategoriesController extends AbstractController
             return $this->redirectToRoute('categories_index');
         }
 
-        return $this->render(
-            'categories/create.html.twig',
-            ['form' => $form->createView()]
-        );
+        return $this->render('categories/create.html.twig', ['form' => $form->createView()]);
     }
 
     /**
      * Edit action.
      *
-     * @param Request       $request  HTTP request
-     * @param Categories    $categories Category entity
+     * @param Request    $request    HTTP request
+     * @param Categories $categories Category entity
      *
      * @return Response HTTP response
      *
@@ -150,7 +139,6 @@ class CategoriesController extends AbstractController
     {
         $form = $this->createForm(CategoriesType::class, $categories, ['method' => 'PUT']);
         $form->handleRequest($request);
-
         if ($form->isSubmitted() && $form->isValid()) {
             $this->categoriesService->save($categories);
             $this->addFlash('success', 'message_updated_successfully');
@@ -158,20 +146,17 @@ class CategoriesController extends AbstractController
             return $this->redirectToRoute('categories_index');
         }
 
-        return $this->render(
-            'categories/edit.html.twig',
-            [
+        return $this->render('categories/edit.html.twig', [
                 'form' => $form->createView(),
                 'categories' => $categories,
-            ]
-        );
+            ]);
     }
 
     /**
      * Delete action.
      *
-     * @param Request       $request  HTTP request
-     * @param Categories    $categories Category entity
+     * @param Request    $request    HTTP request
+     * @param Categories $categories Category entity
      *
      * @return Response HTTP response
      *
@@ -203,7 +188,6 @@ class CategoriesController extends AbstractController
 
         $form = $this->createForm(FormType::class, $categories, ['method' => 'DELETE']);
         $form->handleRequest($request);
-
         if ($request->isMethod('DELETE') && !$form->isSubmitted()) {
             $form->submit($request->request->get($form->getName()));
         }
@@ -215,12 +199,9 @@ class CategoriesController extends AbstractController
             return $this->redirectToRoute('categories_index');
         }
 
-        return $this->render(
-            'categories/delete.html.twig',
-            [
+        return $this->render('categories/delete.html.twig', [
                 'form' => $form->createView(),
                 'categories' => $categories,
-            ]
-        );
+            ]);
     }
 }

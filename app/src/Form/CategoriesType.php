@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Categories type.
  */
@@ -24,20 +25,16 @@ class CategoriesType extends AbstractType
      *
      * @see FormTypeExtensionInterface::buildForm()
      *
-     * @param \Symfony\Component\Form\FormBuilderInterface $builder The form builder
-     * @param array                                        $options The options
+     * @param FormBuilderInterface $builder The form builder
+     * @param array                $options The options
      */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $builder->add(
-            'name',
-            TextType::class,
-            [
+        $builder->add('name', TextType::class, [
                 'label' => 'label_name',
                 'required' => true,
                 'attr' => ['max_length' => 64],
-            ]
-        );
+            ]);
     }
 
     /**

@@ -1,6 +1,7 @@
 <?php
+
 /**
- * Categories Repository
+ * Categories Repository.
  */
 
 namespace App\Repository;
@@ -31,14 +32,13 @@ class CategoriesRepository extends ServiceEntityRepository
      *
      * @constant int
      */
-    const PAGINATOR_ITEMS_PER_PAGE = 10;
+    public const PAGINATOR_ITEMS_PER_PAGE = 10;
 
     /**
      * CategoriesRepository constructor.
      *
      * @param ManagerRegistry $registry Manager registry
      */
-
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Categories::class);
@@ -49,7 +49,6 @@ class CategoriesRepository extends ServiceEntityRepository
      *
      * @return QueryBuilder Query builder
      */
-
     public function queryAll(): QueryBuilder
     {
         return $this->getOrCreateQueryBuilder()
@@ -59,11 +58,10 @@ class CategoriesRepository extends ServiceEntityRepository
     /**
      * Get or create new query builder.
      *
-     * @param QueryBuilder|null $queryBuilder   Query builder
+     * @param QueryBuilder|null $queryBuilder Query builder
      *
-     * @return QueryBuilder                     Query builder
+     * @return QueryBuilder Query builder
      */
-
     private function getOrCreateQueryBuilder(QueryBuilder $queryBuilder = null): QueryBuilder
     {
         return $queryBuilder ?? $this->createQueryBuilder('categories');

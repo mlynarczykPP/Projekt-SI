@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Note controller.
  */
@@ -26,22 +27,17 @@ class NoteController extends AbstractController
 {
     /**
      * Note service.
-     *
-     * @var NoteService
      */
     private NoteService $noteService;
-
     /**
      * File uploader.
-     *
-     * @var FileUploader
      */
-    private $fileUploader;
+    private FileUploader $fileUploader;
 
     /**
      * NoteController constructor.
      *
-     * @param NoteService $noteService Note service
+     * @param NoteService  $noteService  Note service
      * @param FileUploader $fileUploader File uploader
      */
     public function __construct(NoteService $noteService, FileUploader $fileUploader)
@@ -68,17 +64,13 @@ class NoteController extends AbstractController
         $filters = [];
         $filters['categories_id'] = $request->query->getInt('filters_categories_id');
         $filters['tags_id'] = $request->query->getInt('filters_tags_id');
-
         $pagination = $this->noteService->createPaginatedList(
             $request->query->getInt('page', 1),
             $this->getUser(),
             $filters
         );
 
-        return $this->render(
-            'notes/index.html.twig',
-            ['pagination' => $pagination]
-        );
+        return $this->render('notes/index.html.twig', ['pagination' => $pagination]);
     }
 
     /**
@@ -103,10 +95,7 @@ class NoteController extends AbstractController
             return $this->redirectToRoute('notes_index');
         }
 
-        return $this->render(
-            'notes/show.html.twig',
-            ['notes' => $note]
-        );
+        return $this->render('notes/show.html.twig', ['notes' => $note]);
     }
 
     /**
@@ -130,30 +119,33 @@ class NoteController extends AbstractController
         $note = new Note();
         $form = $this->createForm(NoteType::class, $note);
         $form->handleRequest($request);
-
+        $file = $form['file']->getData();
         if ($form->isSubmitted() && $form->isValid()) {
-            $imageFilename = $this->fileUploader->upload(
-                $form->get('file')->getData()
-            );
-            $note->setFilename($imageFilename);
-            $note->setAuthor($this->getUser());
-            $this->noteService->save($note);
-            $this->addFlash('success', 'message_created_successfully');
+            if (null === $file) {
+                $note->setAuthor($this->getUser());
+                $this->noteService->save($note);
+                $this->addFlash('success', 'message_created_successfully');
 
-            return $this->redirectToRoute('notes_index');
+                return $this->redirectToRoute('notes_index');
+            } else {
+                $imageFilename = $this->fileUploader->upload($form->get('file')->getData());
+                $note->setFilename($imageFilename);
+                $note->setAuthor($this->getUser());
+                $this->noteService->save($note);
+                $this->addFlash('success', 'message_created_successfully');
+
+                return $this->redirectToRoute('notes_index');
+            }
         }
 
-        return $this->render(
-            'notes/create.html.twig',
-            ['form' => $form->createView()]
-        );
+        return $this->render('notes/create.html.twig', ['form' => $form->createView()]);
     }
 
     /**
      * Edit action.
      *
-     * @param Request  $request    HTTP request
-     * @param Note     $note       Note entity
+     * @param Request $request HTTP request
+     * @param Note    $note    Note entity
      *
      * @return Response HTTP response
      *
@@ -177,7 +169,6 @@ class NoteController extends AbstractController
 
         $form = $this->createForm(NoteType::class, $note, ['method' => 'PUT']);
         $form->handleRequest($request);
-
         if ($form->isSubmitted() && $form->isValid()) {
             $note->setAuthor($this->getUser());
             $this->noteService->save($note);
@@ -186,20 +177,17 @@ class NoteController extends AbstractController
             return $this->redirectToRoute('notes_index');
         }
 
-        return $this->render(
-            'notes/edit.html.twig',
-            [
+        return $this->render('notes/edit.html.twig', [
                 'form' => $form->createView(),
                 'notes' => $note,
-            ]
-        );
+            ]);
     }
 
     /**
      * Delete action.
      *
-     * @param Request   $request    HTTP request
-     * @param Note      $note       Note entity
+     * @param Request $request HTTP request
+     * @param Note    $note    Note entity
      *
      * @return Response HTTP response
      *
@@ -223,7 +211,6 @@ class NoteController extends AbstractController
 
         $form = $this->createForm(FormType::class, $note, ['method' => 'DELETE']);
         $form->handleRequest($request);
-
         if ($request->isMethod('DELETE') && !$form->isSubmitted()) {
             $form->submit($request->request->get($form->getName()));
         }
@@ -235,12 +222,9 @@ class NoteController extends AbstractController
             return $this->redirectToRoute('notes_index');
         }
 
-        return $this->render(
-            'notes/delete.html.twig',
-            [
+        return $this->render('notes/delete.html.twig', [
                 'form' => $form->createView(),
                 'notes' => $note,
-            ]
-        );
+            ]);
     }
 }

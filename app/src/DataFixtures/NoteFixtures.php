@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Note fixtures.
  */
@@ -21,7 +22,7 @@ class NoteFixtures extends AbstractBaseFixtures implements DependentFixtureInter
      */
     public function loadData(ObjectManager $manager): void
     {
-        $this->createMany(50, 'notes', function ($i) {
+        $this->createMany(50, 'notes', function () {
             $note = new Note();
             $note->setTitle($this->faker->word);
             $note->setComment($this->faker->paragraph(5));
@@ -35,7 +36,7 @@ class NoteFixtures extends AbstractBaseFixtures implements DependentFixtureInter
                 $this->faker->numberBetween(3, 3)
             );
 
-            foreach($tags as $tags){
+            foreach ($tags as $tags) {
                 $note->addTag($tags);
             }
 

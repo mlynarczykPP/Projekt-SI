@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Task service.
  */
@@ -20,25 +21,20 @@ class TaskService
 {
     /**
      * Task repository.
-     *
-     * @var TaskRepository
      */
     private TaskRepository $taskRepository;
-
     /**
      * Paginator.
-     *
-     * @var PaginatorInterface
      */
     private PaginatorInterface $paginator;
 
     /**
      * TaskService constructor.
      *
-     * @param TaskRepository        $taskRepository     Task repository
-     * @param PaginatorInterface    $paginator          Paginator
-     * @param CategoriesService     $categoriesService  Category service
-     * @param TagService            $tagService         Tag service
+     * @param TaskRepository     $taskRepository    Task repository
+     * @param PaginatorInterface $paginator         Paginator
+     * @param CategoriesService  $categoriesService Category service
+     * @param TagService         $tagService        Tag service
      */
     public function __construct(TaskRepository $taskRepository, PaginatorInterface $paginator, CategoriesService $categoriesService, TagService $tagService)
     {
@@ -61,11 +57,7 @@ class TaskService
     {
         $filters = $this->prepareFilters($filters);
 
-        return $this->paginator->paginate(
-            $this->taskRepository->queryByAuthor($user, $filters),
-            $page,
-            TaskRepository::PAGINATOR_ITEMS_PER_PAGE
-        );
+        return $this->paginator->paginate($this->taskRepository->queryByAuthor($user, $filters), $page, TaskRepository::PAGINATOR_ITEMS_PER_PAGE);
     }
 
     /**
@@ -100,7 +92,6 @@ class TaskService
      * @var CategoriesService
      */
     private $categoriesService;
-
     /**
      * Tag service.
      *
@@ -119,18 +110,14 @@ class TaskService
     {
         $resultFilters = [];
         if (isset($filters['categories_id']) && is_numeric($filters['categories_id'])) {
-            $categories = $this->categoriesService->findOneById(
-                $filters['categories_id']
-            );
+            $categories = $this->categoriesService->findOneById($filters['categories_id']);
             if (null !== $categories) {
                 $resultFilters['categories'] = $categories;
             }
         }
 
         if (isset($filters['tags_id']) && is_numeric($filters['tags_id'])) {
-            $tags = $this->tagService->findOneById(
-                $filters['tags_id']
-            );
+            $tags = $this->tagService->findOneById($filters['tags_id']);
             if (null !== $tags) {
                 $resultFilters['tags'] = $tags;
             }

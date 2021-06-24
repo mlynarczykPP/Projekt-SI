@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Users type.
  */
@@ -32,42 +33,26 @@ class UsersType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $builder->add(
-            'firstname',
-            TextType::class,
-            [
+        $builder->add('firstname', TextType::class, [
                 'label' => 'label_firstname',
                 'required' => true,
                 'attr' => ['max_length' => 64],
-            ]
-        );
-        $builder->add(
-            'lastname',
-            TextType::class,
-            [
+            ]);
+        $builder->add('lastname', TextType::class, [
                 'label' => 'label_lastname',
                 'required' => true,
                 'attr' => ['max_length' => 255],
-            ]
-        );
-        $builder->add(
-            'email',
-            EmailType::class,
-            [
+            ]);
+        $builder->add('email', EmailType::class, [
                 'label' => 'label_email',
                 'required' => true,
                 'attr' => ['max_length' => 255],
-            ]
-        );
-        $builder->add(
-            'password',
-            RepeatedType::class,
-            [
+            ]);
+        $builder->add('password', RepeatedType::class, [
                 'type' => PasswordType::class,
-                'first_options' => array('label'=>'label_password'),
-                'second_options' => array('label'=>'label_password_repeat'),
-            ]
-        );
+                'first_options' => ['label' => 'label_password'],
+                'second_options' => ['label' => 'label_password_repeat'],
+            ]);
     }
 
     /**

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Task Entity.
  */
@@ -13,7 +14,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
- * Class Task
+ * Class Task.
  *
  * @ORM\Entity(repositoryClass=TaskRepository::class)
  * @ORM\Table(name="tasks")
@@ -199,7 +200,7 @@ class Task
      *
      * @return DateTimeInterface|null Created At
      */
-    public function getCreatedAt(): ?\DateTimeInterface
+    public function getCreatedAt(): ?DateTimeInterface
     {
         return $this->createdAt;
     }
@@ -209,7 +210,7 @@ class Task
      *
      * @param DateTimeInterface $createdAt Created At
      */
-    public function setCreatedAt(\DateTimeInterface $createdAt): void
+    public function setCreatedAt(DateTimeInterface $createdAt): void
     {
         $this->createdAt = $createdAt;
     }
@@ -219,7 +220,7 @@ class Task
      *
      * @return DateTimeInterface|null Updated At
      */
-    public function getUpdatedAt(): ?\DateTimeInterface
+    public function getUpdatedAt(): ?DateTimeInterface
     {
         return $this->updatedAt;
     }
@@ -229,7 +230,7 @@ class Task
      *
      * @param DateTimeInterface $updatedAt Updated At
      */
-    public function setUpdatedAt(\DateTimeInterface $updatedAt): void
+    public function setUpdatedAt(DateTimeInterface $updatedAt): void
     {
         $this->updatedAt = $updatedAt;
     }

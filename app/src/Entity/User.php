@@ -1,4 +1,5 @@
 <?php
+
 /**
  * User entity.
  */
@@ -11,7 +12,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * Class User
+ * Class User.
  *
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
  * @ORM\Table(
@@ -33,14 +34,14 @@ class User implements UserInterface
      *
      * @var string
      */
-    const ROLE_USER = 'ROLE_USER';
+    public const ROLE_USER = 'ROLE_USER';
 
     /**
      * Role admin.
      *
      * @var string
      */
-    const ROLE_ADMIN = 'ROLE_ADMIN';
+    public const ROLE_ADMIN = 'ROLE_ADMIN';
 
     /**
      * Primary key.

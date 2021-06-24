@@ -1,4 +1,5 @@
 <?php
+
 /**
  * User fixtures.
  */
@@ -6,7 +7,6 @@
 namespace App\DataFixtures;
 
 use App\Entity\User;
-use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
@@ -17,15 +17,13 @@ class UserFixtures extends AbstractBaseFixtures
 {
     /**
      * Password encoder.
-     *
-     * @var \Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface
      */
-    private $passwordEncoder;
+    private UserPasswordEncoderInterface $passwordEncoder;
 
     /**
      * UserFixtures constructor.
      *
-     * @param \Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface $passwordEncoder Password encoder
+     * @param UserPasswordEncoderInterface $passwordEncoder Password encoder
      */
     public function __construct(UserPasswordEncoderInterface $passwordEncoder)
     {
@@ -35,7 +33,7 @@ class UserFixtures extends AbstractBaseFixtures
     /**
      * Load data.
      *
-     * @param \Doctrine\Persistence\ObjectManager $manager Persistence object manager
+     * @param ObjectManager $manager Persistence object manager
      */
     public function loadData(ObjectManager $manager): void
     {
@@ -43,34 +41,22 @@ class UserFixtures extends AbstractBaseFixtures
             $user = new User();
             $user->setEmail(sprintf('user%d@example.com', $i));
             $user->setRoles([User::ROLE_USER]);
-            $user->setPassword(
-                $this->passwordEncoder->encodePassword(
-                    $user,
-                    'user1234'
-                )
-            );
+            $user->setPassword($this->passwordEncoder->encodePassword($user, 'user1234'));
             $user->setFirstname($this->faker->firstName);
             $user->setLastname($this->faker->lastName);
 
             return $user;
         });
-
         $this->createMany(3, 'admins', function ($i) {
             $user = new User();
             $user->setEmail(sprintf('admin%d@example.com', $i));
             $user->setRoles([User::ROLE_USER, User::ROLE_ADMIN]);
-            $user->setPassword(
-                $this->passwordEncoder->encodePassword(
-                    $user,
-                    'admin1234'
-                )
-            );
+            $user->setPassword($this->passwordEncoder->encodePassword($user, 'admin1234'));
             $user->setFirstname($this->faker->firstName);
             $user->setLastname($this->faker->lastName);
 
             return $user;
         });
-
         $manager->flush();
     }
 }

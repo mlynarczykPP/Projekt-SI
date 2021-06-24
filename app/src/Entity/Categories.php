@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Categories entity.
  */
@@ -14,7 +15,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * Class Categories
+ * Class Categories.
  *
  * @ORM\Entity(repositoryClass="App\Repository\CategoriesRepository")
  * @ORM\Table(name="categories")
@@ -56,7 +57,7 @@ class Categories
     /**
      * Tasks.
      *
-     * @var ArrayCollection|Task[] $tasks Tasks
+     * @var ArrayCollection|Task[] Tasks
      *
      * @ORM\OneToMany(
      *     targetEntity="App\Entity\Task",
@@ -68,7 +69,7 @@ class Categories
     /**
      * Notes.
      *
-     * @var ArrayCollection|Note[] $note Notes
+     * @var ArrayCollection|Note[] Notes
      *
      * @ORM\OneToMany(
      *     targetEntity="App\Entity\Note",
@@ -119,6 +120,9 @@ class Categories
      */
     private $updatedAt;
 
+    /**
+     * Categories constructor.
+     */
     public function __construct()
     {
         $this->tasks = new ArrayCollection();
@@ -157,7 +161,7 @@ class Categories
     /**
      * Getter for the Task.
      *
-     * @return Collection|Task[] Task
+     * @return Collection Task
      */
     public function getTasks(): Collection
     {
@@ -195,7 +199,7 @@ class Categories
     /**
      * Getter for the notes.
      *
-     * @return Collection|Note[] Note
+     * @return Collection Note
      */
     public function getNotes(): Collection
     {
@@ -255,7 +259,7 @@ class Categories
      *
      * @return DateTimeInterface|null Created At
      */
-    public function getCreatedAt(): ?\DateTimeInterface
+    public function getCreatedAt(): ?DateTimeInterface
     {
         return $this->createdAt;
     }
@@ -265,7 +269,7 @@ class Categories
      *
      * @param DateTimeInterface $createdAt Created At
      */
-    public function setCreatedAt(\DateTimeInterface $createdAt): void
+    public function setCreatedAt(DateTimeInterface $createdAt): void
     {
         $this->createdAt = $createdAt;
     }
@@ -275,7 +279,7 @@ class Categories
      *
      * @return DateTimeInterface|null Updated At
      */
-    public function getUpdatedAt(): ?\DateTimeInterface
+    public function getUpdatedAt(): ?DateTimeInterface
     {
         return $this->updatedAt;
     }
@@ -285,7 +289,7 @@ class Categories
      *
      * @param DateTimeInterface $updatedAt Updated At
      */
-    public function setUpdatedAt(\DateTimeInterface $updatedAt): void
+    public function setUpdatedAt(DateTimeInterface $updatedAt): void
     {
         $this->updatedAt = $updatedAt;
     }

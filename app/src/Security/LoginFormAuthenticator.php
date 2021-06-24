@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Login form authenticator.
  */
@@ -61,10 +62,10 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implements P
     /**
      * LoginFormAuthenticator constructor.
      *
-     * @param UserRepository                $userRepository   User repository
-     * @param UrlGeneratorInterface         $urlGenerator     URL generator
-     * @param CsrfTokenManagerInterface     $csrfTokenManager CSRF token manager
-     * @param UserPasswordEncoderInterface  $passwordEncoder  Password encoder
+     * @param UserRepository               $userRepository   User repository
+     * @param UrlGeneratorInterface        $urlGenerator     URL generator
+     * @param CsrfTokenManagerInterface    $csrfTokenManager CSRF token manager
+     * @param UserPasswordEncoderInterface $passwordEncoder  Password encoder
      */
     public function __construct(UserRepository $userRepository, UrlGeneratorInterface $urlGenerator, CsrfTokenManagerInterface $csrfTokenManager, UserPasswordEncoderInterface $passwordEncoder)
     {

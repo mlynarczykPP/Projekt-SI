@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Task controller.
  */
@@ -25,8 +26,6 @@ class TaskController extends AbstractController
 {
     /**
      * Task service.
-     *
-     * @var TaskService
      */
     private TaskService $taskService;
 
@@ -58,17 +57,13 @@ class TaskController extends AbstractController
         $filters = [];
         $filters['categories_id'] = $request->query->getInt('filters_categories_id');
         $filters['tags_id'] = $request->query->getInt('filters_tags_id');
-
         $pagination = $this->taskService->createPaginatedList(
             $request->query->getInt('page', 1),
             $this->getUser(),
             $filters
         );
 
-        return $this->render(
-            'task/index.html.twig',
-            ['pagination' => $pagination]
-        );
+        return $this->render('task/index.html.twig', ['pagination' => $pagination]);
     }
 
     /**
@@ -93,10 +88,7 @@ class TaskController extends AbstractController
             return $this->redirectToRoute('task_index');
         }
 
-        return $this->render(
-            'task/show.html.twig',
-            ['task' => $task]
-        );
+        return $this->render('task/show.html.twig', ['task' => $task]);
     }
 
     /**
@@ -120,7 +112,6 @@ class TaskController extends AbstractController
         $task = new Task();
         $form = $this->createForm(TaskType::class, $task);
         $form->handleRequest($request);
-
         if ($form->isSubmitted() && $form->isValid()) {
             $task->setAuthor($this->getUser());
             $this->taskService->save($task);
@@ -129,17 +120,14 @@ class TaskController extends AbstractController
             return $this->redirectToRoute('task_index');
         }
 
-        return $this->render(
-            'task/create.html.twig',
-            ['form' => $form->createView()]
-        );
+        return $this->render('task/create.html.twig', ['form' => $form->createView()]);
     }
 
     /**
      * Edit action.
      *
-     * @param Request  $request    HTTP request
-     * @param Task     $task       Task entity
+     * @param Request $request HTTP request
+     * @param Task    $task    Task entity
      *
      * @return Response HTTP response
      *
@@ -163,7 +151,6 @@ class TaskController extends AbstractController
 
         $form = $this->createForm(TaskType::class, $task, ['method' => 'PUT']);
         $form->handleRequest($request);
-
         if ($form->isSubmitted() && $form->isValid()) {
             $task->setAuthor($this->getUser());
             $this->taskService->save($task);
@@ -172,20 +159,17 @@ class TaskController extends AbstractController
             return $this->redirectToRoute('task_index');
         }
 
-        return $this->render(
-            'task/edit.html.twig',
-            [
+        return $this->render('task/edit.html.twig', [
                 'form' => $form->createView(),
                 'task' => $task,
-            ]
-        );
+            ]);
     }
 
     /**
      * Delete action.
      *
-     * @param Request   $request    HTTP request
-     * @param Task      $task       Task entity
+     * @param Request $request HTTP request
+     * @param Task    $task    Task entity
      *
      * @return Response HTTP response
      *
@@ -209,7 +193,6 @@ class TaskController extends AbstractController
 
         $form = $this->createForm(FormType::class, $task, ['method' => 'DELETE']);
         $form->handleRequest($request);
-
         if ($request->isMethod('DELETE') && !$form->isSubmitted()) {
             $form->submit($request->request->get($form->getName()));
         }
@@ -221,12 +204,9 @@ class TaskController extends AbstractController
             return $this->redirectToRoute('task_index');
         }
 
-        return $this->render(
-            'task/delete.html.twig',
-            [
+        return $this->render('task/delete.html.twig', [
                 'form' => $form->createView(),
                 'task' => $task,
-            ]
-        );
+            ]);
     }
 }

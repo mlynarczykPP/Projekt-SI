@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Tag controller.
  */
@@ -25,8 +26,6 @@ class TagController extends AbstractController
 {
     /**
      * Tag service.
-     *
-     * @var TagService
      */
     private TagService $tagService;
 
@@ -58,10 +57,7 @@ class TagController extends AbstractController
         $page = $request->query->getInt('page', 1);
         $pagination = $this->tagService->createPaginatedList($page);
 
-        return $this->render(
-            'tags/index.html.twig',
-            ['pagination' => $pagination]
-        );
+        return $this->render('tags/index.html.twig', ['pagination' => $pagination]);
     }
 
     /**
@@ -80,10 +76,7 @@ class TagController extends AbstractController
      */
     public function show(Tags $tags): Response
     {
-        return $this->render(
-            'tags/show.html.twig',
-            ['tags' => $tags]
-        );
+        return $this->render('tags/show.html.twig', ['tags' => $tags]);
     }
 
     /**
@@ -107,7 +100,6 @@ class TagController extends AbstractController
         $tags = new Tags();
         $form = $this->createForm(TagsType::class, $tags);
         $form->handleRequest($request);
-
         if ($form->isSubmitted() && $form->isValid()) {
             $this->tagService->save($tags);
             $this->addFlash('success', 'message_created_successfully');
@@ -115,17 +107,14 @@ class TagController extends AbstractController
             return $this->redirectToRoute('tags_index');
         }
 
-        return $this->render(
-            'tags/create.html.twig',
-            ['form' => $form->createView()]
-        );
+        return $this->render('tags/create.html.twig', ['form' => $form->createView()]);
     }
 
     /**
      * Edit action.
      *
-     * @param Request  $request    HTTP request
-     * @param Tags     $tags       Tag entity
+     * @param Request $request HTTP request
+     * @param Tags    $tags    Tag entity
      *
      * @return Response HTTP response
      *
@@ -143,7 +132,6 @@ class TagController extends AbstractController
     {
         $form = $this->createForm(TagsType::class, $tags, ['method' => 'PUT']);
         $form->handleRequest($request);
-
         if ($form->isSubmitted() && $form->isValid()) {
             $this->tagService->save($tags);
             $this->addFlash('success', 'message_updated_successfully');
@@ -151,20 +139,17 @@ class TagController extends AbstractController
             return $this->redirectToRoute('tags_index');
         }
 
-        return $this->render(
-            'tags/edit.html.twig',
-            [
+        return $this->render('tags/edit.html.twig', [
                 'form' => $form->createView(),
                 'tags' => $tags,
-            ]
-        );
+            ]);
     }
 
     /**
      * Delete action.
      *
-     * @param Request   $request    HTTP request
-     * @param Tags      $tags       Tags entity
+     * @param Request $request HTTP request
+     * @param Tags    $tags    Tags entity
      *
      * @return Response HTTP response
      *
@@ -194,7 +179,6 @@ class TagController extends AbstractController
 
         $form = $this->createForm(FormType::class, $tags, ['method' => 'DELETE']);
         $form->handleRequest($request);
-
         if ($request->isMethod('DELETE') && !$form->isSubmitted()) {
             $form->submit($request->request->get($form->getName()));
         }
@@ -206,12 +190,9 @@ class TagController extends AbstractController
             return $this->redirectToRoute('tags_index');
         }
 
-        return $this->render(
-            'tags/delete.html.twig',
-            [
+        return $this->render('tags/delete.html.twig', [
                 'form' => $form->createView(),
                 'tags' => $tags,
-            ]
-        );
+            ]);
     }
 }

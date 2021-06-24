@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Note type.
  */
@@ -52,28 +53,17 @@ class NoteType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $builder->add(
-            'title',
-            TextType::class,
-            [
+        $builder->add('title', TextType::class, [
                 'label' => 'label_title',
                 'required' => true,
                 'attr' => ['max_length' => 64],
-            ]
-        );
-        $builder->add(
-            'comment',
-            TextareaType::class,
-            [
+            ]);
+        $builder->add('comment', TextareaType::class, [
                 'label' => 'label_comment',
                 'required' => true,
                 'attr' => ['max_length' => 255],
-            ]
-        );
-        $builder->add(
-            'categories',
-            EntityType::class,
-            [
+            ]);
+        $builder->add('categories', EntityType::class, [
                 'class' => Categories::class,
                 'choice_label' => function ($categories) {
                     return $categories->getName();
@@ -81,31 +71,19 @@ class NoteType extends AbstractType
                 'label' => 'label_category',
                 'placeholder' => 'label_none',
                 'required' => true,
-            ]
-        );
-        $builder->add(
-            'tags',
-            TextType::class,
-            [
+            ]);
+        $builder->add('tags', TextType::class, [
                 'label' => 'label_tags',
                 'required' => false,
                 'attr' => ['max_length' => 128],
-            ]
-        );
-
-        $builder->get('tags')->addModelTransformer(
-            $this->tagsDataTransformer
-        );
-        $builder->add(
-            'file',
-            FileType::class,
-            [
+            ]);
+        $builder->get('tags')->addModelTransformer($this->tagsDataTransformer);
+        $builder->add('file', FileType::class, [
                 'mapped' => false,
                 'label' => 'label_image',
-                'required' => true,
-                'constraints' => new Image(
-                    [
-                        'maxSize' => '1024k',
+                'required' => false,
+                'constraints' => new Image([
+                        'maxSize' => '1024M',
                         'mimeTypes' => [
                             'image/png',
                             'image/jpeg',
@@ -113,10 +91,8 @@ class NoteType extends AbstractType
                             'image/jpeg',
                             'image/pjpeg',
                         ],
-                    ]
-                ),
-            ]
-        );
+                    ]),
+            ]);
     }
 
     /**

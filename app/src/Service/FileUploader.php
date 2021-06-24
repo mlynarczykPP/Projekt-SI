@@ -1,4 +1,5 @@
 <?php
+
 /**
  * File uploader.
  */
@@ -39,11 +40,7 @@ class FileUploader
      */
     public function upload(UploadedFile $file): string
     {
-        $fileName = $this->generateFilename(
-            pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME),
-            $file->guessClientExtension()
-        );
-
+        $fileName = $this->generateFilename(pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME), $file->guessClientExtension());
         try {
             $file->move($this->getTargetDirectory(), $fileName);
         } catch (FileException $exception) {
@@ -73,10 +70,7 @@ class FileUploader
      */
     private function generateFilename(string $originalFilename, string $extension): string
     {
-        $safeFilename = transliterator_transliterate(
-            'Any-Latin; Latin-ASCII; [^A-Za-z0-9_] remove; Lower()',
-            $originalFilename
-        );
+        $safeFilename = transliterator_transliterate('Any-Latin; Latin-ASCII; [^A-Za-z0-9_] remove; Lower()', $originalFilename);
 
         return $safeFilename.'-'.uniqid().'.'.$extension;
     }

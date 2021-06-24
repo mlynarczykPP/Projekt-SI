@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Index controller.
  */
@@ -25,7 +26,6 @@ class IndexController extends AbstractController
      *     "/",
      *     name="index",
      * )
-     *
      */
     public function index(): Response
     {

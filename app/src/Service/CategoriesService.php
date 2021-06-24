@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Category service.
  */
@@ -19,15 +20,10 @@ class CategoriesService
 {
     /**
      * Category repository.
-     *
-     * @var CategoriesRepository
      */
     private CategoriesRepository $categoriesRepository;
-
     /**
      * Paginator.
-     *
-     * @var PaginatorInterface
      */
     private PaginatorInterface $paginator;
 
@@ -35,7 +31,7 @@ class CategoriesService
      * CategoryService constructor.
      *
      * @param CategoriesRepository $categoriesRepository Category repository
-     * @param PaginatorInterface $paginator            Paginator
+     * @param PaginatorInterface   $paginator            Paginator
      */
     public function __construct(CategoriesRepository $categoriesRepository, PaginatorInterface $paginator)
     {
@@ -52,11 +48,7 @@ class CategoriesService
      */
     public function createPaginatedList(int $page): PaginationInterface
     {
-        return $this->paginator->paginate(
-            $this->categoriesRepository->queryAll(),
-            $page,
-            CategoriesRepository::PAGINATOR_ITEMS_PER_PAGE
-        );
+        return $this->paginator->paginate($this->categoriesRepository->queryAll(), $page, CategoriesRepository::PAGINATOR_ITEMS_PER_PAGE);
     }
 
     /**

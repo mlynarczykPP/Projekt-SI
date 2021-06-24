@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Users controller.
  */
@@ -21,16 +22,15 @@ use Symfony\Component\Routing\Annotation\Route;
  * Class UsersController.
  *
  * @Route("/users")
- *
  */
 class UsersController extends AbstractController
 {
     /**
      * Index action.
      *
-     * @param Request               $request            HTTP request
-     * @param UserRepository        $userRepository     User repository
-     * @param PaginatorInterface    $paginator          Paginator
+     * @param Request            $request        HTTP request
+     * @param UserRepository     $userRepository User repository
+     * @param PaginatorInterface $paginator      Paginator
      *
      * @return Response HTTP response
      *
@@ -50,10 +50,7 @@ class UsersController extends AbstractController
             UserRepository::PAGINATOR_ITEMS_PER_PAGE
         );
 
-        return $this->render(
-            'users/index.html.twig',
-            ['pagination' => $pagination]
-        );
+        return $this->render('users/index.html.twig', ['pagination' => $pagination]);
     }
 
     /**
@@ -72,23 +69,18 @@ class UsersController extends AbstractController
      */
     public function show(User $user): Response
     {
-        return $this->render(
-            'users/show.html.twig',
-            ['users' => $user]
-        );
+        return $this->render('users/show.html.twig', ['users' => $user]);
     }
 
     /**
      * Edit action.
      *
-     * @param Request           $request            HTTP request
-     * @param UserRepository    $userdataRepository User repository
+     * @param Request $request HTTP request
      *
      * @return Response HTTP response
      *
      * @throws ORMException
      * @throws OptimisticLockException
-     *
      * @Route(
      *     "/{id}/edit",
      *     methods={"GET", "PUT"},
@@ -99,48 +91,36 @@ class UsersController extends AbstractController
     public function edit(Request $request, User $user, UserRepository $userRepository): Response
     {
         $log = $this->getUser();
-        if ([User::ROLE_USER]) {
+        if ($this->isGranted('ROLE_ADMIN')) {
             $form = $this->createForm(UsersdataType::class, $user, ['method' => 'PUT']);
             $form->handleRequest($request);
-
             if ($form->isSubmitted() && $form->isValid()) {
                 $newPassword = $form->get('newPassword')->getData();
                 $userRepository->save($user, $newPassword);
-
                 $this->addFlash('success', 'message_updated_successfully');
 
                 return $this->redirectToRoute('users_index');
             }
 
-            return $this->render(
-                'users/edit.html.twig',
-                [
+            return $this->render('users/edit.html.twig', [
                     'form' => $form->createView(),
                     'users' => $user,
-                ]
-            );
-        }
-        else {
+                ]);
+        } else {
             $form = $this->createForm(UsersdataType::class, $log, ['method' => 'PUT']);
             $form->handleRequest($request);
-
             if ($form->isSubmitted() && $form->isValid()) {
                 $newPassword = $form->get('newPassword')->getData();
                 $userRepository->save($log, $newPassword);
-
                 $this->addFlash('success', 'message_updated_successfully');
 
                 return $this->redirectToRoute('notes_index');
             }
 
-            return $this->render(
-                'users/edit.html.twig',
-                [
+            return $this->render('users/edit.html.twig', [
                     'form' => $form->createView(),
                     'users' => $log,
-                ]
-            );
+                ]);
         }
-
     }
 }

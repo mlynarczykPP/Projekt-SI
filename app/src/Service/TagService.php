@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Tag service.
  */
@@ -19,23 +20,18 @@ class TagService
 {
     /**
      * Tag repository.
-     *
-     * @var TagsRepository
      */
     private TagsRepository $tagsRepository;
-
     /**
      * Paginator.
-     *
-     * @var PaginatorInterface
      */
     private PaginatorInterface $paginator;
 
     /**
      * TagService constructor.
      *
-     * @param TagsRepository        $tagsRepository       Tag repository
-     * @param PaginatorInterface    $paginator            Paginator
+     * @param TagsRepository     $tagsRepository Tag repository
+     * @param PaginatorInterface $paginator      Paginator
      */
     public function __construct(TagsRepository $tagsRepository, PaginatorInterface $paginator)
     {
@@ -52,11 +48,7 @@ class TagService
      */
     public function createPaginatedList(int $page): PaginationInterface
     {
-        return $this->paginator->paginate(
-            $this->tagsRepository->queryAll(),
-            $page,
-            TagsRepository::PAGINATOR_ITEMS_PER_PAGE
-        );
+        return $this->paginator->paginate($this->tagsRepository->queryAll(), $page, TagsRepository::PAGINATOR_ITEMS_PER_PAGE);
     }
 
     /**

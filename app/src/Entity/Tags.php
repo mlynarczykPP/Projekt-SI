@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Tags entity.
  */
@@ -142,7 +143,7 @@ class Tags
     /**
      * Getter for the notes.
      *
-     * @return Collection|Note[] Notes collection
+     * @return Collection Notes collection
      */
     public function getNotes(): Collection
     {
@@ -200,7 +201,7 @@ class Tags
      *
      * @return DateTimeInterface|null Created At
      */
-    public function getCreatedAt(): ?\DateTimeInterface
+    public function getCreatedAt(): ?DateTimeInterface
     {
         return $this->createdAt;
     }
@@ -210,7 +211,7 @@ class Tags
      *
      * @param DateTimeInterface $createdAt Created At
      */
-    public function setCreatedAt(\DateTimeInterface $createdAt): void
+    public function setCreatedAt(DateTimeInterface $createdAt): void
     {
         $this->createdAt = $createdAt;
     }
@@ -220,7 +221,7 @@ class Tags
      *
      * @return DateTimeInterface|null Updated At
      */
-    public function getUpdatedAt(): ?\DateTimeInterface
+    public function getUpdatedAt(): ?DateTimeInterface
     {
         return $this->updatedAt;
     }
@@ -230,7 +231,7 @@ class Tags
      *
      * @param DateTimeInterface $updatedAt Updated At
      */
-    public function setUpdatedAt(\DateTimeInterface $updatedAt): void
+    public function setUpdatedAt(DateTimeInterface $updatedAt): void
     {
         $this->updatedAt = $updatedAt;
     }
