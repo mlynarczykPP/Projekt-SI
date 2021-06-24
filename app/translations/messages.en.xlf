@@ -282,9 +282,13 @@
                 <source>message_categories_contains_tasks</source>
                 <target>Categorie contains task</target>
             </trans-unit>
-            <trans-unit id="message_tags_contains_notes">
-                <source>message_tags_contains_notes</source>
+            <trans-unit id="message_tags_contains_note">
+                <source>message_tags_contains_note</source>
                 <target>Tag contains note</target>
+            </trans-unit>
+            <trans-unit id="message_tags_contains_tasks">
+                <source>message_tags_contains_tasks</source>
+                <target>Tag contains task</target>
             </trans-unit>
             <trans-unit id="message_register_successfully">
                 <source>message_register_successfully</source>
