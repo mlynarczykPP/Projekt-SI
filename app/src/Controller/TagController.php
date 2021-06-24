@@ -9,9 +9,11 @@ namespace App\Controller;
 use App\Entity\Tags;
 use App\Form\TagsType;
 use App\Repository\TagsRepository;
+use App\Repository\TaskRepository;
 use App\Service\TagService;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\HttpFoundation\Request;
@@ -44,7 +46,9 @@ class TagController extends AbstractController
      * Index action.
      *
      * @param Request $request HTTP request
+     * @param PaginatorInterface $paginator Paginator
      *
+     * @param TagsRepository $tagsRepository Tags repository
      * @return Response HTTP response
      *
      * @Route(
@@ -53,11 +57,12 @@ class TagController extends AbstractController
      *     name="tags_index",
      * )
      */
-    public function index(Request $request): Response
+    public function index(Request $request, PaginatorInterface $paginator, TagsRepository $tagsRepository): Response
     {
-        $pagination = $this->tagService->createPaginatedList(
+        $pagination = $paginator->paginate(
+            $tagsRepository->queryAll(),
             $request->query->getInt('page', 1),
-            $this->getUser()
+            TagsRepository::PAGINATOR_ITEMS_PER_PAGE
         );
 
         return $this->render('tags/index.html.twig', ['pagination' => $pagination]);
@@ -110,7 +115,6 @@ class TagController extends AbstractController
         $form = $this->createForm(TagsType::class, $tags);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $tags->setAuthor($this->getUser());
             $this->tagService->save($tags);
             $this->addFlash('success', 'message_created_successfully');
 
@@ -140,12 +144,6 @@ class TagController extends AbstractController
      */
     public function edit(Request $request, Tags $tags): Response
     {
-        if ($tags->getAuthor() !== $this->getUser()) {
-            $this->addFlash('warning', 'message_item_not_found');
-
-            return $this->redirectToRoute('tags_index');
-        }
-
         $form = $this->createForm(TagsType::class, $tags, ['method' => 'PUT']);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
@@ -181,12 +179,6 @@ class TagController extends AbstractController
      */
     public function delete(Request $request, Tags $tags): Response
     {
-        if ($tags->getAuthor() !== $this->getUser()) {
-            $this->addFlash('warning', 'message_item_not_found');
-
-            return $this->redirectToRoute('tags_index');
-        }
-
         if ($tags->getNotes()->count()) {
             $this->addFlash('warning', 'message_tags_contains_note');
 

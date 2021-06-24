@@ -111,16 +111,6 @@ class Tags
     private $tasks;
 
     /**
-     * Author.
-     *
-     * @var User User entity
-     *
-     * @ORM\ManyToOne(targetEntity=User::class)
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $author;
-
-    /**
      * Getter for the Id.
      *
      * @return int|null Result
@@ -254,25 +244,5 @@ class Tags
     public function getTasks(): Collection
     {
         return $this->tasks;
-    }
-
-    /**
-     * Getter for the author.
-     *
-     * @return User|null Author
-     */
-    public function getAuthor(): ?User
-    {
-        return $this->author;
-    }
-
-    /**
-     * Setter for the author.
-     *
-     * @param User|null $author Author
-     */
-    public function setAuthor(?User $author): void
-    {
-        $this->author = $author;
     }
 }

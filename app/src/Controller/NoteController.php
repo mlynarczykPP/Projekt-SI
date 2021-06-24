@@ -7,6 +7,7 @@
 namespace App\Controller;
 
 use App\Entity\Note;
+use App\Entity\Tags;
 use App\Form\NoteType;
 use App\Service\FileUploader;
 use App\Service\NoteService;

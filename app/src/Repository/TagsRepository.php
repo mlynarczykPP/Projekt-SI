@@ -95,21 +95,4 @@ class TagsRepository extends ServiceEntityRepository
         $this->_em->remove($tags);
         $this->_em->flush();
     }
-
-    /**
-     * Query tags by author.
-     *
-     * @param User $user User entity
-     *
-     * @return QueryBuilder Query builder
-     */
-    public function queryByAuthor(User $user): QueryBuilder
-    {
-        $queryBuilder = $this->queryAll();
-
-        $queryBuilder->andWhere('tags.author = :author')
-            ->setParameter('author', $user);
-
-        return $queryBuilder;
-    }
 }
