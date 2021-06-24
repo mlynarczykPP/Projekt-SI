@@ -8,6 +8,7 @@ namespace App\Controller;
 
 use App\Entity\Tags;
 use App\Form\TagsType;
+use App\Repository\TagsRepository;
 use App\Service\TagService;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
@@ -54,8 +55,10 @@ class TagController extends AbstractController
      */
     public function index(Request $request): Response
     {
-        $page = $request->query->getInt('page', 1);
-        $pagination = $this->tagService->createPaginatedList($page);
+        $pagination = $this->tagService->createPaginatedList(
+            $request->query->getInt('page', 1),
+            $this->getUser()
+        );
 
         return $this->render('tags/index.html.twig', ['pagination' => $pagination]);
     }
@@ -76,6 +79,12 @@ class TagController extends AbstractController
      */
     public function show(Tags $tags): Response
     {
+        if ($tags->getAuthor() !== $this->getUser()) {
+            $this->addFlash('warning', 'message_item_not_found');
+
+            return $this->redirectToRoute('tags_index');
+        }
+
         return $this->render('tags/show.html.twig', ['tags' => $tags]);
     }
 
@@ -101,6 +110,7 @@ class TagController extends AbstractController
         $form = $this->createForm(TagsType::class, $tags);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
+            $tags->setAuthor($this->getUser());
             $this->tagService->save($tags);
             $this->addFlash('success', 'message_created_successfully');
 
@@ -130,6 +140,12 @@ class TagController extends AbstractController
      */
     public function edit(Request $request, Tags $tags): Response
     {
+        if ($tags->getAuthor() !== $this->getUser()) {
+            $this->addFlash('warning', 'message_item_not_found');
+
+            return $this->redirectToRoute('tags_index');
+        }
+
         $form = $this->createForm(TagsType::class, $tags, ['method' => 'PUT']);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
@@ -165,6 +181,12 @@ class TagController extends AbstractController
      */
     public function delete(Request $request, Tags $tags): Response
     {
+        if ($tags->getAuthor() !== $this->getUser()) {
+            $this->addFlash('warning', 'message_item_not_found');
+
+            return $this->redirectToRoute('tags_index');
+        }
+
         if ($tags->getNotes()->count()) {
             $this->addFlash('warning', 'message_tags_contains_note');
 

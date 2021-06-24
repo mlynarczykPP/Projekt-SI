@@ -26,6 +26,7 @@ class TagsFixtures extends AbstractBaseFixtures
             $tags->setName($this->faker->word);
             $tags->setCreatedAt($this->faker->dateTimeBetween('-100 days', '-1 days'));
             $tags->setUpdatedAt($this->faker->dateTimeBetween('-100 days', '-1 days'));
+            $tags->setAuthor($this->getRandomReference('users'));
 
             return $tags;
         });

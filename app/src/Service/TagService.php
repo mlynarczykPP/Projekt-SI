@@ -12,6 +12,7 @@ use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
 use Knp\Component\Pager\Pagination\PaginationInterface;
 use Knp\Component\Pager\PaginatorInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * Class TagService.
@@ -21,11 +22,11 @@ class TagService
     /**
      * Tag repository.
      */
-    private TagsRepository $tagsRepository;
+    private $tagsRepository;
     /**
      * Paginator.
      */
-    private PaginatorInterface $paginator;
+    private $paginator;
 
     /**
      * TagService constructor.
@@ -42,13 +43,17 @@ class TagService
     /**
      * Create paginated list.
      *
-     * @param int $page Page number
+     * @param int           $page    Page number
+     * @param UserInterface $user    User entity
+     * @param array         $filters Filters array
      *
      * @return PaginationInterface Paginated list
      */
-    public function createPaginatedList(int $page): PaginationInterface
+    public function createPaginatedList(int $page, UserInterface $user): PaginationInterface
     {
-        return $this->paginator->paginate($this->tagsRepository->queryAll(), $page, TagsRepository::PAGINATOR_ITEMS_PER_PAGE);
+        return $this->paginator->paginate($this->tagsRepository->queryByAuthor($user),
+        $page,
+        TagsRepository::PAGINATOR_ITEMS_PER_PAGE);
     }
 
     /**

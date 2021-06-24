@@ -22,11 +22,11 @@ class TaskService
     /**
      * Task repository.
      */
-    private TaskRepository $taskRepository;
+    private $taskRepository;
     /**
      * Paginator.
      */
-    private PaginatorInterface $paginator;
+    private $paginator;
 
     /**
      * TaskService constructor.
