@@ -38,7 +38,7 @@
                         <a href="{{ url('categories_edit', {id: categories.id}) }}" title="{{ 'button_edit'|trans }}" id="op">
                             &#128736;{{ 'button_edit'|trans }}
                         </a>
-                        {% if not categories.tasks|length %}
+                        {% if not categories.tasks|length and not categories.notes|length %}
                             <a href="{{ url('categories_delete', {id: categories.id}) }}" title="{{ 'delete'|trans }}" id="op">
                                 &#10060;{{ 'delete'|trans }}
                             </a>
