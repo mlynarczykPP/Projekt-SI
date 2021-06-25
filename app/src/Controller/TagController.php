@@ -9,7 +9,6 @@ namespace App\Controller;
 use App\Entity\Tags;
 use App\Form\TagsType;
 use App\Repository\TagsRepository;
-use App\Repository\TaskRepository;
 use App\Service\TagService;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
