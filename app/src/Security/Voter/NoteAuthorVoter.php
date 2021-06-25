@@ -12,14 +12,34 @@ use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 use Symfony\Component\Security\Core\User\UserInterface;
 
+/**
+ * Class NoteAuthorVoter
+ */
 class NoteAuthorVoter extends Voter
 {
+    /**
+     * Support.
+     *
+     * @param string $attribute
+     * @param mixed  $subject
+     *
+     * @return bool
+     */
     protected function supports($attribute, $subject): bool
     {
         return in_array($attribute, ['VIEW', 'EDIT', 'DELETE'])
             && $subject instanceof Note;
     }
 
+    /**
+     * Vote on attribute.
+     *
+     * @param string         $attribute
+     * @param mixed          $subject
+     * @param TokenInterface $token
+     *
+     * @return bool
+     */
     protected function voteOnAttribute($attribute, $subject, TokenInterface $token): bool
     {
         $user = $token->getUser();
@@ -42,6 +62,14 @@ class NoteAuthorVoter extends Voter
         return false;
     }
 
+    /**
+     * Is author.
+     *
+     * @param $subject
+     * @param User $user
+     *
+     * @return bool
+     */
     private function isAuthor($subject, User $user): bool
     {
         return $subject->getAuthor() === $user;

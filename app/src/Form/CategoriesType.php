@@ -34,7 +34,7 @@ class CategoriesType extends AbstractType
                 'label' => 'label_name',
                 'required' => true,
                 'attr' => ['max_length' => 64],
-            ]);
+        ]);
     }
 
     /**

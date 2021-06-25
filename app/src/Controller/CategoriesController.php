@@ -149,7 +149,7 @@ class CategoriesController extends AbstractController
         return $this->render('categories/edit.html.twig', [
                 'form' => $form->createView(),
                 'categories' => $categories,
-            ]);
+        ]);
     }
 
     /**
@@ -202,6 +202,6 @@ class CategoriesController extends AbstractController
         return $this->render('categories/delete.html.twig', [
                 'form' => $form->createView(),
                 'categories' => $categories,
-            ]);
+        ]);
     }
 }

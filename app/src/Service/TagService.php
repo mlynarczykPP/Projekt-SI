@@ -43,17 +43,18 @@ class TagService
     /**
      * Create paginated list.
      *
-     * @param int           $page    Page number
-     * @param UserInterface $user    User entity
-     * @param array         $filters Filters array
+     * @param int           $page Page number
+     * @param UserInterface $user User entity
      *
      * @return PaginationInterface Paginated list
      */
     public function createPaginatedList(int $page, UserInterface $user): PaginationInterface
     {
-        return $this->paginator->paginate($this->tagsRepository->queryByAuthor($user),
-        $page,
-        TagsRepository::PAGINATOR_ITEMS_PER_PAGE);
+        return $this->paginator->paginate(
+            $this->tagsRepository->queryByAuthor($user),
+            $page,
+            TagsRepository::PAGINATOR_ITEMS_PER_PAGE
+        );
     }
 
     /**

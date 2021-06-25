@@ -120,6 +120,9 @@ class Task
      */
     private $tags;
 
+    /**
+     * Task constructor.
+     */
     public function __construct()
     {
         $this->tags = new ArrayCollection();

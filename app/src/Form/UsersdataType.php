@@ -28,8 +28,8 @@ class UsersdataType extends AbstractType
      *
      * @see FormTypeExtensionInterface::buildForm()
      *
-     * @param \Symfony\Component\Form\FormBuilderInterface $builder The form builder
-     * @param array                                        $options The options
+     * @param FormBuilderInterface $builder The form builder
+     * @param array                $options The options
      */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
@@ -37,30 +37,30 @@ class UsersdataType extends AbstractType
                 'label' => 'label_new_firstname',
                 'required' => true,
                 'attr' => ['max_length' => 64],
-            ]);
+        ]);
         $builder->add('lastname', TextType::class, [
                 'label' => 'label_new_lastname',
                 'required' => true,
                 'attr' => ['max_length' => 255],
-            ]);
+        ]);
         $builder->add('email', EmailType::class, [
                 'label' => 'label_new_email',
                 'required' => true,
                 'attr' => ['max_length' => 255],
-            ]);
+        ]);
         $builder->add('newPassword', RepeatedType::class, [
                 'mapped' => false,
                 'required' => false,
                 'type' => PasswordType::class,
                 'first_options' => ['label' => 'label_new_password'],
                 'second_options' => ['label' => 'label_new_password_repeat'],
-            ]);
+        ]);
     }
 
     /**
      * Configures the options for this type.
      *
-     * @param \Symfony\Component\OptionsResolver\OptionsResolver $resolver The resolver for the options
+     * @param OptionsResolver $resolver The resolver for the options
      */
     public function configureOptions(OptionsResolver $resolver): void
     {

@@ -72,8 +72,7 @@ class UsersController extends AbstractController
         $log = $this->getUser();
         if ($this->isGranted('ROLE_ADMIN')) {
             return $this->render('users/show.html.twig', ['users' => $user]);
-        }
-        else {
+        } else {
             return $this->render('users/show.html.twig', ['users' => $log]);
         }
     }
@@ -81,12 +80,15 @@ class UsersController extends AbstractController
     /**
      * Edit action.
      *
-     * @param Request $request HTTP request
+     * @param Request        $request        HTTP request
+     * @param User           $user
+     * @param UserRepository $userRepository
      *
      * @return Response HTTP response
      *
      * @throws ORMException
      * @throws OptimisticLockException
+     *
      * @Route(
      *     "/{id}/edit",
      *     methods={"GET", "PUT"},
@@ -111,7 +113,7 @@ class UsersController extends AbstractController
             return $this->render('users/edit.html.twig', [
                     'form' => $form->createView(),
                     'users' => $user,
-                ]);
+            ]);
         } else {
             $form = $this->createForm(UsersdataType::class, $log, ['method' => 'PUT']);
             $form->handleRequest($request);
@@ -126,7 +128,7 @@ class UsersController extends AbstractController
             return $this->render('users/edit.html.twig', [
                     'form' => $form->createView(),
                     'users' => $log,
-                ]);
+            ]);
         }
     }
 }

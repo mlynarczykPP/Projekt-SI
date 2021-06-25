@@ -44,10 +44,10 @@ class TagController extends AbstractController
     /**
      * Index action.
      *
-     * @param Request $request HTTP request
-     * @param PaginatorInterface $paginator Paginator
+     * @param Request            $request        HTTP request
+     * @param PaginatorInterface $paginator      Paginator
+     * @param TagsRepository     $tagsRepository Tags repository
      *
-     * @param TagsRepository $tagsRepository Tags repository
      * @return Response HTTP response
      *
      * @Route(
@@ -149,7 +149,7 @@ class TagController extends AbstractController
         return $this->render('tags/edit.html.twig', [
                 'form' => $form->createView(),
                 'tags' => $tags,
-            ]);
+        ]);
     }
 
     /**
@@ -198,8 +198,8 @@ class TagController extends AbstractController
         }
 
         return $this->render('tags/delete.html.twig', [
-                'form' => $form->createView(),
-                'tags' => $tags,
-            ]);
+            'form' => $form->createView(),
+            'tags' => $tags,
+        ]);
     }
 }

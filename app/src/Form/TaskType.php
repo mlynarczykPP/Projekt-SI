@@ -56,12 +56,12 @@ class TaskType extends AbstractType
                 'label' => 'label_title',
                 'required' => true,
                 'attr' => ['max_length' => 64],
-            ]);
+        ]);
         $builder->add('comment', TextareaType::class, [
                 'label' => 'label_comment',
                 'required' => true,
                 'attr' => ['max_length' => 255],
-            ]);
+        ]);
         $builder->add('categories', EntityType::class, [
                 'class' => Categories::class,
                 'choice_label' => function ($categories) {
@@ -70,18 +70,18 @@ class TaskType extends AbstractType
                 'label' => 'label_category',
                 'placeholder' => 'label_none',
                 'required' => true,
-            ]);
+        ]);
         $builder->add('tags', TextType::class, [
                 'label' => 'label_tags',
                 'required' => false,
                 'attr' => ['max_length' => 128],
-            ]);
+        ]);
         $builder->get('tags')->addModelTransformer($this->tagsDataTransformer);
         $builder->add('priority', IntegerType::class, [
                 'label' => 'label_priority',
                 'required' => false,
                 'attr' => ['max_length' => 2],
-            ]);
+        ]);
     }
 
     /**

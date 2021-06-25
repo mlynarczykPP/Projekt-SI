@@ -9,6 +9,8 @@ namespace App\Form\DataTransformer;
 use App\Entity\Tags;
 use App\Repository\TagsRepository;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\OptimisticLockException;
+use Doctrine\ORM\ORMException;
 use Symfony\Component\Form\DataTransformerInterface;
 
 /**
@@ -61,8 +63,8 @@ class TagsDataTransformer implements DataTransformerInterface
      *
      * @return array Result
      *
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
+     * @throws ORMException
+     * @throws OptimisticLockException
      */
     public function reverseTransform($value): array
     {

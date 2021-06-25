@@ -7,7 +7,6 @@
 namespace App\Controller;
 
 use App\Entity\Note;
-use App\Entity\Tags;
 use App\Form\NoteType;
 use App\Service\FileUploader;
 use App\Service\NoteService;
@@ -181,7 +180,7 @@ class NoteController extends AbstractController
         return $this->render('notes/edit.html.twig', [
                 'form' => $form->createView(),
                 'notes' => $note,
-            ]);
+        ]);
     }
 
     /**
@@ -226,6 +225,6 @@ class NoteController extends AbstractController
         return $this->render('notes/delete.html.twig', [
                 'form' => $form->createView(),
                 'notes' => $note,
-            ]);
+        ]);
     }
 }

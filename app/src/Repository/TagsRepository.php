@@ -7,7 +7,6 @@
 namespace App\Repository;
 
 use App\Entity\Tags;
-use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
@@ -57,18 +56,6 @@ class TagsRepository extends ServiceEntityRepository
     }
 
     /**
-     * Get or create new query builder.
-     *
-     * @param QueryBuilder|null $queryBuilder Query builder
-     *
-     * @return QueryBuilder Query builder
-     */
-    private function getOrCreateQueryBuilder(QueryBuilder $queryBuilder = null): QueryBuilder
-    {
-        return $queryBuilder ?? $this->createQueryBuilder('tags');
-    }
-
-    /**
      * Save record.
      *
      * @param Tags $tags Tags entity
@@ -94,5 +81,17 @@ class TagsRepository extends ServiceEntityRepository
     {
         $this->_em->remove($tags);
         $this->_em->flush();
+    }
+
+    /**
+     * Get or create new query builder.
+     *
+     * @param QueryBuilder|null $queryBuilder Query builder
+     *
+     * @return QueryBuilder Query builder
+     */
+    private function getOrCreateQueryBuilder(QueryBuilder $queryBuilder = null): QueryBuilder
+    {
+        return $queryBuilder ?? $this->createQueryBuilder('tags');
     }
 }
