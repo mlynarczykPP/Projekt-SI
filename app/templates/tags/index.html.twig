@@ -35,7 +35,7 @@
                         <a href="{{ url('tags_show', {id: tags.id}) }}" title="{{ 'button_view'|trans }}">
                             &#128269;{{ 'button_view'|trans }}
                         </a>
-                        {% if not tags.notes|length %}
+                        {% if not tags.notes|length and not tags.tasks|length %}
                             <a href="{{ url('tags_delete', {id: tags.id}) }}" title="{{ 'delete'|trans }}" id="op">
                                 &#10060;{{ 'delete'|trans }}
                             </a>
@@ -47,7 +47,7 @@
                             <a href="{{ url('tags_edit', {id: tags.id}) }}" title="{{ 'button_edit'|trans }}" id="op">
                                 &#128736;{{ 'button_edit'|trans }}
                             </a>
-                            {% if not tags.notes|length %}
+                            {% if not tags.notes|length and not tags.tasks|length %}
                                 <a href="{{ url('tags_delete', {id: tags.id}) }}" title="{{ 'delete'|trans }}" id="op">
                                     &#10060;{{ 'delete'|trans }}
                                 </a>
