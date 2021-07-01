@@ -10,6 +10,7 @@ use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\PersistentCollection;
 use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
@@ -76,7 +77,7 @@ class Tags
      *
      * @Gedmo\Slug(fields={"name"})
      */
-    private $code;
+    private string $code;
 
     /**
      * Created at.
@@ -87,7 +88,7 @@ class Tags
      *
      * @Gedmo\Timestampable(on="update")
      */
-    private $createdAt;
+    private DateTimeInterface $createdAt;
 
     /**
      * Updated at.
@@ -98,7 +99,7 @@ class Tags
      *
      * @Gedmo\Timestampable(on="update")
      */
-    private $updatedAt;
+    private DateTimeInterface $updatedAt;
 
     /**
      * Tasks.
@@ -108,7 +109,7 @@ class Tags
      *     mappedBy="tags"
      * )
      */
-    private $tasks;
+    private PersistentCollection $tasks;
 
     /**
      * Getter for the Id.

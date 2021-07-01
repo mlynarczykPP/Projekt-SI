@@ -91,13 +91,13 @@ class TaskService
      *
      * @var CategoriesService
      */
-    private $categoriesService;
+    private CategoriesService $categoriesService;
     /**
      * Tag service.
      *
      * @var TagService
      */
-    private $tagService;
+    private TagService $tagService;
 
     /**
      * Prepare filters for the tasks list.

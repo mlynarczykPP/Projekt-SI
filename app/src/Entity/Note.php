@@ -81,7 +81,7 @@ class Note
      *
      * @Gedmo\Timestampable(on="update")
      */
-    private $createdAt;
+    private DateTimeInterface $createdAt;
 
     /**
      * Updated at.
@@ -92,7 +92,7 @@ class Note
      *
      * @Gedmo\Timestampable(on="update")
      */
-    private $updatedAt;
+    private DateTimeInterface $updatedAt;
 
     /**
      * Author.
@@ -104,7 +104,7 @@ class Note
      *
      * @ORM\JoinColumn(nullable=false)
      */
-    private $author;
+    private ?User $author;
 
     /**
      * Categories.
@@ -114,7 +114,7 @@ class Note
      *     inversedBy="tasks"
      * )
      */
-    private $categories;
+    private ?Categories $categories;
 
     /**
      * Filename.
@@ -125,7 +125,7 @@ class Note
      *     nullable=true
      * )
      */
-    private $filename;
+    private ?string $filename;
 
     /**
      * Getter for the Id.

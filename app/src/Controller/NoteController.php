@@ -124,18 +124,15 @@ class NoteController extends AbstractController
             if (null === $file) {
                 $note->setAuthor($this->getUser());
                 $this->noteService->save($note);
-                $this->addFlash('success', 'message_created_successfully');
-
-                return $this->redirectToRoute('notes_index');
             } else {
                 $imageFilename = $this->fileUploader->upload($form->get('file')->getData());
                 $note->setFilename($imageFilename);
                 $note->setAuthor($this->getUser());
                 $this->noteService->save($note);
-                $this->addFlash('success', 'message_created_successfully');
-
-                return $this->redirectToRoute('notes_index');
             }
+            $this->addFlash('success', 'message_created_successfully');
+
+            return $this->redirectToRoute('notes_index');
         }
 
         return $this->render('notes/create.html.twig', ['form' => $form->createView()]);
